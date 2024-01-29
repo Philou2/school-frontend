@@ -1,0 +1,109 @@
+<div class="modal-header">
+  <h4 class="modal-title">Class Year</h4>
+  <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+
+  </button>
+</div>
+<div class="modal-body">
+  <form [formGroup]="classYearForm" (ngSubmit)="onFormSubmit()" id="ngForm">
+    <div class="row">
+      
+      <div class="col-md-6">
+        <label class="form-label"> Year <span class="text-danger">*</span></label>
+        <ng-select
+                [items]="years"
+                bindLabel="year"
+                bindValue="id"
+                placeholder="Choose a year"
+                formControlName="year"
+                [ngClass]="{'is-invalid': fc['year'].invalid && isSubmitted}"
+                [(ngModel)]="yearSelected">
+        </ng-select>
+        <div class="invalid-feedback" *ngIf="fc['year'].errors?.['required']">This field is required</div>
+        <div class="invalid-feedback" *ngIf="fc['year'].errors?.['serverError']">
+          {{ fc['year'].errors?.['serverError'] }}
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label"> Class  <span class="text-danger">*</span></label>
+        <ng-select
+                [items]="classes"
+                bindLabel="code"
+                bindValue="id"
+                placeholder="Choose a class"
+                formControlName="schoolClass"
+                [ngClass]="{'is-invalid': fc['schoolClass'].invalid && isSubmitted}"
+                [(ngModel)]="classSelected">
+        </ng-select>
+        <div class="invalid-feedback" *ngIf="fc['schoolClass'].errors?.['required']">This field is required</div>
+        <div class="invalid-feedback" *ngIf="fc['schoolClass'].errors?.['serverError']">
+          {{ fc['schoolClass'].errors?.['serverError'] }}
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <label class="form-label">Min Annual Quota</label>
+        <input class="form-control form-control-sm" type="number" placeholder="Ex. Security" formControlName="minannualquota">
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label">Max Annual Quota</label>
+        <input class="form-control form-control-sm" type="number" placeholder="Ex. Security" formControlName="maxannualquota">
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <label class="form-label">Min Monthly Quota</label>
+        <input class="form-control form-control-sm" type="number" placeholder="Ex. Security" formControlName="minmonthlyquota">
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label">Max Monthly Quota</label>
+        <input class="form-control form-control-sm" type="number" placeholder="Ex. Security" formControlName="maxmonthlyquota">
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <label class="form-label">Min Weekly Quota</label>
+        <input class="form-control form-control-sm" type="number" placeholder="Ex. Security" formControlName="minweeklyquota">
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label">Max Weekly Quota</label>
+        <input class="form-control form-control-sm" type="number" placeholder="Ex. Security" formControlName="maxweeklyquota">
+      </div>
+    </div>
+
+  </form>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-sm btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
+
+
+  <button form="ngForm" (submit)="onFormSubmit()" type="submit" class="btn btn-sm btn-outline-primary" [disabled]=saving>
+    <ng-container *ngIf="!saving; else isSaving">{{data ? update : create}}</ng-container>
+    <ng-template #isSaving>
+      {{ "Submitting" | translate}} ...
+    </ng-template>
+  </button>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

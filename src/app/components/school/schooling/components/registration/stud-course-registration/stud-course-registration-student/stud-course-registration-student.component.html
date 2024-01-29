@@ -1,0 +1,221 @@
+<app-breadcrumb [title]="'Student Course Registration'" [items]="['Schooling']" [active_item]="'Student Course Registration'"></app-breadcrumb>
+<style>
+  .custom-card-erp{
+    margin-bottom: 30px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  @media screen and (max-width: 800px) {
+    .desktop-hidden {
+      display: initial;
+    }
+    .mobile-hidden {
+      display: none;
+    }
+  }
+  @media screen and (min-width: 800px) {
+    .desktop-hidden {
+      display: none;
+    }
+    .mobile-hidden {
+      display: initial;
+    }
+  }
+
+</style>
+
+
+<div class="card">
+  <div class="card-body">
+    <div class="row"  style="margin-top: -15px;">
+
+      <div class="col-md-12">
+        <div class="row">
+          <div class="col-md-4">
+            <label class="form-label">year</label>
+            <ng-select
+              [items]="yearList"
+              bindLabel="year"
+              bindValue="id"
+              placeholder="Choose year"
+              [clearable]="false"
+              [(ngModel)]="yearListSelect" (ngModelChange)="filter()">
+            </ng-select>
+          </div>
+
+        </div>
+        <br>
+        <div class="col-md-4">
+          <p>School Class : {{ schoolClass.code }} </p>
+        </div>
+      </div>
+
+
+      <div class="col-md-12">
+        <div class="alert alert-warning" *ngIf="!isOpen">
+          <div class="alert-body">
+            You cannot choose your courses at this moment
+          </div>
+        </div>
+        <br>
+
+        <button class="btn btn-primary btn-sm" (click)="save()" *ngIf="isOpen">Save</button>
+
+        <br>
+
+        <div class="row" *ngIf="!isLoading">
+          <div class="col-md-6">
+            <br>
+            <div class="input-group input-group-merge">
+              <span class="input-group-text" id="basic-addon-search31"><i class="ti ti-search"></i></span>
+              <input
+                type="text"
+                class="form-control form-control-sm"
+                (keyup)="applyFilter($event)"
+                placeholder="Search..." #inputOptional
+                aria-label="Search..."
+                aria-describedby="basic-addon-search31" />
+            </div>
+            <div class="table-responsive text-nowrap example-container">
+              <p>Optionnal subjects left</p>
+              <table mat-table [dataSource]="dataSourceOptional" matSort>
+
+                <!-- class Column -->
+                <!--<ng-container matColumnDef="class">
+                  <th mat-header-cell *matHeaderCellDef class="mat-cell bg-secondary"> {{ "class" | translate }} </th>
+                  <td mat-cell *matCellDef="let row" class="td-height"> {{  row.class.code }}</td>
+                </ng-container>-->
+
+                <!-- Checkbox Column -->
+                <ng-container matColumnDef="select" sticky *ngIf="isOpen">
+                  <th mat-header-cell *matHeaderCellDef class="bg-secondary">
+                    <!--<mat-checkbox (change)="$event ? masterToggle() : null ; this.selection.hasValue() && isAllSelected() ? isButtonVisible = true  : isButtonVisible = false"
+                                  [checked]="selection.hasValue() && isAllSelected()"
+                                  [indeterminate]="selection.hasValue() && !isAllSelected()">
+                    </mat-checkbox>-->
+                    Select / Unselect your subjects
+                  </th>
+                  <td mat-cell *matCellDef="let row">
+                    <mat-checkbox (click)="$event.stopPropagation()"
+                                  (change)="$event ? selectionOptional.toggle(row) : null; !selectionOptional.selected.length ? this.isButtonVisible = false : this.isButtonVisible = true"
+                    >
+                    </mat-checkbox>
+                  </td>
+                </ng-container>
+
+                <!-- subject Column -->
+                <ng-container matColumnDef="subject">
+                  <th mat-header-cell *matHeaderCellDef class="mat-cell bg-secondary">subject</th>
+                  <td mat-cell *matCellDef="let row" class="td-height"> {{ row.subject.name }}</td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumnsOptional; sticky: true"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumnsOptional;" class="mat-row"></tr>
+
+                <!-- Row shown when there is no matching data. -->
+                <tr class="mat-row" *matNoDataRow>
+                  <td colspan="100" class="text-center"> {{ classProgramsFiltered.length ? 'No data matching the filter '+inputOptional.value : 'No optionnal subjects left' }}</td>
+                </tr>
+              </table>
+
+              <!--<mat-card-content *ngIf="isLoading" style="display: flex; padding: 20px 0; justify-content: center; align-items: center">
+
+                <div class="spinner-border" style="width: 3rem; height: 3rem" role="status">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+
+              </mat-card-content>-->
+            </div>
+
+            <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" #paginatorOptional showFirstLastButtons aria-label="Select page of users" class="mat-mdc-text-field-wrapper"></mat-paginator>
+
+          </div>
+          <div class="col-md-6">
+            <br>
+            <div class="input-group input-group-merge">
+              <span class="input-group-text" id="basic-addon-search32"><i class="ti ti-search"></i></span>
+              <input
+                type="text"
+                class="form-control form-control-sm"
+                (keyup)="applyFilter($event,false)"
+                placeholder="Search..." #inputRegistered
+                aria-label="Search..."
+                aria-describedby="basic-addon-search32" />
+            </div>
+            <div class="table-responsive text-nowrap example-container">
+              <p>Registered Subjects</p>
+              <table mat-table [dataSource]="dataSourceRegistered" matSort>
+
+                <!-- class Column -->
+                <!--<ng-container matColumnDef="class">
+                  <th mat-header-cell *matHeaderCellDef class="mat-cell bg-secondary"> {{ "class" | translate }} </th>
+                  <td mat-cell *matCellDef="let row" class="td-height"> {{  row.class.code }}</td>
+                </ng-container>-->
+
+                <!-- Checkbox Column -->
+                <ng-container matColumnDef="select" sticky *ngIf="isOpen">
+                  <th mat-header-cell *matHeaderCellDef class="bg-secondary">
+                    <!--<mat-checkbox (change)="$event ? masterToggle() : null ; this.selection.hasValue() && isAllSelected() ? isButtonVisible = true  : isButtonVisible = false"
+                                  [checked]="selection.hasValue() && isAllSelected()"
+                                  [indeterminate]="selection.hasValue() && !isAllSelected()">
+                    </mat-checkbox>-->
+                    Select / Unselect your subjects
+                  </th>
+                  <td mat-cell *matCellDef="let row">
+                    <mat-checkbox (click)="$event.stopPropagation()"
+                                  (change)="$event ? selectionRegistered.toggle(row) : null; !selectionRegistered.selected.length ? this.isButtonVisible = false : this.isButtonVisible = true"
+                                  [checked]="selectionRegistered.isSelected(row)"
+                                  *ngIf="!row.classProgram.isSubjectObligatory && !row.hasSchoolMark && row.class.isChoiceStudCourseOpen" >
+                    </mat-checkbox>
+                  </td>
+                </ng-container>
+
+                <!-- subject Column -->
+                <ng-container matColumnDef="subject">
+                  <th mat-header-cell *matHeaderCellDef class="mat-cell bg-secondary">subject</th>
+                  <td mat-cell *matCellDef="let row" class="td-height"> {{ row.subject.name }}</td>
+                </ng-container>
+
+                <!-- type Column -->
+                <ng-container matColumnDef="type">
+                  <th mat-header-cell *matHeaderCellDef class="mat-cell bg-secondary">type</th>
+                  <td mat-cell *matCellDef="let row" class="td-height"> {{ row.classProgram.isSubjectObligatory ? 'Obligatory' : 'Optionnal' }}</td>
+                </ng-container>
+
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumnsRegistered; sticky: true"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumnsRegistered;" class="mat-row"></tr>
+
+                <!-- Row shown when there is no matching data. -->
+                <tr class="mat-row" *matNoDataRow>
+                  <td colspan="100" class="text-center"> {{ studCourseRegistrationsFiltered.length ? 'No data matching the filter '+inputRegistered.value : 'No optionnal or obligatory subjects' }}</td>
+                </tr>
+              </table>
+
+              <!--<mat-card-content *ngIf="isLoading" style="display: flex; padding: 20px 0; justify-content: center; align-items: center">
+
+                <div class="spinner-border" style="width: 3rem; height: 3rem" role="status">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+
+              </mat-card-content>-->
+            </div>
+
+            <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" #paginatorRegistered showFirstLastButtons aria-label="Select page of users" class="mat-mdc-text-field-wrapper"></mat-paginator>
+
+          </div>
+        </div>
+        <mat-card-content *ngIf="isLoading" style="display: flex; padding: 20px 0; justify-content: center; align-items: center">
+
+          <div class="spinner-border" style="width: 3rem; height: 3rem" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+
+        </mat-card-content>
+      </div>
+    </div>
+
+  </div>
+
+</div>

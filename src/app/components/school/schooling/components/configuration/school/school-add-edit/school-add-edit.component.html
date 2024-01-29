@@ -1,0 +1,130 @@
+<div class="modal-header">
+  <h4 class="modal-title">School</h4>
+  <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+
+  </button>
+</div>
+<div class="modal-body">
+  <form [formGroup]="schoolForm" (ngSubmit)="onFormSubmit()" id="ngForm">
+    <div class="row">
+
+      <div class="col-md-4">
+        <label class="form-label">Code <span class="text-danger">*</span></label>
+        <input class="form-control form-control-sm" type="text" placeholder="Ex. Security" formControlName="code" [ngClass]="{'is-invalid': fc['code'].invalid && isSubmitted}">
+        <small class="invalid-feedback fst-italic" *ngIf="fc['code'].errors?.['required']">This field is required</small>
+        <div class="invalid-feedback" *ngIf="fc['code'].errors?.['minlength']">Code must be atleast 1 caracters long</div>
+        <div class="invalid-feedback" *ngIf="fc['code'].errors?.['serverError']">
+          {{ fc['code'].errors?.['serverError'] }}
+        </div>
+      </div>
+      
+      <div class="col-md-4">
+        <label class="form-label">Name <span class="text-danger">*</span></label>
+        <input class="form-control form-control-sm" type="text" placeholder="Ex. Security" formControlName="name" [ngClass]="{'is-invalid': fc['name'].invalid && isSubmitted}">
+        <small class="invalid-feedback fst-italic" *ngIf="fc['name'].errors?.['required']">This field is required</small>
+        <div class="invalid-feedback" *ngIf="fc['name'].errors?.['minlength']">Name must be atleast 1 caracters long</div>
+        <div class="invalid-feedback" *ngIf="fc['name'].errors?.['serverError']">
+          {{ fc['name'].errors?.['serverError'] }}
+        </div>
+      </div>
+      
+      <div class="col-md-4">
+        <label class="form-label">Email</label>
+        <input class="form-control form-control-sm" type="text" placeholder="Ex. jdoe@bp.com" formControlName="email" [ngClass]="{'is-invalid': fc['email'].invalid && isSubmitted}">
+        <small class="invalid-feedback fst-italic" *ngIf="fc['email'].errors?.['required']">This field is required</small>
+        <small class="invalid-feedback fst-italic" *ngIf="fc['email'].errors?.['email']">Email must be with mail convention</small>
+        <div class="invalid-feedback" *ngIf="fc['email'].errors?.['serverError']">
+          {{ fc['email'].errors?.['serverError'] }}
+        </div>
+      </div>
+      
+      
+    </div>
+
+    <div class="row">
+
+      <div class="col-md-4">
+        <label class="form-label">Phone</label>
+        <input class="form-control form-control-sm" type="text" placeholder="Ex. 677777777" formControlName="phone" [ngClass]="{'is-invalid': fc['phone'].invalid && isSubmitted}">
+        <small class="invalid-feedback fst-italic" *ngIf="fc['phone'].errors?.['required']">This field is required</small>
+        <div class="invalid-feedback" *ngIf="fc['phone'].errors?.['pattern']">Phone must between 1 - 9</div>
+        <div class="invalid-feedback" *ngIf="fc['phone'].errors?.['serverError']">
+          {{ fc['phone'].errors?.['serverError'] }}
+        </div>
+      </div>
+      
+      <div class="col-md-4">
+        <label class="form-label">Postal Code</label>
+        <input class="form-control form-control-sm" type="text" placeholder="Ex. Security" formControlName="postalCode">
+      </div> 
+      
+      <div class="col-md-4">
+        <label class="form-label">City</label>
+        <input class="form-control form-control-sm" type="text" placeholder="Ex. Security" formControlName="city">
+      </div> 
+      
+     
+    </div>
+
+    <div class="row">
+
+      <div class="col-md-4">
+        <label class="form-label">Address</label>
+        <input class="form-control form-control-sm" type="text" placeholder="Ex. Security" formControlName="address">
+      </div> 
+      
+      <div class="col-md-4">
+        <label class="form-label">Manager<span class="text-danger">*</span></label>
+        <input class="form-control form-control-sm" type="text" placeholder="Ex. Security" formControlName="manager" [ngClass]="{'is-invalid': fc['manager'].invalid && isSubmitted}">
+        <small class="invalid-feedback fst-italic" *ngIf="fc['manager'].errors?.['required']">This field is required</small>
+        <div class="invalid-feedback" *ngIf="fc['manager'].errors?.['serverError']">
+          {{ fc['manager'].errors?.['serverError'] }}
+        </div>
+      </div> 
+      
+      <div class="col-md-4">
+        <label class="form-label"> Manager Type<span class="text-danger">*</span></label>
+        <ng-select
+                [items]="managerTypes"
+                bindLabel="name"
+                bindValue="id"
+                placeholder="Choose an managerType"
+                formControlName="managerType"
+                [ngClass]="{'is-invalid': fc['managerType'].invalid && isSubmitted}"
+                [(ngModel)]="managerTypeSelected">
+        </ng-select>
+        <div class="invalid-feedback" *ngIf="fc['managerType'].errors?.['required']">This field is required</div>
+        <div class="invalid-feedback" *ngIf="fc['managerType'].errors?.['serverError']">
+          {{ fc['managerType'].errors?.['serverError'] }}
+        </div>
+      </div>
+    </div>
+
+  </form>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-sm btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
+
+
+  <button form="ngForm" (submit)="onFormSubmit()" type="submit" class="btn btn-sm btn-outline-primary" [disabled]=saving>
+    <ng-container *ngIf="!saving; else isSaving">{{data ? update : create}}</ng-container>
+    <ng-template #isSaving>
+      {{ "Submitting" | translate}} ...
+    </ng-template>
+  </button>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

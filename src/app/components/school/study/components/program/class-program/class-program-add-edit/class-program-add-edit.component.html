@@ -1,0 +1,772 @@
+<app-breadcrumb [title]="'Class Program'" [items]="['Study']" [active_item]="'Class Program'"></app-breadcrumb>
+<style>
+    .custom-card-erp{
+        margin-bottom: 30px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    @media screen and (max-width: 800px) {
+        .desktop-hidden {
+            display: initial;
+        }
+        .mobile-hidden {
+            display: none;
+        }
+    }
+    @media screen and (min-width: 800px) {
+        .desktop-hidden {
+            display: none;
+        }
+        .mobile-hidden {
+            display: initial;
+        }
+    }
+
+</style>
+
+<div class="card">
+    <div class="card-body">
+
+        <div>
+
+            <div [formGroup]="classProgramForm" (ngSubmit)="onFormSubmit()">
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <label class="form-label">Year<span class="text-danger">*</span></label>
+                        <ng-select
+                                [items]="years"
+                                bindLabel="year"
+                                bindValue="id"
+                                placeholder="Choose an year"
+                                formControlName="year"
+                                [ngClass]="{'is-invalid': fc['year'].invalid && isSubmitted}"
+                                [(ngModel)]="yearSelected">
+                        </ng-select>
+                        <div class="invalid-feedback" [ngClass]="{'d-block':hasSchoolMark}">This class program has marks linked to him</div>
+                        <div class="invalid-feedback" *ngIf="fc['year'].errors?.['required']">This field is required</div>
+                        <div class="invalid-feedback" *ngIf="fc['year'].errors?.['serverError']">
+                            {{ fc['year'].errors?.['serverError'] }}
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">School<span class="text-danger">*</span></label>
+                        <ng-select
+                                [items]="schools"
+                                bindLabel="name"
+                                bindValue="id"
+                                placeholder="Choose an school"
+                                formControlName="school"
+                                [ngClass]="{'is-invalid': fc['school'].invalid && isSubmitted}"
+                                [(ngModel)]="schoolSelected">
+                        </ng-select>
+                        <div class="invalid-feedback" [ngClass]="{'d-block':hasSchoolMark}">This class program has marks linked to him</div>
+                        <div class="invalid-feedback" *ngIf="fc['school'].errors?.['required']">This field is required</div>
+                        <div class="invalid-feedback" *ngIf="fc['school'].errors?.['serverError']">
+                            {{ fc['school'].errors?.['serverError'] }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <label class="form-label">Class<span class="text-danger">*</span></label>
+                        <ng-select
+                                [items]="classes"
+                                bindLabel="code"
+                                bindValue="id"
+                                placeholder="Choose an class"
+                                formControlName="class"
+                                [ngClass]="{'is-invalid': fc['class'].invalid && isSubmitted}"
+                                [(ngModel)]="classSelected">
+                        </ng-select>
+                        <div class="invalid-feedback" [ngClass]="{'d-block':hasSchoolMark}">This class program has marks linked to him</div>
+                        <div class="invalid-feedback" *ngIf="fc['class'].errors?.['required']">This field is required</div>
+                        <div class="invalid-feedback" *ngIf="fc['class'].errors?.['serverError']">
+                            {{ fc['class'].errors?.['serverError'] }}
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Subject<span class="text-danger">*</span></label>
+                        <ng-select
+                                [items]="subjects"
+                                bindLabel="name"
+                                bindValue="id"
+                                placeholder="Choose an subject"
+                                formControlName="subject"
+                                [ngClass]="{'is-invalid': fc['subject'].invalid && isSubmitted}"
+                                [(ngModel)]="subjectSelected">
+                        </ng-select>
+                        <div class="invalid-feedback" [ngClass]="{'d-block':hasSchoolMark}">This class program has marks linked to him</div>
+                        <div class="invalid-feedback" *ngIf="fc['subject'].errors?.['required']">This field is required</div>
+                        <div class="invalid-feedback" *ngIf="fc['subject'].errors?.['serverError']">
+                            {{ fc['subject'].errors?.['serverError'] }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-3">
+                        <label class="form-label">Module<span class="text-danger">*</span></label>
+                        <ng-select
+                                [items]="modules"
+                                bindLabel="name"
+                                bindValue="id"
+                                placeholder="Choose an module"
+                                formControlName="module"
+                                [ngClass]="{'is-invalid': fc['year'].invalid && isSubmitted}"
+                                [(ngModel)]="moduleSelected">
+                        </ng-select>
+                        <div class="invalid-feedback" *ngIf="fc['module'].errors?.['required']">This field is required</div>
+                        <div class="invalid-feedback" *ngIf="fc['module'].errors?.['serverError']">
+                            {{ fc['module'].errors?.['serverError'] }}
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label class="form-label">Actif</label>
+
+                        <div class="btn-radio" >
+                            <div class="btn-group" data-bs-toggle="buttons">
+                                <div class="btn btn-light txt-dark">
+                                    <div class="radio radio-dark">
+                                        <input id="radio25" formControlName="isActif" type="radio" value='1'>
+                                        <label for="radio25">Yes</label>
+                                    </div>
+                                </div>
+                                <div class="btn btn-light txt-dark">
+                                    <div class="radio radio-dark">
+                                        <input id="radio26" formControlName="isActif" type="radio" value='0'>
+                                        <label for="radio26">No</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label class="form-label">Obligatory</label>
+
+                        <div class="btn-radio" >
+                            <div class="btn-group" data-bs-toggle="buttons">
+                                <div class="btn btn-light txt-dark">
+                                    <div class="radio radio-dark">
+                                        <input id="radio27" formControlName="isSubjectObligatory" type="radio" value='1'>
+                                        <label for="radio27">Yes</label>
+                                    </div>
+                                </div>
+                                <div class="btn btn-light txt-dark">
+                                    <div class="radio radio-dark">
+                                        <input id="radio28" formControlName="isSubjectObligatory" type="radio" value='0'>
+                                        <label for="radio28">No</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--              <div class="col-md-6">-->
+                    <!--                <label class="form-label">Teacher</label>-->
+                    <!--                <ng-select-->
+                    <!--                        [items]="teachers"-->
+                    <!--                        bindLabel="name"-->
+                    <!--                        bindValue="id"-->
+                    <!--                        placeholder="Choose an teacher"-->
+                    <!--                        formControlName="teacher"-->
+                    <!--                        [(ngModel)]="teacherSelected">-->
+                    <!--                </ng-select>-->
+                    <!--              </div>-->
+                </div>
+
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <label class="form-label">Code UVC </label>
+                        <input class="form-control form-control-sm" type="text" placeholder="Ex. Security" formControlName="codeuvc">
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label">Name UVC</label>
+                        <input class="form-control form-control-sm" type="text" placeholder="Ex. Security" formControlName="nameuvc">
+                    </div>
+                </div>
+                <div class="row">
+
+                </div>
+
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <label class="form-label">PeriodType<span class="text-danger">*</span></label>
+                        <ng-select
+                                [items]="periodTypes"
+                                bindLabel="name"
+                                bindValue="id"
+                                placeholder="Choose an period Type"
+                                formControlName="periodType"
+                                [ngClass]="{'is-invalid': fc['periodType'].invalid && isSubmitted}"
+                                [(ngModel)]="periodTypeSelected">
+                        </ng-select>
+                        <div class="invalid-feedback" *ngIf="fc['periodType'].errors?.['required']">This field is required</div>
+                        <div class="invalid-feedback" *ngIf="fc['periodType'].errors?.['serverError']">
+                            {{ fc['periodType'].errors?.['serverError'] }}
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label">Position</label>
+                        <input class="form-control form-control-sm" type="number" placeholder="Ex. Security" formControlName="position">
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label">Nature</label>
+                        <ng-select
+                                [items]="natures"
+                                bindLabel="name"
+                                bindValue="id"
+                                placeholder="Choose an nature"
+                                formControlName="nature"
+                                [(ngModel)]="natureSelected">
+                        </ng-select>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <label class="form-label">Coeff</label>
+                        <input class="form-control form-control-sm" type="number" placeholder="Ex. Security" formControlName="coeff" >
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label">Principal Room</label>
+                        <ng-select
+                                [items]="rooms"
+                                bindLabel="name"
+                                bindValue="id"
+                                placeholder="Choose an room"
+                                formControlName="principalRoom"
+                                [(ngModel)]="roomSelected">
+                        </ng-select>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label">Number of subject chapters</label>
+                        <input class="form-control form-control-sm" type="number" placeholder="Ex. Security" formControlName="numberSubChap" >
+                    </div>
+                </div>
+
+
+                <!-- <div class="row">
+
+                  <div class="col-md-6">
+                    <label class="form-label">VH_AB</label>
+                    <input class="form-control form-control-sm" type="number" placeholder="Ex. Security" formControlName="vhAb" >
+                  </div>
+                </div> -->
+
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <label class="form-label">Teacher CM</label>
+                        <ng-select
+                                [items]="teacherCms"
+                                bindLabel="name"
+                                bindValue="id"
+                                placeholder="Choose an teacher"
+                                formControlName="teacherCm"
+                                [(ngModel)]="teacherCmSelected">
+                        </ng-select>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label">VH_CM</label>
+                        <input class="form-control form-control-sm" type="number" placeholder="Ex. Security" formControlName="vhCm" >
+                    </div>
+                </div>
+
+                <br>
+
+                <div class="row" style="display: flex; flex-direction: row; overflow-x: auto; border: 2px solid black; margin: 20px">
+                    <div class="col-md-2 custom-checkbox" style="white-space: nowrap;">
+                        <input type="checkbox" id="mondayCm" formControlName="mondayCm">
+                        <label for="mondayCm">Monday</label>
+                    </div>
+                    <div class="col-md-2 custom-checkbox" style="white-space: nowrap;">
+                        <input type="checkbox" id="tuesdayCm" formControlName="tuesdayCm">
+                        <label for="tuesdayCm">Tuesday</label>
+                    </div>
+                    <div class="col-md-2 custom-checkbox" style="white-space: nowrap;">
+                        <input type="checkbox" id="wednesdayCm" formControlName="wednesdayCm">
+                        <label for="wednesdayCm">Wednesday</label>
+                    </div>
+                    <div class="col-md-2 custom-checkbox" style="white-space: nowrap;">
+                        <input type="checkbox" id="thursdayCm" formControlName="thursdayCm">
+                        <label for="thursdayCm">Thursday</label>
+                    </div>
+                    <div class="col-md-2 custom-checkbox" style="white-space: nowrap;">
+                        <input type="checkbox" id="fridayCm" formControlName="fridayCm">
+                        <label for="fridayCm">Friday</label>
+                    </div>
+                    <div class="col-md-2 custom-checkbox" style="white-space: nowrap;">
+                        <input type="checkbox" id="saturdayCm" formControlName="saturdayCm">
+                        <label for="saturdayCm">Saturday</label>
+                    </div>
+                    <div class="col-md-2 custom-checkbox" style="white-space: nowrap;">
+                        <input type="checkbox" id="sundayCm" formControlName="sundayCm">
+                        <label for="sundayCm">Sunday</label>
+                    </div>
+                </div>
+
+
+                <div class="row" *ngIf="classProgramForm.get('mondayCm').value">
+                    <div class="col-md-6">
+                        <label class="form-label"> Monday Start<span class="text-danger">*</span> </label>
+                        <input class="form-control form-control-sm" type="time" placeholder="Ex. A" formControlName="mondayStartCm">
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label"> Monday End <span class="text-danger">*</span></label>
+                        <input class="form-control form-control-sm" type="time" placeholder="Ex. A" formControlName="mondayEndCm">
+                    </div>
+                </div>
+
+                <div class="row" *ngIf="classProgramForm.get('tuesdayCm').value">
+                    <div class="col-md-6">
+                        <label class="form-label"> Tuesday Start <span class="text-danger">*</span></label>
+                        <input class="form-control form-control-sm" type="time" placeholder="Ex. A" formControlName="tuesdayStartCm">
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label"> Tuesday End <span class="text-danger">*</span></label>
+                        <input class="form-control form-control-sm" type="time" placeholder="Ex. A" formControlName="tuesdayEndCm">
+                    </div>
+                </div>
+
+                <div class="row" *ngIf="classProgramForm.get('wednesdayCm').value">
+                    <div class="col-md-6">
+                        <label class="form-label"> Wednesday Start <span class="text-danger">*</span></label>
+                        <input class="form-control form-control-sm" type="time" placeholder="Ex. A" formControlName="wednesdayStartCm">
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label"> Wednesday End <span class="text-danger">*</span></label>
+                        <input class="form-control form-control-sm" type="time" placeholder="Ex. A" formControlName="wednesdayEndCm">
+                    </div>
+                </div>
+
+                <div class="row" *ngIf="classProgramForm.get('thursdayCm').value">
+                    <div class="col-md-6">
+                        <label class="form-label"> Thursday Start <span class="text-danger">*</span></label>
+                        <input class="form-control form-control-sm" type="time" placeholder="Ex. A" formControlName="thursdayStartCm">
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label"> Thursday End <span class="text-danger">*</span></label>
+                        <input class="form-control form-control-sm" type="time" placeholder="Ex. A" formControlName="thursdayEndCm">
+                    </div>
+                </div>
+
+                <div class="row" *ngIf="classProgramForm.get('fridayCm').value">
+                    <div class="col-md-6">
+                        <label class="form-label"> Friday Start <span class="text-danger">*</span></label>
+                        <input class="form-control form-control-sm" type="time" placeholder="Ex. A" formControlName="fridayStartCm">
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label"> Friday End <span class="text-danger">*</span></label>
+                        <input class="form-control form-control-sm" type="time" placeholder="Ex. A" formControlName="fridayEndCm">
+                    </div>
+                </div>
+
+                <div class="row" *ngIf="classProgramForm.get('saturdayCm').value">
+                    <div class="col-md-6">
+                        <label class="form-label"> Saturday Start <span class="text-danger">*</span></label>
+                        <input class="form-control form-control-sm" type="time" placeholder="Ex. A" formControlName="saturdayStartCm">
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label"> Saturday End <span class="text-danger">*</span></label>
+                        <input class="form-control form-control-sm" type="time" placeholder="Ex. A" formControlName="saturdayEndCm">
+                    </div>
+                </div>
+
+                <div class="row" *ngIf="classProgramForm.get('sundayCm').value">
+                    <div class="col-md-6">
+                        <label class="form-label"> Sunday Start <span class="text-danger">*</span></label>
+                        <input class="form-control form-control-sm" type="time" placeholder="Ex. A" formControlName="sundayStartCm">
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label"> Sunday End <span class="text-danger">*</span></label>
+                        <input class="form-control form-control-sm" type="time" placeholder="Ex. A" formControlName="sundayEndCm">
+                    </div>
+                </div>
+
+                <br>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <label class="form-label">Teacher Tp</label>
+                        <ng-select
+                                [items]="teacherTps"
+                                bindLabel="name"
+                                bindValue="id"
+                                placeholder="Choose an teacher"
+                                formControlName="teacherTp"
+                                [(ngModel)]="teacherTpSelected">
+                        </ng-select>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label">VH_TP</label>
+                        <input class="form-control form-control-sm" type="number" placeholder="Ex. Security" formControlName="vhTp" >
+                    </div>
+                </div>
+
+                <br>
+
+                <div class="row" style="display: flex; flex-direction: row; overflow-x: auto; border: 2px solid black; margin: 20px">
+                    <div class="col-md-2 custom-checkbox" style="white-space: nowrap;">
+                        <input type="checkbox" id="mondayTp" formControlName="mondayTp">
+                        <label for="mondayTp">Monday</label>
+                    </div>
+                    <div class="col-md-2 custom-checkbox" style="white-space: nowrap;">
+                        <input type="checkbox" id="tuesdayTp" formControlName="tuesdayTp">
+                        <label for="tuesdayTp">Tuesday</label>
+                    </div>
+                    <div class="col-md-2 custom-checkbox" style="white-space: nowrap;">
+                        <input type="checkbox" id="wednesdayTp" formControlName="wednesdayTp">
+                        <label for="wednesdayTp">Wednesday</label>
+                    </div>
+                    <div class="col-md-2 custom-checkbox" style="white-space: nowrap;">
+                        <input type="checkbox" id="thursdayTp" formControlName="thursdayTp">
+                        <label for="thursdayTp">Thursday</label>
+                    </div>
+                    <div class="col-md-2 custom-checkbox" style="white-space: nowrap;">
+                        <input type="checkbox" id="fridayTp" formControlName="fridayTp">
+                        <label for="fridayTp">Friday</label>
+                    </div>
+                    <div class="col-md-2 custom-checkbox" style="white-space: nowrap;">
+                        <input type="checkbox" id="saturdayTp" formControlName="saturdayTp">
+                        <label for="saturdayTp">Saturday</label>
+                    </div>
+                    <div class="col-md-2 custom-checkbox" style="white-space: nowrap;">
+                        <input type="checkbox" id="sundayTp" formControlName="sundayTp">
+                        <label for="sundayTp">Sunday</label>
+                    </div>
+                </div>
+
+
+                <div class="row" *ngIf="classProgramForm.get('mondayTp').value">
+                    <div class="col-md-6">
+                        <label class="form-label"> Monday Start<span class="text-danger">*</span> </label>
+                        <input class="form-control form-control-sm" type="time" placeholder="Ex. A" formControlName="mondayStartTp">
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label"> Monday End <span class="text-danger">*</span></label>
+                        <input class="form-control form-control-sm" type="time" placeholder="Ex. A" formControlName="mondayEndTp">
+                    </div>
+                </div>
+
+                <div class="row" *ngIf="classProgramForm.get('tuesdayTp').value">
+                    <div class="col-md-6">
+                        <label class="form-label"> Tuesday Start <span class="text-danger">*</span></label>
+                        <input class="form-control form-control-sm" type="time" placeholder="Ex. A" formControlName="tuesdayStartTp">
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label"> Tuesday End <span class="text-danger">*</span></label>
+                        <input class="form-control form-control-sm" type="time" placeholder="Ex. A" formControlName="tuesdayEndTp">
+                    </div>
+                </div>
+
+                <div class="row" *ngIf="classProgramForm.get('wednesdayTp').value">
+                    <div class="col-md-6">
+                        <label class="form-label"> Wednesday Start <span class="text-danger">*</span></label>
+                        <input class="form-control form-control-sm" type="time" placeholder="Ex. A" formControlName="wednesdayStartTp">
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label"> Wednesday End <span class="text-danger">*</span></label>
+                        <input class="form-control form-control-sm" type="time" placeholder="Ex. A" formControlName="wednesdayEndTp">
+                    </div>
+                </div>
+
+                <div class="row" *ngIf="classProgramForm.get('thursdayTp').value">
+                    <div class="col-md-6">
+                        <label class="form-label"> Thursday Start <span class="text-danger">*</span></label>
+                        <input class="form-control form-control-sm" type="time" placeholder="Ex. A" formControlName="thursdayStartTp">
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label"> Thursday End <span class="text-danger">*</span></label>
+                        <input class="form-control form-control-sm" type="time" placeholder="Ex. A" formControlName="thursdayEndTp">
+                    </div>
+                </div>
+
+                <div class="row" *ngIf="classProgramForm.get('fridayTp').value">
+                    <div class="col-md-6">
+                        <label class="form-label"> Friday Start <span class="text-danger">*</span></label>
+                        <input class="form-control form-control-sm" type="time" placeholder="Ex. A" formControlName="fridayStartTp">
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label"> Friday End <span class="text-danger">*</span></label>
+                        <input class="form-control form-control-sm" type="time" placeholder="Ex. A" formControlName="fridayEndTp">
+                    </div>
+                </div>
+
+                <div class="row" *ngIf="classProgramForm.get('saturdayTp').value">
+                    <div class="col-md-6">
+                        <label class="form-label"> Saturday Start <span class="text-danger">*</span></label>
+                        <input class="form-control form-control-sm" type="time" placeholder="Ex. A" formControlName="saturdayStartTp">
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label"> Saturday End <span class="text-danger">*</span></label>
+                        <input class="form-control form-control-sm" type="time" placeholder="Ex. A" formControlName="saturdayEndTp">
+                    </div>
+                </div>
+
+                <div class="row" *ngIf="classProgramForm.get('sundayTp').value">
+                    <div class="col-md-6">
+                        <label class="form-label"> Sunday Start <span class="text-danger">*</span></label>
+                        <input class="form-control form-control-sm" type="time" placeholder="Ex. A" formControlName="sundayStartTp">
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label"> Sunday End <span class="text-danger">*</span></label>
+                        <input class="form-control form-control-sm" type="time" placeholder="Ex. A" formControlName="sundayEndTp">
+                    </div>
+                </div>
+
+                <br>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <label class="form-label">Teacher Td</label>
+                        <ng-select
+                                [items]="teacherTds"
+                                bindLabel="name"
+                                bindValue="id"
+                                placeholder="Choose an teacher"
+                                formControlName="teacherTd"
+                                [(ngModel)]="teacherTdSelected">
+                        </ng-select>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label">VH_TD</label>
+                        <input class="form-control form-control-sm" type="number" placeholder="Ex. Security" formControlName="vhTd" >
+                    </div>
+                </div>
+
+
+                <br>
+
+                <div class="row" style="display: flex; flex-direction: row; overflow-x: auto; border: 2px solid black; margin: 20px">
+                    <div class="col-md-2 custom-checkbox" style="white-space: nowrap;">
+                        <input type="checkbox" id="mondayTd" formControlName="mondayTd">
+                        <label for="mondayTd">Monday</label>
+                    </div>
+                    <div class="col-md-2 custom-checkbox" style="white-space: nowrap;">
+                        <input type="checkbox" id="tuesdayTd" formControlName="tuesdayTd">
+                        <label for="tuesdayTd">Tuesday</label>
+                    </div>
+                    <div class="col-md-2 custom-checkbox" style="white-space: nowrap;">
+                        <input type="checkbox" id="wednesdayTd" formControlName="wednesdayTd">
+                        <label for="wednesdayTd">Wednesday</label>
+                    </div>
+                    <div class="col-md-2 custom-checkbox" style="white-space: nowrap;">
+                        <input type="checkbox" id="thursdayTd" formControlName="thursdayTd">
+                        <label for="thursdayTd">Thursday</label>
+                    </div>
+                    <div class="col-md-2 custom-checkbox" style="white-space: nowrap;">
+                        <input type="checkbox" id="fridayTd" formControlName="fridayTd">
+                        <label for="fridayTd">Friday</label>
+                    </div>
+                    <div class="col-md-2 custom-checkbox" style="white-space: nowrap;">
+                        <input type="checkbox" id="saturdayTd" formControlName="saturdayTd">
+                        <label for="saturdayTd">Saturday</label>
+                    </div>
+                    <div class="col-md-2 custom-checkbox" style="white-space: nowrap;">
+                        <input type="checkbox" id="sundayTd" formControlName="sundayTd">
+                        <label for="sundayTd">Sunday</label>
+                    </div>
+                </div>
+
+
+                <div class="row" *ngIf="classProgramForm.get('mondayTd').value">
+                    <div class="col-md-6">
+                        <label class="form-label"> Monday Start<span class="text-danger">*</span> </label>
+                        <input class="form-control form-control-sm" type="time" placeholder="Ex. A" formControlName="mondayStartTd">
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label"> Monday End <span class="text-danger">*</span></label>
+                        <input class="form-control form-control-sm" type="time" placeholder="Ex. A" formControlName="mondayEndTd">
+                    </div>
+                </div>
+
+                <div class="row" *ngIf="classProgramForm.get('tuesdayTd').value">
+                    <div class="col-md-6">
+                        <label class="form-label"> Tuesday Start <span class="text-danger">*</span></label>
+                        <input class="form-control form-control-sm" type="time" placeholder="Ex. A" formControlName="tuesdayStartTd">
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label"> Tuesday End <span class="text-danger">*</span></label>
+                        <input class="form-control form-control-sm" type="time" placeholder="Ex. A" formControlName="tuesdayEndTd">
+                    </div>
+                </div>
+
+                <div class="row" *ngIf="classProgramForm.get('wednesdayTd').value">
+                    <div class="col-md-6">
+                        <label class="form-label"> Wednesday Start <span class="text-danger">*</span></label>
+                        <input class="form-control form-control-sm" type="time" placeholder="Ex. A" formControlName="wednesdayStartTd">
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label"> Wednesday End <span class="text-danger">*</span></label>
+                        <input class="form-control form-control-sm" type="time" placeholder="Ex. A" formControlName="wednesdayEndTd">
+                    </div>
+                </div>
+
+                <div class="row" *ngIf="classProgramForm.get('thursdayTd').value">
+                    <div class="col-md-6">
+                        <label class="form-label"> Thursday Start <span class="text-danger">*</span></label>
+                        <input class="form-control form-control-sm" type="time" placeholder="Ex. A" formControlName="thursdayStartTd">
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label"> Thursday End <span class="text-danger">*</span></label>
+                        <input class="form-control form-control-sm" type="time" placeholder="Ex. A" formControlName="thursdayEndTd">
+                    </div>
+                </div>
+
+                <div class="row" *ngIf="classProgramForm.get('fridayTd').value">
+                    <div class="col-md-6">
+                        <label class="form-label"> Friday Start <span class="text-danger">*</span></label>
+                        <input class="form-control form-control-sm" type="time" placeholder="Ex. A" formControlName="fridayStartTd">
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label"> Friday End <span class="text-danger">*</span></label>
+                        <input class="form-control form-control-sm" type="time" placeholder="Ex. A" formControlName="fridayEndTd">
+                    </div>
+                </div>
+
+                <div class="row" *ngIf="classProgramForm.get('saturdayTd').value">
+                    <div class="col-md-6">
+                        <label class="form-label"> Saturday Start <span class="text-danger">*</span></label>
+                        <input class="form-control form-control-sm" type="time" placeholder="Ex. A" formControlName="saturdayStartTd">
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label"> Saturday End <span class="text-danger">*</span></label>
+                        <input class="form-control form-control-sm" type="time" placeholder="Ex. A" formControlName="saturdayEndTd">
+                    </div>
+                </div>
+
+                <div class="row" *ngIf="classProgramForm.get('sundayTd').value">
+                    <div class="col-md-6">
+                        <label class="form-label"> Sunday Start <span class="text-danger">*</span></label>
+                        <input class="form-control form-control-sm" type="time" placeholder="Ex. A" formControlName="sundayStartTd">
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label"> Sunday End <span class="text-danger">*</span></label>
+                        <input class="form-control form-control-sm" type="time" placeholder="Ex. A" formControlName="sundayEndTd">
+                    </div>
+                </div>
+
+                <br>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <label class="form-label">Teacher Mark</label>
+                        <ng-select
+                                [items]="teacherMarks"
+                                bindLabel="name"
+                                bindValue="id"
+                                placeholder="Choose an teacher"
+                                formControlName="teacherMark"
+                                [(ngModel)]="teacherMarkSelected">
+                        </ng-select>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label">VH_EX</label>
+                        <input class="form-control form-control-sm" type="number" placeholder="Ex. Security" formControlName="vhEx" >
+                    </div>
+                </div>
+
+
+                <br>
+
+
+                <div class="d-flex justify-content-between" style="margin-right: 10px;">
+                    <button (click)="close()" type="button" style="margin-right: 10px;" class="btn btn-sm btn-outline-dark" routerLink='/school/study/class-program'>Close</button>
+                    <button (click)="onFormSubmit()" type="button" class="btn btn-sm btn-outline-primary" [disabled]=saving>
+                        <ng-container *ngIf="!saving; else isSaving">{{data ? update : create}}</ng-container>
+                        <ng-template #isSaving>
+                            {{ "Submitting" | translate}} ...
+                        </ng-template>
+                    </button>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <div class="modal-header">
+  <h4 class="modal-title">Class program</h4>
+  <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+  </button>
+</div>
+<div class="modal-body">
+  <form [formGroup]="classProgramForm" (ngSubmit)="onFormSubmit()" id="ngForm">
+
+   
+
+
+  </form>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-sm btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
+
+  <button form="ngForm" (submit)="onFormSubmit()" type="submit" class="btn btn-sm btn-outline-primary" [disabled]=saving>
+    <ng-container *ngIf="!saving; else isSaving">{{data ? update : create}}</ng-container>
+    <ng-template #isSaving>
+      {{ "Submitting" | translate}} ...
+    </ng-template>
+  </button>
+</div> -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+

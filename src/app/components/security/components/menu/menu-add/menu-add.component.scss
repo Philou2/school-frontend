@@ -1,0 +1,29 @@
+::placeholder{
+  //chrome, firefox, opera, safari
+  color: #2F2F3B;
+  opacity: 0.3;
+}
+:-ms-input-placeholder{
+  // internet explorer
+  color: #2F2F3B;
+  opacity: 0.3;
+}
+::-ms-input-placeholder{
+  //Edge
+  color: #2F2F3B;
+  opacity: 0.3;
+}
+
+.form-control-sm {
+  color: #2F2F3B;
+}
+
+input:read-only {
+  background: lightgrey;
+  //font-style: italic;
+}
+
+input:-moz-read-only { /* For Firefox */
+  background: lightgrey;
+  //font-style: italic;
+}

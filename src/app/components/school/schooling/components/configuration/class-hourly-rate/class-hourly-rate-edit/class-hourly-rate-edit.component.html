@@ -1,0 +1,79 @@
+<div class="modal-header">
+  <h4 class="modal-title">Class Hourly Rate</h4>
+<!--
+  <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></button>
+-->
+</div>
+<div class="modal-body">
+  <form [formGroup]="classroomForm" (ngSubmit)="onFormSubmit()" id="ngForm">
+    <div class="row">
+      <div class="col-md-6">
+        <label class="form-label"> School <span class="text-danger">*</span></label>
+        <ng-select
+                [items]="schools"
+                bindLabel="name"
+                bindValue="id"
+                placeholder="Choose an school"
+                formControlName="school"
+                [ngClass]="{'is-invalid': fc['school'].invalid && isSubmitted}"
+                [(ngModel)]="schoolSelected" readonly="readonly">
+        </ng-select>
+        <div class="invalid-feedback" *ngIf="fc['school'].errors?.['required']">This field is required</div>
+        <div class="invalid-feedback" *ngIf="fc['school'].errors?.['serverError']">
+          {{ fc['school'].errors?.['serverError'] }}
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label">Class <span class="text-danger">*</span></label>
+        <input class="form-control form-control-sm txt-secondary" type="text" placeholder="Ex. Security" formControlName="code" [ngClass]="{'is-invalid': fc['code'].invalid && isSubmitted}" readonly>
+        <small class="invalid-feedback fst-italic" *ngIf="fc['code'].errors?.['required']">This field is required</small>
+        <div class="invalid-feedback" *ngIf="fc['code'].errors?.['minlength']">Name must be atleast 1 caracters long</div>
+        <div class="invalid-feedback" *ngIf="fc['code'].errors?.['serverError']">
+          {{ fc['code'].errors?.['serverError'] }}
+        </div>
+      </div>
+
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <label class="form-label">Simple Hourly Rate</label>
+        <input class="form-control form-control-sm" type="number" placeholder="Ex. Security"
+               formControlName="simpleHourlyRate">
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Multiple Hourly Rate</label>
+        <input class="form-control form-control-sm" type="number" placeholder="Ex. Security"
+               formControlName="multipleHourlyRate">
+      </div>
+    </div>
+
+  </form>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-sm btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
+
+
+  <button form="ngForm" (submit)="onFormSubmit()" type="submit" class="btn btn-sm btn-outline-primary" [disabled]=saving>
+    <ng-container *ngIf="!saving; else isSaving">{{data ? update : create}}</ng-container>
+    <ng-template #isSaving>
+      {{ "Submitting" | translate}} ...
+    </ng-template>
+  </button>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

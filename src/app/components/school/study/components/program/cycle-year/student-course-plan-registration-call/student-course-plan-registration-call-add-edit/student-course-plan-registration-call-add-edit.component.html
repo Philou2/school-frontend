@@ -1,0 +1,98 @@
+<div class="modal-header">
+  <h4 class="modal-title">Teacher Course Registration</h4>
+  <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+
+  </button>
+</div>
+<div class="modal-body">
+  <form [formGroup]="teacherCourseRegistrationForm" (ngSubmit)="onFormSubmit()" id="ngForm">
+    <div class="row">
+      <div class="col-md-6">
+        <label class="form-label"> Teacher <span class="text-danger">*</span></label>
+        <ng-select
+                [items]="teachers"
+                bindLabel="name"
+                bindValue="id"
+                placeholder="Choose a teacher"
+                formControlName="teacher"
+                [ngClass]="{'is-invalid': fc['teacher'].invalid && isSubmitted}"
+                [(ngModel)]="teacherSelected">
+        </ng-select>
+        <div class="invalid-feedback" *ngIf="fc['teacher'].errors?.['required']">This field is required</div>
+        <div class="invalid-feedback" *ngIf="fc['teacher'].errors?.['serverError']">
+          {{ fc['teacher'].errors?.['serverError'] }}
+        </div>
+      </div>
+      
+      <div class="col-md-6">
+        <label class="form-label"> Course <span class="text-danger">*</span></label>
+        <ng-select
+                [items]="courses"
+                bindLabel="codeuvc"
+                bindValue="id"
+                placeholder="Choose a course"
+                formControlName="course"
+                [ngClass]="{'is-invalid': fc['course'].invalid && isSubmitted}"
+                [(ngModel)]="courseSelected">
+        </ng-select>
+        <div class="invalid-feedback" *ngIf="fc['course'].errors?.['required']">This field is required</div>
+        <div class="invalid-feedback" *ngIf="fc['course'].errors?.['serverError']">
+          {{ fc['course'].errors?.['serverError'] }}
+        </div>
+      </div>
+
+
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <label class="form-label">Hourly Rate Volume</label>
+        <input class="form-control form-control-sm" type="number" placeholder="Ex. Security" formControlName="hourlyRateVolume">
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label">Hourly Rate Exhausted</label>
+        <input class="form-control form-control-sm" type="number" placeholder="Ex. Security" formControlName="hourlyRateExhausted">
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <label class="form-label">Hourly Rate Not Exhausted</label>
+        <input class="form-control form-control-sm" type="number" placeholder="Ex. Security" formControlName="hourlyRateNotExhausted">
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label">type</label>
+        <input class="form-control form-control-sm" type="text" placeholder="Ex. Security" formControlName="type">
+      </div>
+    </div>
+
+  </form>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-sm btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
+
+
+  <button form="ngForm" (submit)="onFormSubmit()" type="submit" class="btn btn-sm btn-outline-primary" [disabled]=saving>
+    <ng-container *ngIf="!saving; else isSaving">{{data ? update : create}}</ng-container>
+    <ng-template #isSaving>
+      {{ "Submitting" | translate}} ...
+    </ng-template>
+  </button>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

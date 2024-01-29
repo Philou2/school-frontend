@@ -1,0 +1,215 @@
+<app-breadcrumb [title]="'Anonymity'" [items]="['Exam']" [active_item]="'anonymity'"></app-breadcrumb>
+<style>
+  .custom-card-erp{
+    margin-bottom: 30px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  @media screen and (max-width: 800px) {
+    .desktop-hidden {
+      display: initial;
+    }
+    .mobile-hidden {
+      display: none;
+    }
+  }
+  @media screen and (min-width: 800px) {
+    .desktop-hidden {
+      display: none;
+    }
+    .mobile-hidden {
+      display: initial;
+    }
+  }
+
+</style>
+<div class="card">
+
+  <div class="card-header d-block mb-2" *ngIf="!isLoading">
+    <h3>{{"class filters" | translate}}</h3>
+
+    <div class="row">
+      <div class="col-md-3">
+        <div class="row">
+          <label class="col-sm-3 col-form-label text-sm-end">{{ "year" | translate}}</label>
+          <div class="col-sm-9">
+            <ng-select
+              [items]="yearList"
+              bindLabel="year"
+              bindValue="id"
+              placeholder="Choose year"
+              [clearable]="false"
+              [(ngModel)]="yearListSelect" (ngModelChange)="filter(true,true)">
+            </ng-select>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="row">
+          <label class="col-sm-6 col-form-label text-sm-end">{{ "school" | translate }}</label>
+          <div class="col-sm-6">
+            <ng-select [items]="schoolList" bindLabel="name" bindValue="@id"
+                       placeholder="{{ 'nothing_f' | translate }}" [clearable]="false" [(ngModel)]=schoolListSelect
+                       (ngModelChange)="filter()"></ng-select>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="row">
+          <label class="col-sm-3 col-form-label text-sm-end">{{ "class" | translate }}</label>
+          <div class="col-sm-9">
+            <ng-select [items]="schoolClassListFiltered" bindLabel="code" bindValue="@id"
+                       placeholder="{{ 'nothing_f' | translate }}" [clearable]="false"
+                       [(ngModel)]=schoolClassListSelect (ngModelChange)="filter(true)"></ng-select>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+
+    <h3 class="mt-2">{{ "note filters" | translate }}</h3>
+
+    <div class="row">
+      <div class="col-md-4">
+        <div class="row">
+          <label class="col-sm-4 col-form-label text-sm-end">{{ "sequence" | translate }}</label>
+          <div class="col-sm-8">
+            <ng-select [items]="sequenceListFiltered" bindLabel="code" bindValue="@id"
+                       placeholder="{{ 'nothing_f' | translate }}" [clearable]="false" [(ngModel)]=sequenceListSelect
+                       (ngModelChange)="filter(true)"></ng-select>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="row">
+          <label class="col-sm-3 col-form-label text-sm-end">{{ "subject" | translate }}</label>
+          <div class="col-sm-9">
+            <ng-select [items]="subjectListFiltered" bindLabel="name" bindValue="@id"
+                       placeholder="{{ 'nothing_f' | translate }}" [clearable]="false" [(ngModel)]=subjectListSelect
+                       (ngModelChange)="filter()"></ng-select>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!--    {{ assignmentInformationFormGroup?.errors }}-->
+
+    <div class="row">
+      <div class="col-md-6">
+        <h3 class="mt-2">{{"generateAnonymity" | translate}}</h3>
+        <p class="mt-2 mx-2 text-primary">{{"formatExplication" | translate}}</p>
+        <div class="row">
+          <label class="col-sm-2 col-form-label text-sm-end">{{ "format" | translate }}</label>
+          <div class="col-sm-10 d-flex align-items-center">
+            <ng-template ngFor [ngForOf]="[1,2,3,4,5]" let-length let-even="even" let-index="index">
+              <ng-select [items]="formats" bindLabel="code" bindValue="code"
+                         [clearable]="false" [(ngModel)]="formatsSelected[index]" (ngModelChange)="makeExample()"
+                         [ngClass]="{ 'mx-2' : even }"></ng-select>
+            </ng-template>
+
+          </div>
+        </div>
+        <div class="row my-1">
+          <label class="col-sm-2 col-form-label text-sm-end">{{ "length" | translate }}</label>
+          <div class="col-sm-10 d-flex align-items-center">
+            <ng-template ngFor [ngForOf]="[1,2,3,4,5]" let-length let-even="even" let-index="index">
+              <ng-select [items]="lengths" bindLabel="value" bindValue="value"
+                         [clearable]="false" [(ngModel)]="lengthsSelected[index]" (ngModelChange)="makeExample()"
+                         [ngClass]="{ 'mx-2' : even }"></ng-select>
+            </ng-template>
+
+          </div>
+        </div>
+        <div class="row">
+          <label class="col-sm-2 col-form-label text-sm-end">{{ "example" | translate }}</label>
+          <div class="col-sm-10 d-flex align-items-center">
+            <input type="text" [value]=example class="form-control" [disabled]="true" value="example">
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <h3 class="mt-2">{{"actions" | translate}}</h3>
+        <div class="form-check form-check-inline d-block my-1">
+          <input class="form-check-input" type="checkbox" [(ngModel)]="crushTheOldAnonymity">
+          <label class="form-check-label">{{ "crush_the_old_anonymity" | translate }}</label>
+        </div>
+        <button class="btn btn-primary" (click)="generateCurrentSubjectAnonymity()">{{ 'generateCurrentSubject' | translate }}</button>
+        <button class="btn btn-primary mx-2" (click)="generateCurrentSubjectAnonymity(false)">{{ 'generateCurrentClass' | translate }}</button>
+        <button class="btn btn-primary" (click)="reset()">{{ 'reset' | translate }}</button>
+      </div>
+    </div>
+
+  </div>
+
+
+  <div class="card-body" >
+    <div class="d-flex justify-content-between align-items-center mb-2" *ngIf="!isLoading">
+      <h3 class="mb-0">{{ ("list_of" | translate) + " " + ("note_entry" | translate) }}</h3>
+      <!--<button type="button" class="btn btn-sm btn-primary waves-effect waves-float waves-light" (click)="openForm()">
+        <span class="tf-icon ti ti-plus ti-xs me-1"></span> {{ "new" | translate }}
+      </button>-->
+
+      <div class="d-flex align-items-center">
+        <div class="d-flex align-items-center">
+          <div class="input-group input-group-merge" style="width:fit-content">
+            <span class="input-group-text" id="basic-addon-search31"><i class="fa fa-search"></i></span>
+            <input type="text" class="form-control" (keyup)="applyFilter($event)"
+                   placeholder="{{ 'search'|translate }}..." #input aria-label="Search..."
+                   aria-describedby="basic-addon-search31"/>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="table-responsive text-nowrap example-container" *ngIf="!isLoading">
+      <form [formGroup]="markFormGroup" id="ngForm">
+        <table mat-table [dataSource]="dataSource" matSort>
+
+          <!-- Student Column -->
+          <ng-container matColumnDef="studentName">
+            <th mat-header-cell *matHeaderCellDef class="mat-cell"> {{ "student" | translate }} </th>
+            <td mat-cell *matCellDef="let row" class="td-height"> {{ row.studentName }}</td>
+          </ng-container>
+
+          <!-- Mark Column -->
+          <ng-container matColumnDef="mark">
+            <th mat-header-cell *matHeaderCellDef class="mat-cell"> {{ "anonymityCode" | translate }} </th>
+            <td mat-cell *matCellDef="let row" class="td-height">
+              {{ row.anonymityCode }}
+            </td>
+          </ng-container>
+
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="mat-row"></tr>
+
+          <!-- Row shown when there is no matching data. -->
+          <tr class="mat-row" *matNoDataRow>
+            <td colspan="100" style="text-align: center">
+              {{ ('no_data' | translate) }}
+            </td>
+          </tr>
+        </table>
+      </form>
+
+    </div>
+
+    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" *ngIf="!isLoading" showFirstLastButtons aria-label="Select page of users"
+                   class="mat-mdc-text-field-wrapper"></mat-paginator>
+
+    <mat-card-content *ngIf="isLoading"
+                      style="display: flex; padding: 20px 0; justify-content: center; align-items: center">
+
+      <div class="spinner-border" style="width: 3rem; height: 3rem" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+
+    </mat-card-content>
+
+  </div >
+
+</div>

@@ -1,0 +1,113 @@
+<app-breadcrumb [title]="'Permission'" [items]="['Security']" [active_item]="'Permission'"></app-breadcrumb>
+<style>
+  .custom-card-erp{
+    margin-bottom: 30px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  @media screen and (max-width: 800px) {
+    .desktop-hidden {
+      display: initial;
+    }
+    .mobile-hidden {
+      display: none;
+    }
+  }
+  @media screen and (min-width: 800px) {
+    .desktop-hidden {
+      display: none;
+    }
+    .mobile-hidden {
+      display: initial;
+    }
+  }
+
+</style>
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-12">
+
+      <div class="custom-card-erp">
+        <div style="float:left;">
+          <input
+                  type="text"
+                  style="padding:5px;margin:5px auto;width:30%;"
+                  placeholder="Type to filter the name column..."
+                  (keyup)="updateFilter($event)"
+          />
+
+          <div style="float: right; margin: 5px;">
+            <div class="btn-group-vertical me-2" role="group" aria-label="Vertical button group" *ngIf="this.isButtonVisible">
+              <div ngbDropdown placement="top" class="btn-group" role="group">
+                <button type="button" class="btn btn-outline-primary dropdown-toggle" id="dropdownBasic1"
+                        ngbDropdownToggle>Global actions</button>
+                <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                  <button class="dropdown-item" (click)="deleteSelectedPermissionRows()">Delete selection</button>
+                </div>
+              </div>
+            </div>
+
+            <button class="btn btn-outline-primary" (click)="addPermission()">Add</button>
+            <button class="btn btn-outline-primary" (click)="importPermission()">Import</button>
+          </div>
+
+        </div>
+
+
+          <ngx-datatable
+                  style="width: 100%"
+                  class="material striped"
+                  selectionType="checkbox"
+                  [rows]="rows"
+                  [headerHeight]="50"
+                  [footerHeight]="50"
+                  [limit]="10"
+                  rowHeight="auto"
+                  columnMode="force"
+                  [scrollbarH]="true"
+                  [loadingIndicator]="loadingIndicator"
+                  [reorderable]="reorderable"
+                  [selected]="selected"
+                  (select)="onSelect($event)"
+                  [selectAllRowsOnPage]="false"
+          >
+            <ngx-datatable-column
+                    [width]="55"
+                    [sortable]="false"
+                    [canAutoResize]="false"
+                    [draggable]="false"
+                    [resizeable]="false"
+                    [headerCheckboxable]="true"
+                    [checkboxable]="true"
+            >
+
+            </ngx-datatable-column>
+
+            <ngx-datatable-column name="name">
+              <ng-template let-column="column" ngx-datatable-header-template>
+                <span class="f-w-700 sp-policy-erp">Name</span>
+              </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column name="actions">
+              <ng-template let-column="column" ngx-datatable-header-template>
+                <span class="f-w-700 sp-policy-erp">Actions</span>
+              </ng-template>
+              <ng-template  let-row="row" let-value="value" ngx-datatable-cell-template>
+                <a type="button" (click)="editPermission(row)" placement="top" ngbTooltip="Edit"><i class="icon-pencil-alt text-success"></i></a>
+                <a type="button" (click)="deletePermission(row.id)" placement="top" ngbTooltip="Delete"><i class="icon-trash text-danger ms-2"></i></a>
+              </ng-template>
+            </ngx-datatable-column>
+          </ngx-datatable>
+
+      </div>
+
+
+    </div>
+    </div>
+  </div>
+
+
+
+

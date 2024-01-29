@@ -1,0 +1,148 @@
+<app-breadcrumb [title]="'Student attendance By subject'" [items]="['Study']" [active_item]="'Student attendance'"></app-breadcrumb>
+<style>
+    .custom-card-erp{
+        margin-bottom: 30px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    @media screen and (max-width: 800px) {
+        .desktop-hidden {
+            display: initial;
+        }
+        .mobile-hidden {
+            display: none;
+        }
+    }
+    @media screen and (min-width: 800px) {
+        .desktop-hidden {
+            display: none;
+        }
+        .mobile-hidden {
+            display: initial;
+        }
+    }
+
+</style>
+
+<div class="card">
+    <div class="card-body">
+
+        <div>
+
+          <div [formGroup]="studentAttendanceForm" (ngSubmit)="onFormSubmit()">
+
+            <div class="row">
+        <!--        <div class="col-md-4">
+                    <label class="form-label">Class<span class="text-danger">*</span></label>
+                    <ng-select
+                            [items]="classes"
+                            bindLabel="code"
+                            bindValue="id"
+                            placeholder="Choose an class"
+                            formControlName="class"
+                            [ngClass]="{'is-invalid': fc['class'].invalid && isSubmitted}"
+                            [(ngModel)]="classSelected">
+                    </ng-select>
+                    <div class="invalid-feedback" *ngIf="fc['class'].errors?.['required']">This field is required</div>
+                    <div class="invalid-feedback" *ngIf="fc['class'].errors?.['serverError']">
+                        {{ fc['class'].errors?.['serverError'] }}
+                    </div>
+                </div>-->
+
+                <div class="col-md-4">
+                    <label class="form-label">Subject<span class="text-danger">*</span></label>
+                    <ng-select
+                            [items]="subjects"
+                            bindLabel="course.subject.name"
+                            bindValue="id"
+                            placeholder="Choose a subject"
+                            formControlName="subject"
+                            [ngClass]="{'is-invalid': fc['subject'].invalid && isSubmitted}"
+                            (change)="lordStudents($event)"
+                            [(ngModel)]="subjectSelected">
+                    </ng-select>
+                    <div class="invalid-feedback" *ngIf="fc['subject'].errors?.['required']">This field is required</div>
+                    <div class="invalid-feedback" *ngIf="fc['subject'].errors?.['serverError']">
+                        {{ fc['subject'].errors?.['serverError'] }}
+                    </div>
+                </div>
+
+
+            </div>
+              <br>
+              <div class="card">
+                  <div class="collapse show" id="collapseicon">
+                      <div class="card-body filter-cards-view animate-chk">
+                          <div class="row">
+                              <div class="col-md-10">
+                                  <div class="job-filter mb-2">
+                                      <div class="faq-form" >
+                                          <input class="form-control" type="text" placeholder="Search.." />
+                                          <i class="search-icon" data-feather="search"></i>
+                                      </div>
+                                  </div>
+                              </div>
+                              <div class="col-md-2">
+                                  <div class="btn-group-vertical me-2" role="group" aria-label="Vertical button group" >
+                                      <div ngbDropdown placement="top" class="btn-group" role="group">
+                                          <button type="button" class="btn btn-outline-primary dropdown-toggle" id="dropdownBasic1"
+                                                  ngbDropdownToggle>Actions</button>
+                                          <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                                              <button class="dropdown-item" >All present</button>
+                                              <button class="dropdown-item" >All abscent</button>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+
+                          </div>
+
+                          <div class="checkbox-animated" *ngFor="let student of students; let i = index">
+                              <div class="row">
+                                  <div class="col-md-4">
+                                      <label class="d-block stud-name"> {{student?.name}}: </label>
+                                  </div>
+                                  <div class="col-md-8">
+<!--                                      <input class="stud-present" [formControlName]="i" id="{{student?.id}}" type="checkbox"/>-->
+                                      <input class="stud-present" name="i" id="{{student?.id}}" type="checkbox"/>
+                                      <label for="{{student?.id}}">Present/Absent</label>
+                                  </div>
+                              </div>
+                          </div>
+
+                      </div>
+                  </div>
+              </div>
+              <br>
+          <div class="d-flex justify-content-between" style="margin-right: 10px;">
+            <button (click)="close()" type="button" style="margin-right: 10px;" class="btn btn-sm btn-outline-dark" routerLink='/school/study/attendance'>Close</button>
+            <button (click)="onFormSubmit()" type="button" class="btn btn-sm btn-outline-primary" [disabled]=saving>
+                <ng-container *ngIf="!saving; else isSaving">{{data ? update : create}}</ng-container>
+                <ng-template #isSaving>
+                    {{ "Submitting" | translate}} ...
+                </ng-template>
+            </button>
+            </div>
+
+          </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

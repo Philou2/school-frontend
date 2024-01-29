@@ -1,0 +1,168 @@
+<app-breadcrumb [title]="'Old Student Registration Per Class'" [items]="['Schooling']" [active_item]="'Old Student Registration Per Class'"></app-breadcrumb>
+<style>
+    .custom-card-erp{
+        margin-bottom: 30px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    @media screen and (max-width: 800px) {
+        .desktop-hidden {
+            display: initial;
+        }
+        .mobile-hidden {
+            display: none;
+        }
+    }
+    @media screen and (min-width: 800px) {
+        .desktop-hidden {
+            display: none;
+        }
+        .mobile-hidden {
+            display: initial;
+        }
+    }
+
+</style>
+
+<div class="card">
+    <div class="card-body">
+        <div>
+            <div  [formGroup]="oldStudentRegistrationPerClassForm" (ngSubmit)="onFormSubmit()">
+                <div class="row">
+                    <div class="col-md-6">
+                        <label class="form-label"> Old Year </label>
+                        <ng-select
+                                [items]="years"
+                                bindLabel="year"
+                                bindValue="id"
+                                placeholder="Choose a year"
+                                formControlName="year"
+                                [ngClass]="{'is-invalid': fc['year'].invalid && isSubmitted}"
+                                [(ngModel)]="yearSelected"
+                                (change)="applyYearFilter($event)">
+                        </ng-select>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label"> Old Class </label>
+                        <ng-select
+                                [items]="classesFiltered"
+                                bindLabel="code"
+                                bindValue="id"
+                                placeholder="Choose a class"
+                                formControlName="classe"
+                                [ngClass]="{'is-invalid': fc['classe'].invalid && isSubmitted}"
+                                [(ngModel)]="classSelected"
+                                (change)="applyClassFilter($event)">
+                        </ng-select>
+                    </div>
+
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <label class="form-label"> Student Name(s) </label>
+                        <ng-select
+                                [items]="studregistrationsFiltered"
+                                bindLabel="student.name"
+                                bindValue="id"
+                                [multiple]="true"
+                                placeholder="Choose a student name"
+                                formControlName="studentlist"
+                                [ngClass]="{'is-invalid': fc['studentlist'].invalid && isSubmitted}"
+                                [(ngModel)]="studregistrationSelected">
+                        </ng-select>
+                    </div>
+
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <label class="form-label"> New Year <span class="text-danger">*</span></label>
+                        <ng-select
+                                [items]="currentyears"
+                                bindLabel="year"
+                                bindValue="id"
+                                placeholder="Choose a year"
+                                formControlName="currentyear"
+                                [ngClass]="{'is-invalid': fc['currentyear'].invalid && isSubmitted}"
+                                [(ngModel)]="currentyearSelected"
+                                (change)="applyCurrentYearFilter($event)">
+                        </ng-select>
+                        <div class="invalid-feedback" *ngIf="fc['currentyear'].errors?.['required']">This field is required</div>
+                        <div class="invalid-feedback" *ngIf="fc['currentyear'].errors?.['serverError']">
+                            {{ fc['currentyear'].errors?.['serverError'] }}
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label"> New Class <span class="text-danger">*</span></label>
+                        <ng-select
+                                [items]="currentclassesFiltered"
+                                bindLabel="code"
+                                bindValue="id"
+                                placeholder="Choose a class"
+                                formControlName="currentclasse"
+                                [ngClass]="{'is-invalid': fc['currentclasse'].invalid && isSubmitted}"
+                                [(ngModel)]="currentclassSelected">
+                        </ng-select>
+                        <div class="invalid-feedback" *ngIf="fc['currentclasse'].errors?.['required']">This field is required</div>
+                        <div class="invalid-feedback" *ngIf="fc['currentclasse'].errors?.['serverError']">
+                            {{ fc['currentclasse'].errors?.['serverError'] }}
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <label class="form-label"> New Regime<span class="text-danger">*</span> </label>
+                        <ng-select
+                                [items]="regimes"
+                                bindLabel="regime"
+                                bindValue="id"
+                                placeholder="Choose a regime"
+                                formControlName="regime"
+                                [ngClass]="{'is-invalid': fc['regime'].invalid && isSubmitted}"
+                                [(ngModel)]="regimeSelected">
+                        </ng-select>
+                        <div class="invalid-feedback" *ngIf="fc['regime'].errors?.['required']">This field is required</div>
+                        <div class="invalid-feedback" *ngIf="fc['regime'].errors?.['serverError']">
+                            {{ fc['regime'].errors?.['serverError'] }}
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label"> New Option </label>
+                        <ng-select
+                                [items]="options"
+                                bindLabel="name"
+                                bindValue="id"
+                                placeholder="Choose an option"
+                                formControlName="options"
+                                [ngClass]="{'is-invalid': fc['options'].invalid && isSubmitted}"
+                                [(ngModel)]="optionSelected">
+                        </ng-select>
+                    </div>
+
+                </div>
+
+                <br>
+
+                <div class="d-flex justify-content-between" style="margin-right: 10px;">
+                <button (click)="close()" type="button" style="margin-right: 10px;" class="btn btn-sm btn-outline-dark" routerLink="/school/schooling/old-student-registration">Close</button>
+                <button (click)="onFormSubmit()" type="button" class="btn btn-sm btn-outline-primary" [disabled]=saving>
+                    <ng-container *ngIf="!saving; else isSaving">{{data ? update : create}}</ng-container>
+                    <ng-template #isSaving>
+                        {{ "Submitting" | translate}} ...
+                    </ng-template>
+                </button>
+            </div>
+
+    </div>
+        </div>
+    </div>
+</div>
+

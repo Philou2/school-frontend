@@ -1,0 +1,81 @@
+<div class="modal-header">
+  <h4 class="modal-title">Leave Request</h4>
+  <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+  </button>
+</div>
+<div class="modal-body">
+  <form [formGroup]="leaveRequestForm" (ngSubmit)="onFormSubmit()" id="ngForm">
+
+
+
+
+      <div class="row">
+        <div class="col-md-6">
+          <label class="form-label">Leave Type</label>
+          <ng-select
+                  [items]="leacveTypes"
+                  bindLabel="name"
+                  bindValue="id"
+                  placeholder="Choose a type"
+                  formControlName="leacveType"
+                  [(ngModel)]="leaveTypeSelected">
+          </ng-select>
+        </div>
+
+        <div class="col-md-6">
+          <label class="form-label">Leave Character</label>
+          <ng-select
+                  [items]="leaveCharacters"
+                  bindLabel="name"
+                  bindValue="id"
+                  placeholder="Choose a character"
+                  formControlName="leaveCharacter"
+                  [(ngModel)]="leaveCharactereSelected">
+          </ng-select>
+        </div>
+      </div>
+
+
+    <div class="row">
+      <div class="col-md-6">
+        <label class="form-label">Start Date</label>
+        <input class="form-control form-control-sm" type="date" placeholder="Ex. HH:mm" formControlName="startAt" >
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label">End Date</label>
+        <input class="form-control form-control-sm" type="date" placeholder="Ex. HH:mm" formControlName="endAt" >
+      </div>
+    </div>
+
+    <div class="row">
+    <div class="col-md-12">
+      <label class="form-label">Description</label>
+      <input class="form-control form-control-sm" type="text" placeholder="Ex. mm ff" formControlName="description" >
+    </div>
+    </div>
+  </form>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-sm btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
+  <button form="ngForm" (submit)="onFormSubmit()" type="submit" class="btn btn-sm btn-outline-primary" [disabled]=saving>
+    <ng-container *ngIf="!saving; else isSaving">{{data ? update : create}}</ng-container>
+    <ng-template #isSaving>
+      {{ "Submitting" | translate}} ...
+    </ng-template>
+  </button>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

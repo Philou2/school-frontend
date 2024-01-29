@@ -1,0 +1,171 @@
+<app-breadcrumb [title]="'Module'" [items]="['Security']" [active_item]="'Module'"></app-breadcrumb>
+<style>
+  .custom-card-erp{
+    margin-bottom: 30px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  @media screen and (max-width: 800px) {
+    .desktop-hidden {
+      display: initial;
+    }
+    .mobile-hidden {
+      display: none;
+    }
+  }
+  @media screen and (min-width: 800px) {
+    .desktop-hidden {
+      display: none;
+    }
+    .mobile-hidden {
+      display: initial;
+    }
+  }
+
+</style>
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-12">
+
+      <div class="custom-card-erp">
+        <div style="float:left;">
+          <input
+                  type="text"
+                  style="padding:5px;margin:5px auto;width:30%;"
+                  placeholder="Type to filter the name column..."
+                  (keyup)="updateFilter($event)"
+          />
+
+<!--          <div class="col-sm-6">-->
+<!--            <div ngbDropdown placement="top" class="d-inline-block">-->
+<!--              <button class="btn btn-outline-primary me-0" id="dropdownBasic2" ngbDropdownToggle>Toggle-->
+<!--                dropup</button>-->
+<!--              <div ngbDropdownMenu aria-labelledby="dropdownBasic2">-->
+<!--                <button class="dropdown-item">Action - 1</button>-->
+<!--                <button class="dropdown-item">Another Action</button>-->
+<!--                <button class="dropdown-item">Something else is here</button>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </div>-->
+
+          <div style="float: right; margin: 5px;">
+            <div class="btn-group-vertical me-2" role="group" aria-label="Vertical button group" *ngIf="this.isButtonVisible">
+              <div ngbDropdown placement="top" class="btn-group" role="group">
+                <button type="button" class="btn btn-outline-primary dropdown-toggle" id="dropdownBasic1"
+                        ngbDropdownToggle>Global actions</button>
+                <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                  <button class="dropdown-item" (click)="deleteSelectedModuleRows()">Delete selection</button>
+                </div>
+              </div>
+            </div>
+
+            <button class="btn btn-outline-primary" (click)="addModule()">Add</button>
+          </div>
+
+        </div>
+
+          <ngx-datatable
+                  style="width: 100%"
+                  class="material striped"
+                  selectionType="checkbox"
+                  [rows]="rows"
+                  [headerHeight]="50"
+                  [footerHeight]="50"
+                  [limit]="10"
+                  rowHeight="auto"
+                  columnMode="force"
+                  [scrollbarH]="true"
+                  [loadingIndicator]="loadingIndicator"
+                  [reorderable]="reorderable"
+                  [selected]="selected"
+                  (activate)="onActivate($event)"
+                  (select)="onSelect($event)"
+                  [selectAllRowsOnPage]="false"
+                  [displayCheck]="displayCheck"
+          >
+            <ngx-datatable-column
+                    [width]="55"
+                    [sortable]="false"
+                    [canAutoResize]="false"
+                    [draggable]="false"
+                    [resizeable]="false"
+                    [headerCheckboxable]="true"
+                    [checkboxable]="true"
+            >
+
+            </ngx-datatable-column>
+
+            <ngx-datatable-column name="name">
+              <ng-template let-column="column" ngx-datatable-header-template>
+                <span class="f-w-700 sp-policy-erp">Name</span>
+              </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column name="path">
+              <ng-template let-column="column" ngx-datatable-header-template>
+                <span class="f-w-700 sp-policy-erp">Path</span>
+              </ng-template>
+              <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                <span class="font-primary">{{row.path}}</span>
+              </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column name="layout">
+              <ng-template let-column="column" ngx-datatable-header-template>
+                <span class="f-w-700 sp-policy-erp">Layout</span>
+              </ng-template>
+              <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                <span class="badge badge-info">{{ row.layout }}</span>
+<!--                <span class="badge rounded-pill badge-light-success" style="font-size: 12px;">{{ row.layout }}</span>-->
+              </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column name="color">
+              <ng-template let-column="column" ngx-datatable-header-template>
+                <span class="f-w-700 sp-policy-erp">Color</span>
+              </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column name="icon">
+              <ng-template let-column="column" ngx-datatable-header-template>
+                <span class="f-w-700 sp-policy-erp">Icon</span>
+              </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column name="position">
+              <ng-template let-column="column" ngx-datatable-header-template>
+                <span class="f-w-700 sp-policy-erp">Position</span>
+              </ng-template>
+              <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                <span class="badge rounded-circle badge-p-space badge-dark">{{ row.position }}</span>
+              </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column name="actions">
+              <ng-template let-column="column" ngx-datatable-header-template>
+                <span class="f-w-700 sp-policy-erp">Actions</span>
+              </ng-template>
+              <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                <a type="button" (click)="editModule(row)" placement="bottom" ngbTooltip="Edit"><i class="icon-pencil-alt text-success"></i></a>
+                <a type="button" (click)="deleteModule(row.id)" placement="bottom" ngbTooltip="Delete"><i class="icon-trash text-danger ms-2" style="cursor: pointer"></i></a>
+              </ng-template>
+            </ngx-datatable-column>
+          </ngx-datatable>
+
+      </div>
+
+
+    </div>
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+

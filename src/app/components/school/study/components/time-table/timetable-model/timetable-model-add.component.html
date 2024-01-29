@@ -1,0 +1,318 @@
+<app-breadcrumb [title]="'Time Table Model'" [items]="['Study']" [active_item]="'Time Table Model'"></app-breadcrumb>
+<style>
+    .custom-card-erp{
+        margin-bottom: 30px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    @media screen and (max-width: 800px) {
+        .desktop-hidden {
+            display: initial;
+        }
+        .mobile-hidden {
+            display: none;
+        }
+    }
+    @media screen and (min-width: 800px) {
+        .desktop-hidden {
+            display: none;
+        }
+        .mobile-hidden {
+            display: initial;
+        }
+    }
+
+</style>
+
+<div class="card">
+    <div class="card-body">
+
+        <div>
+            <div  [formGroup]="timeTableModelForm" (ngSubmit)="onFormSubmit()">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label class="form-label">Name <span class="text-danger">*</span></label>
+                            <input class="form-control form-control-sm" type="text" placeholder="Ex. Security" formControlName="name" [ngClass]="{'is-invalid': fc['name'].invalid && isSubmitted}">
+                            <small class="invalid-feedback fst-italic" *ngIf="fc['name'].errors?.['required']">This field is required</small>
+                            <div class="invalid-feedback" *ngIf="fc['name'].errors?.['minlength']">Name must be at least 3  characters long</div>
+                            <div class="invalid-feedback" *ngIf="fc['name'].errors?.['serverError']">
+                                {{ fc['name'].errors?.['serverError'] }}
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label class="form-label">Time table Period</label>
+                            <ng-select
+                                    [items]="timeTablePeriods"
+                                    bindLabel="name"
+                                    bindValue="id"
+                                    placeholder="Choose a Time table period"
+                                    formControlName="timeTablePeriod"
+                                    [ngClass]="{'is-invalid': fc['timeTablePeriod'].invalid && isSubmitted}"
+                                    [(ngModel)]="timeTablePeriodSelected">
+                            </ng-select>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label class="form-label">Start Date <span class="text-danger">*</span></label>
+                            <input class="form-control form-control-sm" type="date" placeholder="Ex. yyyy-mm-dd" formControlName="startDate" [ngClass]="{'is-invalid': fc['startDate'].invalid && isSubmitted}" (change)="onStartDateChange($event)">
+                            <small class="invalid-feedback fst-italic" *ngIf="fc['startDate'].errors?.['required']">This field is required</small>
+                            <div class="invalid-feedback" *ngIf="fc['startDate'].errors?.['serverError']">
+                                {{ fc['startDate'].errors?.['serverError'] }}
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label class="form-label">End Date <span class="text-danger">*</span></label>
+                            <input class="form-control form-control-sm" type="date" placeholder="Ex. yyyy-mm-dd" formControlName="endDate" [ngClass]="{'is-invalid': fc['endDate'].invalid && isSubmitted}" [min]="minEndDate">
+                            <small class="invalid-feedback fst-italic" *ngIf="fc['endDate'].errors?.['required']">This field is required</small>
+                            <div class="invalid-feedback" *ngIf="fc['endDate'].errors?.['serverError']">
+                                {{ fc['endDate'].errors?.['serverError'] }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                    <div class="col-md-3">
+                        <label class="form-label"> Campus </label>
+                        <ng-select
+                                [items]="campus"
+                                bindLabel="name"
+                                bindValue="id"
+                                placeholder="Choose a campus"
+                                formControlName="campus"
+                                [(ngModel)]="campusSelected">
+                        </ng-select>
+                    </div>
+
+                        <div class="col-md-3">
+                            <label class="form-label"> Training Type<span class="text-danger">*</span> </label>
+                            <ng-select
+                                    [items]="trainingTypes"
+                                    bindLabel="name"
+                                    bindValue="id"
+                                    placeholder="Choose a trainingType"
+                                    formControlName="trainingType"
+                                    [ngClass]="{'is-invalid': fc['trainingType'].invalid && isSubmitted}"
+                                    [(ngModel)]="trainingTypeSelected">
+                            </ng-select>
+                            <div class="invalid-feedback" *ngIf="fc['trainingType'].errors?.['required']">This field is required</div>
+                            <div class="invalid-feedback" *ngIf="fc['trainingType'].errors?.['serverError']">
+                              {{ fc['trainingType'].errors?.['serverError'] }}
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label"> Cycle </label>
+                            <ng-select
+                                    [items]="cycles"
+                                    bindLabel="name"
+                                    bindValue="id"
+                                    placeholder="Choose a cycle"
+                                    formControlName="cycle"
+                                    [ngClass]="{'is-invalid': fc['cycle'].invalid && isSubmitted}"
+                                    [(ngModel)]="cycleSelected"
+                                    (change)="applyCycleFilter($event)">
+                            </ng-select>
+                        </div>
+
+                </div>
+
+                <div class="row">
+<!--                    <div class="col-md-3">-->
+<!--                        <label class="form-label"> Room </label>-->
+<!--                        <ng-select-->
+<!--                                [items]="mainRooms"-->
+<!--                                bindLabel="name"-->
+<!--                                bindValue="id"-->
+<!--                                placeholder="Choose a room"-->
+<!--                                formControlName="mainRoom"-->
+<!--                                [ngClass]="{'is-invalid': fc['mainRoom'].invalid && isSubmitted}"-->
+<!--                                [(ngModel)]="mainRoomSelected">-->
+<!--                        </ng-select>-->
+<!--                    </div>-->
+                    <div class="col-md-6">
+                        <label class="form-label"> Speciality <span class="text-danger">*</span></label>
+                        <ng-select
+                                [items]="specialitiesFiltered"
+                                bindLabel="name"
+                                bindValue="id"
+                                placeholder="Choose a speciality"
+                                formControlName="speciality"
+                                [ngClass]="{'is-invalid': fc['speciality'].invalid && isSubmitted}"
+                                [(ngModel)]="specialitySelected"
+                                (change)="applySpecialityFilter($event)">
+                        </ng-select>
+                        <div class="invalid-feedback" *ngIf="fc['speciality'].errors?.['required']">This field is required</div>
+                        <div class="invalid-feedback" *ngIf="fc['speciality'].errors?.['serverError']">
+                          {{ fc['speciality'].errors?.['serverError'] }}
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label"> Level <span class="text-danger">*</span></label>
+                        <ng-select
+                                [items]="levelsFiltered"
+                                bindLabel="name"
+                                bindValue="id"
+                                placeholder="Choose a level"
+                                formControlName="level"
+                                [ngClass]="{'is-invalid': fc['level'].invalid && isSubmitted}"
+                                [(ngModel)]="levelSelected">
+                        </ng-select>
+                        <div class="invalid-feedback" *ngIf="fc['level'].errors?.['required']">This field is required</div>
+                        <div class="invalid-feedback" *ngIf="fc['level'].errors?.['serverError']">
+                            {{ fc['level'].errors?.['serverError'] }}
+                        </div>
+                    </div>
+
+                </div>
+
+                <br>
+
+<!--                <div class="row" style="display: flex; flex-direction: row; overflow-x: auto; border: 2px solid black; margin: 20px">-->
+<!--                    <div class="col-md-2 custom-checkbox" *ngFor="let day of days" style="white-space: nowrap;">-->
+<!--                        <input type="checkbox" id="{{day.id}}" [value]="day.id" [(ngModel)]="day.selected">-->
+<!--                        <label for="{{day.id}}">{{day.name}}</label>-->
+<!--                    </div>-->
+<!--                </div>-->
+
+                <div class="row" style="display: flex; flex-direction: row; overflow-x: auto; border: 2px solid black; margin: 20px">
+                    <div class="col-md-2 custom-checkbox" style="white-space: nowrap;">
+                        <input type="checkbox" id="monday" formControlName="monday">
+                        <label for="monday">Monday</label>
+                    </div>
+                    <div class="col-md-2 custom-checkbox" style="white-space: nowrap;">
+                        <input type="checkbox" id="tuesday" formControlName="tuesday">
+                        <label for="tuesday">Tuesday</label>
+                    </div>
+                    <div class="col-md-2 custom-checkbox" style="white-space: nowrap;">
+                        <input type="checkbox" id="wednesday" formControlName="wednesday">
+                        <label for="wednesday">Wednesday</label>
+                    </div>
+                    <div class="col-md-2 custom-checkbox" style="white-space: nowrap;">
+                        <input type="checkbox" id="thursday" formControlName="thursday">
+                        <label for="thursday">Thursday</label>
+                    </div>
+                    <div class="col-md-2 custom-checkbox" style="white-space: nowrap;">
+                        <input type="checkbox" id="friday" formControlName="friday">
+                        <label for="friday">Friday</label>
+                    </div>
+                    <div class="col-md-2 custom-checkbox" style="white-space: nowrap;">
+                        <input type="checkbox" id="saturday" formControlName="saturday">
+                        <label for="saturday">Saturday</label>
+                    </div>
+                    <div class="col-md-2 custom-checkbox" style="white-space: nowrap;">
+                        <input type="checkbox" id="sunday" formControlName="sunday">
+                        <label for="sunday">Sunday</label>
+                    </div>
+                </div>
+
+
+                <div class="row" *ngIf="timeTableModelForm.get('monday').value">
+                    <div class="col-md-6">
+                        <label class="form-label"> Monday Start<span class="text-danger">*</span> </label>
+                        <input class="form-control form-control-sm" type="time" placeholder="Ex. A" formControlName="mondayStart">
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label"> Monday End <span class="text-danger">*</span></label>
+                        <input class="form-control form-control-sm" type="time" placeholder="Ex. A" formControlName="mondayEnd">
+                    </div>
+                </div>
+
+                <div class="row" *ngIf="timeTableModelForm.get('tuesday').value">
+                    <div class="col-md-6">
+                        <label class="form-label"> Tuesday Start <span class="text-danger">*</span></label>
+                        <input class="form-control form-control-sm" type="time" placeholder="Ex. A" formControlName="tuesdayStart">
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label"> Tuesday End <span class="text-danger">*</span></label>
+                        <input class="form-control form-control-sm" type="time" placeholder="Ex. A" formControlName="tuesdayEnd">
+                    </div>
+                </div>
+
+                <div class="row" *ngIf="timeTableModelForm.get('wednesday').value">
+                    <div class="col-md-6">
+                        <label class="form-label"> Wednesday Start <span class="text-danger">*</span></label>
+                        <input class="form-control form-control-sm" type="time" placeholder="Ex. A" formControlName="wednesdayStart">
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label"> Wednesday End <span class="text-danger">*</span></label>
+                        <input class="form-control form-control-sm" type="time" placeholder="Ex. A" formControlName="wednesdayEnd">
+                    </div>
+                </div>
+
+                <div class="row" *ngIf="timeTableModelForm.get('thursday').value">
+                    <div class="col-md-6">
+                        <label class="form-label"> Thursday Start <span class="text-danger">*</span></label>
+                        <input class="form-control form-control-sm" type="time" placeholder="Ex. A" formControlName="thursdayStart">
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label"> Thursday End <span class="text-danger">*</span></label>
+                        <input class="form-control form-control-sm" type="time" placeholder="Ex. A" formControlName="thursdayEnd">
+                    </div>
+                </div>
+
+                <div class="row" *ngIf="timeTableModelForm.get('friday').value">
+                    <div class="col-md-6">
+                        <label class="form-label"> Friday Start <span class="text-danger">*</span></label>
+                        <input class="form-control form-control-sm" type="time" placeholder="Ex. A" formControlName="fridayStart">
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label"> Friday End <span class="text-danger">*</span></label>
+                        <input class="form-control form-control-sm" type="time" placeholder="Ex. A" formControlName="fridayEnd">
+                    </div>
+                </div>
+
+                <div class="row" *ngIf="timeTableModelForm.get('saturday').value">
+                    <div class="col-md-6">
+                        <label class="form-label"> Saturday Start <span class="text-danger">*</span></label>
+                        <input class="form-control form-control-sm" type="time" placeholder="Ex. A" formControlName="saturdayStart">
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label"> Saturday End <span class="text-danger">*</span></label>
+                        <input class="form-control form-control-sm" type="time" placeholder="Ex. A" formControlName="saturdayEnd">
+                    </div>
+                </div>
+
+                <div class="row" *ngIf="timeTableModelForm.get('sunday').value">
+                    <div class="col-md-6">
+                        <label class="form-label"> Sunday Start <span class="text-danger">*</span></label>
+                        <input class="form-control form-control-sm" type="time" placeholder="Ex. A" formControlName="sundayStart">
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label"> Sunday End <span class="text-danger">*</span></label>
+                        <input class="form-control form-control-sm" type="time" placeholder="Ex. A" formControlName="sundayEnd">
+                    </div>
+                </div>
+
+
+
+
+                <br>
+
+                <div class="d-flex justify-content-between" style="margin-right: 10px;">
+                <button (click)="close()" type="button" style="margin-right: 10px;" class="btn btn-sm btn-outline-dark" routerLink="/school/study/timetable-model">Close</button>
+                <button (click)="onFormSubmit()" type="button" class="btn btn-sm btn-outline-primary" [disabled]=saving>
+                    <ng-container *ngIf="!saving; else isSaving">{{data ? update : create}}</ng-container>
+                    <ng-template #isSaving>
+                        {{ "Submitting" | translate}} ...
+                    </ng-template>
+                </button>
+                </div>
+
+
+            </div>
+
+
+        </div>
+    </div>
+</div>

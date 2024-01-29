@@ -1,0 +1,99 @@
+<div class="modal-header">
+  <h4 class="modal-title">Time Table Model Day Cell</h4>
+  <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+  </button>
+</div>
+<div class="modal-body">
+  <form [formGroup]="timeTableModelDayCellForm" (ngSubmit)="onFormSubmit()" id="ngForm">
+
+    <div class="row">
+      <div class="col-md-6">
+        <label class="form-label"> Model</label>
+        <ng-select
+                [items]="models"
+                bindLabel="name"
+                bindValue="id"
+                placeholder="Choose an model"
+                formControlName="model"
+                [(ngModel)]="modelSelected"
+                (change)="applyModelFilter($event)">
+        </ng-select>
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label"> Model Day</label>
+        <ng-select
+                [items]="modelDaysFiltered"
+                bindLabel="day"
+                bindValue="id"
+                placeholder="Choose an model Day"
+                formControlName="modelDay"
+                [(ngModel)]="modelDaySelected">
+        </ng-select>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <label class="form-label">Subject</label>
+        <ng-select
+                [items]="courses"
+                bindLabel="nameuvc"
+                bindValue="id"
+                placeholder="Choose an course"
+                formControlName="course"
+                [(ngModel)]="courseSelected">
+        </ng-select>
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label">Teacher</label>
+        <ng-select
+                [items]="teachers"
+                bindLabel="name"
+                bindValue="id"
+                placeholder="Choose an teacher"
+                formControlName="teacher"
+                [(ngModel)]="teacherSelected">
+        </ng-select>
+      </div>
+    </div>
+   
+    <div class="row">
+      <div class="col-md-6">
+        <label class="form-label">Start Time</label>
+        <input class="form-control form-control-sm" type="time" placeholder="Ex. hh:mm" formControlName="startAt" >
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label">End Time </label>
+        <input class="form-control form-control-sm" type="time" placeholder="Ex. hh:mm" formControlName="endAt" >
+      </div>
+    </div>
+
+
+  </form>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-sm btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
+  <button form="ngForm" (submit)="onFormSubmit()" type="submit" class="btn btn-sm btn-outline-primary" [disabled]=saving>
+    <ng-container *ngIf="!saving; else isSaving">{{data ? update : create}}</ng-container>
+    <ng-template #isSaving>
+      {{ "Submitting" | translate}} ...
+    </ng-template>
+  </button>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

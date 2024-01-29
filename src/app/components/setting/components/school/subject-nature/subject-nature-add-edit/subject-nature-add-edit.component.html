@@ -1,0 +1,45 @@
+<div class="modal-header">
+  <h4 class="modal-title">Subject Nature</h4>
+  <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+  </button>
+</div>
+<div class="modal-body">
+  <form [formGroup]="subjectNatureForm" (ngSubmit)="onFormSubmit()" id="ngForm">
+
+    <div class="row">
+      <div class="col-md-6">
+        <label class="form-label">Code</label>
+        <input class="form-control form-control-sm" type="text" placeholder="Ex. Security" formControlName="code" >
+      </div>
+        <div class="col-md-6">
+          <label class="form-label">Name</label>
+          <input class="form-control form-control-sm" type="text" placeholder="Ex. Security" formControlName="name" >
+          </div>
+     </div>
+
+  </form>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-sm btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
+
+  <button form="ngForm" (submit)="onFormSubmit()" type="submit" class="btn btn-sm btn-outline-primary" [disabled]=saving>
+    <ng-container *ngIf="!saving; else isSaving">{{data ? update : create}}</ng-container>
+    <ng-template #isSaving>
+      {{ "Submitting" | translate}} ...
+    </ng-template>
+  </button>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

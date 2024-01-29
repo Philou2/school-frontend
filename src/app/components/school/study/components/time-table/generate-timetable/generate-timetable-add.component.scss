@@ -1,0 +1,49 @@
+::placeholder{
+  //chrome, firefox, opera, safari
+  color: #2F2F3B;
+  opacity: 0.3;
+}
+:-ms-input-placeholder{
+  // internet explorer
+  color: #2F2F3B;
+  opacity: 0.3;
+}
+::-ms-input-placeholder{
+  //Edge
+  color: #2F2F3B;
+  opacity: 0.3;
+}
+
+.form-control-sm {
+  color: #2F2F3B;
+}
+
+.custom-checkbox {
+  display: inline-block;
+  position: relative;
+  padding-left: 25px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  font-size: 14px;
+  user-select: none;
+}
+
+.custom-checkbox input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.custom-checkbox label:before {
+  position: absolute;
+  content: "";
+  left: 0;
+  width: 18px;
+  height: 18px;
+  border: 1px solid #adadad;
+  border-radius: 3px;
+}
+
+.custom-checkbox input[type="checkbox"]:checked ~ label:before {
+  background-color: #0d6efd; /* Change this to your preferred color */
+}

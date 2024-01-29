@@ -1,0 +1,47 @@
+
+<br>
+
+<!--<div>-->
+<!--  <button id="download-button" (click)="testing()">Download</button>-->
+<!--</div>-->
+
+<div class="buttons">
+  <button (click)="viewDay()">Day</button>
+  <button (click)="viewWeek()">Week</button>
+  <button (click)="viewMonth()">Month</button>
+</div>
+
+
+<daypilot-calendar [config]="configDay" [events]="events" #day></daypilot-calendar>
+<daypilot-calendar id="dp" [config]="configWeek" [events]="events" #calendar></daypilot-calendar>
+<daypilot-month [config]="configMonth" [events]="events" #month></daypilot-month>
+
+<!--<daypilot-calendar [config]="configCalendar" [events]="events" #calendar></daypilot-calendar>-->
+
+
+<div>
+  <button id="download-button">Download</button>
+</div>
+
+<!--<script type="text/javascript">-->
+
+<!--  function xyz() {-->
+<!--    console.log('Bonjour le monde!');-->
+<!--  }-->
+
+<!--  xyz();-->
+
+<!--  var dp = new DayPilot.Calendar("dp");-->
+<!--  // ... config-->
+<!--  dp.init();-->
+
+<!--  $(document).ready(function() {-->
+<!--    $("#download-button").click(function(ev) {-->
+<!--      console.log('hellloooo');-->
+
+<!--      ev.preventDefault();-->
+<!--      dp.exportAs("jpeg").download();-->
+<!--    });-->
+<!--  });-->
+
+<!--</script>-->

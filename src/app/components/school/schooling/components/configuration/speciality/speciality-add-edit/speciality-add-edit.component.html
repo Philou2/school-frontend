@@ -1,0 +1,125 @@
+<div class="modal-header">
+  <h4 class="modal-title">Speciality</h4>
+  <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+
+  </button>
+</div>
+<div class="modal-body">
+  <form [formGroup]="specialityForm" (ngSubmit)="onFormSubmit()" id="ngForm">
+    <div class="row">
+      <div class="col-md-4">
+        <label class="form-label">Code <span class="text-danger">*</span></label>
+        <input class="form-control form-control-sm" type="text" placeholder="Ex. Security" formControlName="code" [ngClass]="{'is-invalid': fc['code'].invalid && isSubmitted}">
+        <small class="invalid-feedback fst-italic" *ngIf="fc['code'].errors?.['required']">This field is required</small>
+        <div class="invalid-feedback" *ngIf="fc['code'].errors?.['serverError']">
+          {{ fc['code'].errors?.['serverError'] }}
+        </div>
+      </div>
+      <div class="col-md-8">
+        <label class="form-label">Name <span class="text-danger">*</span></label>
+        <input class="form-control form-control-sm" type="text" placeholder="Ex. Security" formControlName="name" [ngClass]="{'is-invalid': fc['name'].invalid && isSubmitted}">
+        <small class="invalid-feedback fst-italic" *ngIf="fc['name'].errors?.['required']">This field is required</small>
+        <div class="invalid-feedback" *ngIf="fc['name'].errors?.['minlength']">Name must be at least 3 characters long</div>
+        <div class="invalid-feedback" *ngIf="fc['name'].errors?.['serverError']">
+          {{ fc['name'].errors?.['serverError'] }}
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <label class="form-label"> Cycle <span class="text-danger">*</span></label>
+        <ng-select
+                [items]="cycles"
+                bindLabel="name"
+                bindValue="id"
+                placeholder="Choose an cycle"
+                formControlName="cycle"
+                [ngClass]="{'is-invalid': fc['cycle'].invalid && isSubmitted}"
+                [(ngModel)]="cycleSelected">
+        </ng-select>
+        <div class="invalid-feedback" *ngIf="fc['cycle'].errors?.['required']">This field is required</div>
+        <div class="invalid-feedback" *ngIf="fc['cycle'].errors?.['serverError']">
+          {{ fc['cycle'].errors?.['serverError'] }}
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label"> Program</label>
+        <ng-select
+                [items]="programs"
+                bindLabel="name"
+                bindValue="id"
+                placeholder="Choose an program"
+                formControlName="program"
+                [(ngModel)]="programSelected">
+        </ng-select>
+      </div>
+
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <label class="form-label"> Minimum Level <span class="text-danger">*</span></label>
+        <ng-select
+                [items]="minimumLevels"
+                bindLabel="name"
+                bindValue="id"
+                placeholder="Choose an minimumLevel"
+                formControlName="minimumLevel"
+                [ngClass]="{'is-invalid': fc['minimumLevel'].invalid && isSubmitted}"
+                [(ngModel)]="minimumLevelSelected"
+                (change)="filterMaximumLevels()">
+        </ng-select>
+        <div class="invalid-feedback" *ngIf="fc['minimumLevel'].errors?.['required']">This field is required</div>
+        <div class="invalid-feedback" *ngIf="fc['minimumLevel'].errors?.['serverError']">
+          {{ fc['minimumLevel'].errors?.['serverError'] }}
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label"> Maximum Level <span class="text-danger">*</span></label>
+        <ng-select
+                [items]="maximumLevels"
+                bindLabel="name"
+                bindValue="id"
+                placeholder="Choose an maximumLevel"
+                formControlName="maximumLevel"
+                [ngClass]="{'is-invalid': fc['maximumLevel'].invalid && isSubmitted}"
+                [(ngModel)]="maximumLevelSelected">
+        </ng-select>
+        <div class="invalid-feedback" *ngIf="fc['maximumLevel'].errors?.['required']">This field is required</div>
+        <div class="invalid-feedback" *ngIf="fc['maximumLevel'].errors?.['serverError']">
+          {{ fc['maximumLevel'].errors?.['serverError'] }}
+        </div>
+      </div>
+    </div>
+
+  </form>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-sm btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
+
+
+  <button form="ngForm" (submit)="onFormSubmit()" type="submit" class="btn btn-sm btn-outline-primary" [disabled]=saving>
+    <ng-container *ngIf="!saving; else isSaving">{{data ? update : create}}</ng-container>
+    <ng-template #isSaving>
+      {{ "Submitting" | translate}} ...
+    </ng-template>
+  </button>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

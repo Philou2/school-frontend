@@ -1,0 +1,108 @@
+<div class="modal-header">
+  <h4 class="modal-title">Module</h4>
+  <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+  </button>
+</div>
+<div class="modal-body">
+  <form [formGroup]="moduleForm" (ngSubmit)="onFormSubmit()" id="ngForm">
+    <div class="row">
+      <div class="col-md-6">
+        <label class="form-label">Name <span class="text-danger">*</span></label>
+        <input class="form-control form-control-sm" type="text" placeholder="Ex. Module" formControlName="name" [ngClass]="{'is-invalid': fc['name'].invalid && isSubmitted}">
+        <small class="invalid-feedback fst-italic" *ngIf="fc['name'].errors?.['required']">This field is required</small>
+        <div class="invalid-feedback" *ngIf="fc['name'].errors?.['minlength']">Name must be atleast 3 caracters long</div>
+        <div class="invalid-feedback" *ngIf="fc['name'].errors?.['serverError']">
+          {{ fc['name'].errors?.['serverError'] }}
+        </div>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Path <span class="text-danger">*</span></label>
+        <input class="form-control form-control-sm" type="text" placeholder="Ex. /security/dashboard" formControlName="path" [ngClass]="{'is-invalid': fc['path'].invalid && isSubmitted}">
+        <small class="invalid-feedback fst-italic" *ngIf="fc['path'].errors?.['required']">This field is required</small>
+        <div class="invalid-feedback" *ngIf="fc['path'].errors?.['serverError']">
+          {{ fc['path'].errors?.['serverError'] }}
+        </div>
+      </div>
+    </div>
+
+    <div class="row mt-2">
+      <div class="col-md-3">
+        <label class="form-label">Layout <span class="text-danger">*</span></label>
+        <ng-select
+                [items]="layouts"
+                bindLabel="name"
+                bindValue="name"
+                placeholder="Choose a layout"
+                formControlName="layout"
+                [ngClass]="{'is-invalid': fc['layout'].invalid && isSubmitted}"
+                [(ngModel)]="layoutSelected">
+        </ng-select>
+        <div class="invalid-feedback" *ngIf="fc['layout'].errors?.['required']">This field is required</div>
+        <div class="invalid-feedback" *ngIf="fc['layout'].errors?.['serverError']">
+          {{ fc['layout'].errors?.['serverError'] }}
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <label class="form-label">Color <span class="text-danger">*</span></label>
+        <ng-select
+                [items]="colors"
+                bindLabel="name"
+                bindValue="name"
+                placeholder="Choose a color"
+                formControlName="color"
+                [ngClass]="{'is-invalid': fc['color'].invalid && isSubmitted}"
+                [(ngModel)]="selectedColors">
+        </ng-select>
+        <div class="invalid-feedback" *ngIf="fc['color'].errors?.['required']">This field is required</div>
+        <div class="invalid-feedback" *ngIf="fc['color'].errors?.['serverError']">
+          {{ fc['color'].errors?.['serverError'] }}
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <label class="form-label">Icon <span class="text-danger">*</span></label>
+        <input class="form-control form-control-sm" type="text" placeholder="Ex. layout" formControlName="icon" [ngClass]="{'is-invalid': fc['icon'].invalid && isSubmitted}">
+        <small class="invalid-feedback fst-italic" *ngIf="fc['icon'].errors?.['required']">This field is required</small>
+        <div class="invalid-feedback" *ngIf="fc['icon'].errors?.['serverError']">
+          {{ fc['icon'].errors?.['serverError'] }}
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <label class="form-label">Position <span class="text-danger">*</span></label>
+        <input class="form-control form-control-sm" type="number" placeholder="Ex. 10" formControlName="position" [ngClass]="{'is-invalid': fc['position'].invalid && isSubmitted}">
+        <small class="invalid-feedback fst-italic" *ngIf="fc['position'].errors?.['required']">This field is required</small>
+        <div class="invalid-feedback" *ngIf="fc['position'].errors?.['serverError']">
+          {{ fc['position'].errors?.['serverError'] }}
+        </div>
+      </div>
+    </div>
+
+  </form>
+</div>
+
+<div class="modal-footer">
+  <button type="button" class="btn btn-sm btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
+
+  <button form="ngForm" (submit)="onFormSubmit()" type="submit" class="btn btn-sm btn-outline-primary" [disabled]=saving>
+    <ng-container *ngIf="!saving; else isSaving">{{data ? update : create}}</ng-container>
+    <ng-template #isSaving>
+      {{ "Submitting" | translate}} ...
+    </ng-template>
+  </button>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

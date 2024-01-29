@@ -1,0 +1,284 @@
+<app-breadcrumb [title]="'Generate Time Table'" [items]="['Schooling']" [active_item]="'Generate Time Table'"></app-breadcrumb>
+<style>
+  .custom-card-erp{
+    margin-bottom: 30px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  @media screen and (max-width: 800px) {
+    .desktop-hidden {
+      display: initial;
+    }
+    .mobile-hidden {
+      display: none;
+    }
+  }
+  @media screen and (min-width: 800px) {
+    .desktop-hidden {
+      display: none;
+    }
+    .mobile-hidden {
+      display: initial;
+    }
+  }
+
+</style>
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-12">
+
+
+      <div class="custom-card-erp">
+        <div style="float:left;">
+          <input
+                  type="text"
+                  style="padding:5px;margin:5px auto;width:30%;"
+                  placeholder="Type to filter the name column..."
+                  (keyup)="updateFilter($event)"
+          />
+          <div style="float: right; margin: 5px;">
+            <button class="btn btn-outline-primary ms-2" (click)="addGenerateTimeTable()">Add</button>
+          </div>
+
+          <div class="btn-group-vertical" role="group" aria-label="Vertical button group" *ngIf="this.isButtonVisible">
+            <div ngbDropdown class="btn-group" role="group">
+              <button type="button" class="btn btn-outline-primary dropdown-toggle" id="dropdownBasic1"
+                      ngbDropdownToggle>Dropdown</button>
+              <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                <button class="dropdown-item" (click)="deleteSelectedTimeTableModelRows()">Delete selection</button>
+                <button class="dropdown-item">Dropdown link</button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+
+          <ngx-datatable
+                  style="width: 100%"
+                  class="material striped"
+                  selectionType="checkbox"
+                  [rows]="rows"
+                  [headerHeight]="50"
+                  [footerHeight]="50"
+                  [limit]="10"
+                  rowHeight="auto"
+                  columnMode="force"
+                  [scrollbarH]="true"
+                  [loadingIndicator]="loadingIndicator"
+                  [reorderable]="reorderable"
+                  [selected]="selected"
+                  (select)="onSelect($event)"
+                  [selectAllRowsOnPage]="false"
+                  [displayCheck]="displayCheck"
+          >
+            <ngx-datatable-column
+                    [width]="55"
+                    [sortable]="false"
+                    [canAutoResize]="false"
+                    [draggable]="false"
+                    [resizeable]="false"
+                    [headerCheckboxable]="true"
+                    [checkboxable]="true"
+                    [frozenLeft]="true"
+            >
+
+<!--              <ng-template-->
+<!--                      ngx-datatable-header-template-->
+<!--                      let-value="value"-->
+<!--                      let-allRowsSelected="allRowsSelected"-->
+<!--                      let-selectFn="selectFn">-->
+<!--                <input type="checkbox" [checked]="allRowsSelected"  (change)="selectFn(!allRowsSelected)"  />-->
+<!--              </ng-template>-->
+
+<!--              <ng-template-->
+<!--                      ngx-datatable-cell-template-->
+<!--                      let-value="value"-->
+<!--                      let-isSelected="isSelected"-->
+<!--                      let-onCheckboxChangeFn="onCheckboxChangeFn">-->
+<!--                <input type="checkbox" [checked]="isSelected" (change)="onCheckboxChangeFn($event)" />-->
+<!--              </ng-template>-->
+
+            </ngx-datatable-column>
+
+            <ngx-datatable-column name="code">
+              <ng-template let-column="column" ngx-datatable-header-template>
+                <span class="f-w-700 sp-policy-erp">Code</span>
+              </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column name="name">
+              <ng-template let-column="column" ngx-datatable-header-template>
+                <span class="f-w-700 sp-policy-erp">Name</span>
+              </ng-template>
+            </ngx-datatable-column>
+
+              <ngx-datatable-column name="campus">
+              <ng-template let-column="column" ngx-datatable-header-template>
+                <span class="f-w-700 sp-policy-erp">Campus</span>
+              </ng-template>
+              <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                {{row.campus ? row.campus.name : "" }}
+              </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column name="cycle">
+              <ng-template let-column="column" ngx-datatable-header-template>
+                <span class="f-w-700 sp-policy-erp">Cycle</span>
+              </ng-template>
+              <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                {{row.cycle ? row.cycle.name : "" }}
+              </ng-template>
+            </ngx-datatable-column>
+
+              <ngx-datatable-column name="speciality">
+              <ng-template let-column="column" ngx-datatable-header-template>
+                <span class="f-w-700 sp-policy-erp">Speciality</span>
+              </ng-template>
+              <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                {{row.speciality ? row.speciality.name : "" }}
+              </ng-template>
+            </ngx-datatable-column>
+
+              <ngx-datatable-column name="level">
+              <ng-template let-column="column" ngx-datatable-header-template>
+                <span class="f-w-700 sp-policy-erp">Level</span>
+              </ng-template>
+              <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                {{row.level ? row.level.name : "" }}
+              </ng-template>
+            </ngx-datatable-column>
+
+              <ngx-datatable-column name="trainingType">
+              <ng-template let-column="column" ngx-datatable-header-template>
+                <span class="f-w-700 sp-policy-erp">Training Type</span>
+              </ng-template>
+              <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                {{row.trainingType ? row.trainingType.name : "" }}
+              </ng-template>
+            </ngx-datatable-column>
+
+              <ngx-datatable-column name="isValidated">
+                  <ng-template let-column="column" ngx-datatable-header-template>
+                      <span class="f-w-700 sp-policy-erp">Status</span>
+                  </ng-template>
+
+                  <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                      <ng-container *ngIf="row.isValidated == 1; else otherFormat">
+                          <span class="badge rounded-pill badge-light-success">Validated</span>
+                      </ng-container>
+                      <ng-template #otherFormat>
+                          <span class="badge rounded-pill badge-light-danger">Un-Validated</span>
+                      </ng-template>
+                  </ng-template>
+              </ngx-datatable-column>
+
+              <ngx-datatable-column [frozenRight]="true" name="actions">
+                  <ng-template let-column="column" ngx-datatable-header-template>
+                      <span class="f-w-700 sp-policy-erp">Actions</span>
+                  </ng-template>
+                  <ng-template  let-row="row" let-value="value" ngx-datatable-cell-template>
+                      <a (click)="putValidate(row.id)" placement="top" ngbTooltip="Validate TimeTable"><i  class="fa fa-toggle-right text-success" style="cursor: pointer"></i></a>
+                      <a (click)="putInValidate(row.id)" *ngIf="row.isValidated" placement="top" ngbTooltip="Unvalidate TimeTable"><i  class="fa fa-toggle-left text-warning ms-2" style="cursor: pointer"></i></a>
+                      <a (click)="putPublish(row.id)" *ngIf="row.isValidated"  placement="top" ngbTooltip="Publish TimeTable"><i  class="icofont icofont-external-link text-info ms-2" style="cursor: pointer"></i></a>
+                      <a (click)="putUnPublish(row.id)" *ngIf="row.isValidated && row.isPublished" placement="top" ngbTooltip="UnPublish TimeTable"><i  class="icofont icofont-close-squared-alt text-warning ms-2" style="cursor: pointer"></i></a>
+                      <a (click)="editGenerateTimeTable(row)" placement="top" ngbTooltip="Edit TimeTable"><i class="icon-pencil-alt text-success ms-2" style="cursor: pointer"></i></a>
+                      <a (click)="deleteGenerateTimeTable(row.id)" *ngIf="row.isValidated == 0 && row.isPublished == 0" placement="top" ngbTooltip="Delete TimeTable"><i class="icon-trash text-warning ms-2" style="cursor: pointer"></i></a>
+                      <a (click)="duplicateTimeTableModel(row.id)" *ngIf="row.isValidated" placement="top" ngbTooltip="Duplicate TimeTable"><i class="icon-files text-success ms-2" style="cursor: pointer"></i></a>
+                      <a (click)="displayCalendar(row.id)" *ngIf="row.isValidated && row.isPublished" placement="top" ngbTooltip="Display TimeTable"><i class="icofont icofont-calendar text-info ms-2" style="cursor: pointer"></i></a>
+                  </ng-template>
+              </ngx-datatable-column>
+
+
+
+
+<!--              <ngx-datatable-column [frozenRight]="true" name="actions">-->
+<!--                  <ng-template let-column="column" ngx-datatable-header-template>-->
+<!--                      <span class="f-w-700 sp-policy-erp">Actions</span>-->
+<!--                  </ng-template>-->
+<!--                  <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>-->
+<!--                      <div class="dropdown">-->
+<!--                          <a class="dropdown-toggle" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">-->
+<!--                              <i class="icon-settings"></i>-->
+<!--                          </a>-->
+<!--                          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">-->
+<!--                              <a class="dropdown-item" (click)="putValidate(row.id)"><i class="icofont icofont-tick-boxed text-success"></i> Validate</a>-->
+<!--                              <a class="dropdown-item" (click)="putInValidate(row.id)" *ngIf="row.isValidated"><i class="icofont icofont-tick-boxed text-warning"></i> Invalidate</a>-->
+<!--                              <a class="dropdown-item" (click)="putPublish(row.id)" *ngIf="row.isValidated"><i class="icofont icofont-tick-boxed text-info"></i> Publish</a>-->
+<!--                              <a class="dropdown-item" (click)="putUnPublish(row.id)" *ngIf="row.isValidated && row.isPublished"><i class="icofont icofont-tick-boxed text-warning"></i> Unpublish</a>-->
+<!--                              <a class="dropdown-item" (click)="editGenerateTimeTable(row)"><i class="icon-pencil-alt text-success"></i> Edit</a>-->
+<!--                              <a class="dropdown-item" (click)="deleteGenerateTimeTable(row.id)" *ngIf="row.isValidated == 0 && row.isPublished == 0"><i class="icon-trash text-warning"></i> Delete</a>-->
+<!--                              <a class="dropdown-item" (click)="duplicateTimeTableModel(row.id)" *ngIf="row.isValidated"><i class="icon-pencil-alt text-success"></i> Duplicate</a>-->
+<!--                              <a class="dropdown-item" (click)="displayCalendar(row.id)" *ngIf="row.isValidated && row.isPublished"><i class="icon-pencil-alt text-info"></i> Display Calendar</a>-->
+<!--                          </ul>-->
+<!--                      </div>-->
+<!--                  </ng-template>-->
+<!--              </ngx-datatable-column>-->
+
+          </ngx-datatable>
+
+      </div>
+
+
+    </div>
+    </div>
+  </div>
+
+
+
+<!--<div style="float:left;width:75%">-->
+<!--  <ngx-datatable-->
+<!--          style="width: 90%"-->
+<!--          class="material"-->
+<!--          [rows]="rows"-->
+<!--          columnMode="force"-->
+<!--          selectionType="checkbox"-->
+<!--          [headerHeight]="50"-->
+<!--          [footerHeight]="50"-->
+<!--          rowHeight="auto"-->
+<!--          [limit]="5"-->
+<!--          [selected]="selected"-->
+<!--          [selectAllRowsOnPage]="false"-->
+<!--          [displayCheck]="displayCheck"-->
+<!--          (activate)="onActivate($event)"-->
+<!--          (select)="onSelect($event)"-->
+<!--  >-->
+<!--    <ngx-datatable-column-->
+<!--            [width]="30"-->
+<!--            [sortable]="false"-->
+<!--            [canAutoResize]="false"-->
+<!--            [draggable]="false"-->
+<!--            [resizeable]="false"-->
+<!--            [headerCheckboxable]="true"-->
+<!--            [checkboxable]="true"-->
+<!--    >-->
+<!--    </ngx-datatable-column>-->
+<!--    <ngx-datatable-column name="Name"></ngx-datatable-column>-->
+<!--    <ngx-datatable-column name="Gender"></ngx-datatable-column>-->
+<!--    <ngx-datatable-column name="Company"></ngx-datatable-column>-->
+<!--  </ngx-datatable>-->
+<!--</div>-->
+
+<!-- <div class="selected-column">
+  <h4>
+    Selections <small>({{ selected?.length }})</small>
+  </h4>
+  <ul>
+    <li *ngFor="let sel of selected">
+      {{ sel.name }}
+    </li>
+    <li *ngIf="!selected?.length">No Selections</li>
+  </ul>
+</div> -->
+
+
+
+
+
+
+
+
+
+

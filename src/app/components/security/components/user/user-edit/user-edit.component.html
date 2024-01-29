@@ -1,0 +1,214 @@
+<app-breadcrumb [title]="'User'" [items]="['Security', 'User']" [active_item]="'Edit User'"></app-breadcrumb>
+<div class="container-fluid">
+  <div class="edit-profile">
+    <form class="row" [formGroup]="userForm" (ngSubmit)="onFormSubmit()" id="ngForm">
+      <div class="col-xl-4">
+        <div class="card">
+          <div class="card-header">
+            <h5 class="card-title mb-0 f-w-700">Picture</h5>
+
+            <ng-template *ngIf="loadForm === false; else isLoadForm"> </ng-template>
+            <ng-template #isLoadForm>
+              <div class="card-header-right">
+                <ul class="list-unstyled card-option">
+                  <li><i class="fa fa-spin fa-cog"></i></li>
+                </ul>
+              </div>
+            </ng-template>
+
+            <div class="card-options">
+              <a class="card-options-collapse" href="javascript:void(0)" data-bs-toggle="card-collapse"><i class="fe fe-chevron-up"></i></a><a class="card-options-remove" href="javascript:void(0)" data-bs-toggle="card-remove"><i class="fe fe-x"></i></a>
+            </div>
+          </div>
+          <div class="card-body">
+            <div>
+              <div class="row mb-2">
+                <div class="col-auto">
+                  <img class="img-70 rounded-circle" alt="" src="{{defaultImg}}" />
+                </div>
+                <div class="col">
+                  <h5 class="mb-1">{{userName}}</h5>
+                  <p class="mb-4">{{profileName}}</p>
+                </div>
+              </div>
+
+
+              <div class="col-md-12 mb-3">
+                <label class="form-label">Picture </label>
+                <input class="form-control form-control-sm" type="file" (change)="onChange($event)" placeholder="Ex. Security" formControlName="file" [ngClass]="{'is-invalid': fc['file'].invalid && isSubmitted}">
+                <div class="invalid-feedback" *ngIf="fc['file'].errors?.['serverError']">
+                  {{ fc['file'].errors?.['serverError'] }}
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-8">
+        <div class="card" >
+          <div class="card-header">
+            <h5 class="card-title mb-0 f-w-700">Information</h5>
+
+            <ng-template *ngIf="loadForm === false; else isLoadForm"> </ng-template>
+            <ng-template #isLoadForm>
+              <div class="card-header-right">
+                <ul class="list-unstyled card-option">
+                  <li><i class="fa fa-spin fa-cog"></i></li>
+                </ul>
+              </div>
+            </ng-template>
+
+            <div class="card-options">
+              <a class="card-options-collapse" href="javascript:void(0)" data-bs-toggle="card-collapse"><i class="fe fe-chevron-up"></i></a><a class="card-options-remove" href="javascript:void(0)" data-bs-toggle="card-remove"><i class="fe fe-x"></i></a>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-4">
+                <label class="form-label">Firstname <span class="text-danger">*</span></label>
+                <input class="form-control form-control-sm" type="text" placeholder="Ex. John" formControlName="firstname" [ngClass]="{'is-invalid': fc['firstname'].invalid && isSubmitted}">
+                <small class="invalid-feedback fst-italic" *ngIf="fc['firstname'].errors?.['required']">This field is required</small>
+                <div class="invalid-feedback" *ngIf="fc['firstname'].errors?.['minlength']">Name must be atleast 3 caracters long</div>
+                <div class="invalid-feedback" *ngIf="fc['firstname'].errors?.['serverError']">
+                  {{ fc['firstname'].errors?.['serverError'] }}
+                </div>
+              </div>
+              <div class="col-md-4">
+                <label class="form-label">Lastname <span class="text-danger">*</span></label>
+                <input class="form-control form-control-sm" type="text" placeholder="Ex. Doe" formControlName="lastname" [ngClass]="{'is-invalid': fc['lastname'].invalid && isSubmitted}">
+                <small class="invalid-feedback fst-italic" *ngIf="fc['lastname'].errors?.['required']">This field is required</small>
+                <div class="invalid-feedback" *ngIf="fc['lastname'].errors?.['minlength']">Name must be atleast 3 caracters long</div>
+                <div class="invalid-feedback" *ngIf="fc['lastname'].errors?.['serverError']">
+                  {{ fc['lastname'].errors?.['serverError'] }}
+                </div>
+              </div>
+              <div class="col-md-4">
+                <label class="form-label">Phone <span class="text-danger">*</span></label>
+                <input class="form-control form-control-sm" type="number" placeholder="Ex. 677777777" formControlName="phone" [ngClass]="{'is-invalid': fc['phone'].invalid && isSubmitted}">
+                <small class="invalid-feedback fst-italic" *ngIf="fc['phone'].errors?.['required']">This field is required</small>
+                <div class="invalid-feedback" *ngIf="fc['phone'].errors?.['pattern']">Phone must between 1 - 9</div>
+                <div class="invalid-feedback" *ngIf="fc['phone'].errors?.['serverError']">
+                  {{ fc['phone'].errors?.['serverError'] }}
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-4">
+                <label class="form-label">Username <span class="text-danger">*</span></label>
+                <input class="form-control form-control-sm" type="text" placeholder="Ex. Jdoe" formControlName="username" [ngClass]="{'is-invalid': fc['username'].invalid && isSubmitted}">
+                <small class="invalid-feedback fst-italic" *ngIf="fc['username'].errors?.['required']">This field is required</small>
+                <div class="invalid-feedback" *ngIf="fc['username'].errors?.['serverError']">
+                  {{ fc['username'].errors?.['serverError'] }}
+                </div>
+              </div>
+              <div class="col-md-8">
+                <label class="form-label">Email <span class="text-danger">*</span></label>
+                <input class="form-control form-control-sm" type="text" placeholder="Ex. jdoe@bp.com" formControlName="email" [ngClass]="{'is-invalid': fc['email'].invalid && isSubmitted}">
+                <small class="invalid-feedback fst-italic" *ngIf="fc['email'].errors?.['required']">This field is required</small>
+                <small class="invalid-feedback fst-italic" *ngIf="fc['email'].errors?.['email']">Email must be with mail convention</small>
+                <div class="invalid-feedback" *ngIf="fc['email'].errors?.['serverError']">
+                  {{ fc['email'].errors?.['serverError'] }}
+                </div>
+              </div>
+
+            </div>
+
+            <div class="row">
+              <div class="col-md-6">
+                <label class="form-label"> Branch <span class="text-danger">*</span></label>
+                <ng-select
+                        [items]="branches"
+                        bindLabel="name"
+                        bindValue="id"
+                        placeholder="Choose an branch"
+                        formControlName="branch"
+                        [ngClass]="{'is-invalid': fc['branch'].invalid && isSubmitted}"
+                        [(ngModel)]="branchSelected">
+                </ng-select>
+                <div class="invalid-feedback" *ngIf="fc['branch'].errors?.['required']">This field is required</div>
+                <div class="invalid-feedback" *ngIf="fc['branch'].errors?.['serverError']">
+                  {{ fc['branch'].errors?.['serverError'] }}
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label"> Profile <span class="text-danger">*</span></label>
+                <ng-select
+                        [items]="profiles"
+                        bindLabel="name"
+                        bindValue="id"
+                        placeholder="Choose a profile"
+                        formControlName="profile"
+                        [ngClass]="{'is-invalid': fc['profile'].invalid && isSubmitted}"
+                        [(ngModel)]="profileSelected">
+                </ng-select>
+                <div class="invalid-feedback" *ngIf="fc['profile'].errors?.['required']">This field is required</div>
+                <div class="invalid-feedback" *ngIf="fc['profile'].errors?.['serverError']">
+                  {{ fc['profile'].errors?.['serverError'] }}
+                </div>
+              </div>
+            </div>
+
+          </div>
+          <div class="card-footer text-end">
+<!--            <button class="btn btn-primary" type="submit">Update Profile</button>-->
+            <button form="ngForm" (submit)="onFormSubmit()" type="submit" class="btn btn-sm btn-primary" [disabled]=saving>
+              <ng-container *ngIf="!saving; else isSaving">{{update}}</ng-container>
+              <ng-template #isSaving>
+                {{ "Submitting" | translate}} ...
+              </ng-template>
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </form>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--  <form [formGroup]="userForm" (ngSubmit)="onFormSubmit()" id="ngForm">-->
+
+
+
+
+<!--    <div class="row">-->
+<!--      <div class="col-md-12">-->
+<!--        <label class="form-label">Picture </label>-->
+<!--        <input class="form-control form-control-sm" type="file" (change)="onChange($event)" placeholder="Ex. Security" formControlName="file" [ngClass]="{'is-invalid': fc['file'].invalid && isSubmitted}">-->
+<!--        <div class="invalid-feedback" *ngIf="fc['file'].errors?.['serverError']">-->
+<!--          {{ fc['file'].errors?.['serverError'] }}-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+
+<!--  </form>-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

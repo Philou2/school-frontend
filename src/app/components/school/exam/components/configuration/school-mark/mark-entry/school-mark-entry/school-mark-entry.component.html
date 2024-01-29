@@ -1,0 +1,285 @@
+<app-breadcrumb [title]="title" [items]="['Exam']" [active_item]="activeItem"></app-breadcrumb>
+<style>
+  .custom-card-erp{
+    margin-bottom: 30px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  @media screen and (max-width: 800px) {
+    .desktop-hidden {
+      display: initial;
+    }
+    .mobile-hidden {
+      display: none;
+    }
+  }
+  @media screen and (min-width: 800px) {
+    .desktop-hidden {
+      display: none;
+    }
+    .mobile-hidden {
+      display: initial;
+    }
+  }
+
+</style>
+
+<div class="card">
+
+  <div class="card-header d-block mb-2" *ngIf="!isLoading">
+    <h3>{{"class filters" | translate}}</h3>
+
+    <div class="row">
+      <div class="col-md-3">
+        <div class="row">
+          <label class="col-sm-3 col-form-label text-sm-end">{{ "year" | translate}}</label>
+          <div class="col-sm-9">
+            <ng-select
+              [items]="yearList"
+              bindLabel="year"
+              bindValue="id"
+              placeholder="Choose year"
+              [clearable]="false"
+              [(ngModel)]="yearListSelect" (ngModelChange)="filter(true,true)">
+            </ng-select>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="row">
+          <label class="col-sm-6 col-form-label text-sm-end">{{ "school" | translate }}</label>
+          <div class="col-sm-6">
+            <ng-select [items]="schoolList" bindLabel="name" bindValue="@id"
+                       placeholder="{{ 'nothing_f' | translate }}" [clearable]="false" [(ngModel)]=schoolListSelect
+                       (ngModelChange)="filter()"></ng-select>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="row">
+          <label class="col-sm-3 col-form-label text-sm-end">{{ "class" | translate }}</label>
+          <div class="col-sm-9">
+            <ng-select [items]="schoolClassList" bindLabel="code" bindValue="@id"
+                       placeholder="{{ 'nothing_f' | translate }}" [clearable]="false"
+                       [(ngModel)]=schoolClassListSelect (ngModelChange)="filter(true,false,true)"></ng-select>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+
+    <h3 class="mt-2">{{ "note filters" | translate }}</h3>
+
+    <div class="row">
+      <div class="col-md-4">
+        <div class="row">
+          <label class="col-sm-4 col-form-label text-sm-end">{{ "sequence" | translate }}</label>
+          <div class="col-sm-8">
+            <ng-select [items]="sequenceListFiltered" bindLabel="code" bindValue="@id"
+                       placeholder="{{ 'nothing_f' | translate }}" [clearable]="false" [(ngModel)]=sequenceListSelect
+                       (ngModelChange)="filter()"></ng-select>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="row">
+          <label class="col-sm-4 col-form-label text-sm-end">{{ "note_type" | translate }}</label>
+          <div class="col-sm-8">
+            <ng-select [items]="noteTypeList" bindLabel="name" bindValue="@id"
+                       placeholder="{{ 'nothing_f' | translate }}" [clearable]="false" [(ngModel)]=noteTypeListSelect
+                       (ngModelChange)="filter()"></ng-select>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="row">
+          <label class="col-sm-3 col-form-label text-sm-end">{{ "subject" | translate }}</label>
+          <div class="col-sm-9">
+            <ng-select [items]="subjectListFiltered" bindLabel="name" bindValue="@id"
+                       placeholder="{{ 'nothing_f' | translate }}" [clearable]="false" [(ngModel)]=subjectListSelect
+                       (ngModelChange)="filter()"></ng-select>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <h3 class="mt-2">{{"assignment_information" | translate}}</h3>
+    <!--    {{ assignmentInformationFormGroup?.errors }}-->
+    <form [formGroup]="assignmentInformationFormGroup">
+      <div class="row">
+        <div class="col-md-4">
+          <div class="row">
+            <label class="col-sm-3 col-form-label text-sm-end">{{ "base" | translate }}</label>
+            <input class="col-sm-9 form-control form-control-sm" style="display: inline; width: fit-content"
+                   type="number" formControlName="base" [(ngModel)]="base"
+                   [ngClass]="{'is-invalid': aifc['base'].invalid && isSubmitted}">
+            <small class="invalid-feedback fst-italic"
+                   *ngIf="aifc['base'].errors?.['required']">{{ 'base' | translate }} {{ 'requiredMessage' | translate }}</small>
+            <small class="invalid-feedback fst-italic"
+                   *ngIf="aifc['base'].errors?.['min']">{{ 'base' | translate }} {{ ('minMessage' | translate).replace('minValue', 1) }}</small>
+            <small class="invalid-feedback fst-italic"
+                   *ngIf="aifc['base'].errors?.['max']">{{ 'base' | translate }} {{ ('maxMessage' | translate).replace('maxValue', 2147483647) }}</small>
+            <div class="invalid-feedback" *ngIf="aifc['base'].errors?.['serverError']">
+              {{ aifc['base'].errors?.['serverError'] }}
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="row">
+            <label class="col-sm-5 col-form-label">{{ "date_of_assignment" | translate }}</label>
+            <input class="col-sm-7 form-control form-control-sm" type="date" style="display: inline; width: max-content"
+                   formControlName="assignmentDate"
+                   [ngClass]="{'is-invalid': aifc['assignmentDate'].invalid && isSubmitted}">
+            <small class="invalid-feedback fst-italic"
+                   *ngIf="aifc['assignmentDate'].errors?.['required']">{{ 'assignmentDate' | translate }} {{ 'requiredMessage' | translate }}</small>
+            <div class="invalid-feedback" *ngIf="aifc['assignmentDate'].errors?.['serverError']">
+              {{ aifc['assignmentDate'].errors?.['serverError'] }}
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="row">
+            <label class="col-sm-4 col-form-label"
+                   style="align-self: start;">{{ "description" | translate }}</label>
+            <textarea class="col-sm-8 form-control form-control-sm" formControlName="description"
+                      style="width: max-content; display: inline-block;"> </textarea>
+            <div class="invalid-feedback" *ngIf="aifc['description'].errors?.['serverError']">
+              {{ aifc['description'].errors?.['serverError'] }}
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </form>
+
+  </div>
+
+
+  <div class="card-body">
+    <div class="d-flex justify-content-between align-items-center mb-2" *ngIf="!isLoading">
+      <h3 class="mb-0">{{ ("list_of" | translate) + " " + ("note_entry" | translate) }}</h3>
+      <!--<button type="button" class="btn btn-sm btn-primary waves-effect waves-float waves-light" (click)="openForm()">
+        <span class="tf-icon ti ti-plus ti-xs me-1"></span> {{ "new" | translate }}
+      </button>-->
+
+      <div class="d-flex align-items-center">
+        <button type="button" (click)="onFormSubmit()" *ngIf="isOpen && schoolMarksFiltered.length" class="btn btn-primary mx-2"
+                [disabled]=saving>
+          <ng-container *ngIf="!saving; else isSaving">{{ 'save' | translate }}</ng-container>
+          <ng-template #isSaving>
+            {{ "Submitting" | translate}} ...
+          </ng-template>
+        </button>
+        <div class="d-flex align-items-center">
+          <div class="input-group input-group-merge" style="width:fit-content">
+            <span class="input-group-text" id="basic-addon-search31"><i class="fa fa-search"></i></span>
+            <input type="text" class="form-control" (keyup)="applyFilter($event)"
+                   placeholder="{{ 'search'|translate }}..." #input aria-label="Search..."
+                   aria-describedby="basic-addon-search31"/>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="alert alert-warning" *ngIf="!isOpen">
+      <div class="alert-body">
+        You cannot type the marks at this moment
+      </div>
+    </div>
+    <div class="table-responsive text-nowrap example-container" *ngIf="!isLoading">
+      <form [formGroup]="markFormGroup" id="ngForm">
+        <table mat-table [dataSource]="dataSource" matSort>
+
+          <!-- Student Column -->
+          <ng-container matColumnDef="{{ property }}">
+            <th mat-header-cell *matHeaderCellDef
+                class="mat-cell"> {{ (property === 'studentName' ? 'name' : property) | translate }} </th>
+            <td mat-cell *matCellDef="let row" class="td-height"> {{ row[property] }}</td>
+          </ng-container>
+          <!--
+                    &lt;!&ndash; Anon Column &ndash;&gt;
+                    <ng-container matColumnDef="anonymityCode">
+                      <th mat-header-cell *matHeaderCellDef class="mat-cell"> {{ "anonymityCode" | translate }} </th>
+                      <td mat-cell *matCellDef="let row" class="td-height"> {{ row.anonymityCode }}</td>
+                    </ng-container>
+
+                    &lt;!&ndash; Student Column &ndash;&gt;
+                    <ng-container matColumnDef="studentName">
+                      <th mat-header-cell *matHeaderCellDef class="mat-cell"> {{ "name" | translate }} </th>
+                      <td mat-cell *matCellDef="let row" class="td-height"> {{ row.studentName }}</td>
+                    </ng-container>
+
+                    &lt;!&ndash; Matricule Column &ndash;&gt;
+                    <ng-container matColumnDef="matricule">
+                      <th mat-header-cell *matHeaderCellDef class="mat-cell"> {{ "matricule" | translate }} </th>
+                      <td mat-cell *matCellDef="let row" class="td-height"> {{ row.matricule }}</td>
+                    </ng-container>-->
+
+          <!-- Mark Column -->
+          <ng-container matColumnDef="mark">
+            <th mat-header-cell *matHeaderCellDef class="mat-cell"> {{ "mark" | translate }} </th>
+            <td mat-cell *matCellDef="let row" class="td-height">
+              <!--              {{ row.schoolMark }} -->
+              <ng-template [ngIf]="!isOpen" [ngIfElse]="markRow">
+                {{row.mark}}
+              </ng-template>
+
+              <ng-template class="row" #markRow>
+                <div class="col-md-12">
+                  <input class="form-control form-control-sm" type="number" placeholder=""
+                         [formControlName]="row.id" [ngClass]="{'is-invalid': fc[row.id].invalid && isSubmitted}"
+                         [max]="base">
+                  <small class="invalid-feedback fst-italic"
+                         *ngIf="fc[row.id].errors?.['required']">{{ 'mark' | translate }} {{ 'requiredMessage' | translate }}</small>
+                  <small class="invalid-feedback fst-italic"
+                         *ngIf="fc[row.id].errors?.['min']">{{ 'mark' | translate }} {{ ('minMessage' | translate).replace('minValue', 0) }}</small>
+                  <small class="invalid-feedback fst-italic"
+                         *ngIf="fc[row.id].errors?.['max']">{{ 'mark' | translate }} {{ ('maxMessage' | translate).replace('maxValue', this.base) }}</small>
+
+                  <div class="invalid-feedback" *ngIf="fc[row.id].errors?.['serverError']">
+                    {{ fc[row.id].errors?.['serverError'] }}
+                  </div>
+                </div>
+              </ng-template>
+            </td>
+          </ng-container>
+
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="mat-row"></tr>
+
+          <!-- Row shown when there is no matching data. -->
+          <tr class="mat-row" *matNoDataRow>
+            <td colspan="100" style="text-align: center">
+              {{ ('no_data' | translate) }}
+            </td>
+          </tr>
+        </table>
+      </form>
+
+    </div>
+
+    <mat-paginator *ngIf="!isLoading" [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons
+                   aria-label="Select page of users"
+                   class="mat-mdc-text-field-wrapper"></mat-paginator>
+
+
+    <mat-card-content *ngIf="isLoading"
+                      style="display: flex; padding: 20px 0; justify-content: center; align-items: center">
+
+      <div class="spinner-border" style="width: 3rem; height: 3rem" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+
+    </mat-card-content>
+  </div>
+</div>
+
+

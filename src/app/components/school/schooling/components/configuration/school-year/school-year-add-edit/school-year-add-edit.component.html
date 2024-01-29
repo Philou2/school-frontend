@@ -1,0 +1,81 @@
+<div class="modal-header">
+  <h4 class="modal-title">Year</h4>
+  <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+  </button>
+</div>
+<div class="modal-body">
+  <form [formGroup]="schoolYearForm" (ngSubmit)="onFormSubmit()" id="ngForm">
+    <div class="row">
+      <div class="col-md-4">
+        <label class="form-label">Year <span class="text-danger">*</span></label>
+        <input class="form-control form-control-sm" type="text" placeholder="Ex. Security" formControlName="year" [ngClass]="{'is-invalid': fc['year'].invalid && isSubmitted}">
+        <small class="invalid-feedback fst-italic" *ngIf="fc['year'].errors?.['required']">This field is required</small>
+        <div class="invalid-feedback" *ngIf="fc['year'].errors?.['serverError']">
+          {{ fc['year'].errors?.['serverError'] }}
+        </div>
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Start at <span class="text-danger">*</span></label>
+        <input class="form-control form-control-sm" type="date" placeholder="Ex. Security" formControlName="startAt" [ngClass]="{'is-invalid': fc['startAt'].invalid && isSubmitted}">
+        <small class="invalid-feedback fst-italic" *ngIf="fc['startAt'].errors?.['required']">This field is required</small>
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">End at <span class="text-danger">*</span></label>
+        <input class="form-control form-control-sm" type="date" placeholder="Ex. Security" formControlName="endAt" [ngClass]="{'is-invalid': fc['endAt'].invalid && isSubmitted}">
+        <small class="invalid-feedback fst-italic" *ngIf="fc['endAt'].errors?.['required']">This field is required</small>
+      </div>
+    </div>
+
+<!--    <div class="row">-->
+<!--      <div class="col-md-6">-->
+<!--        <label class="form-label">{{ "objective" | translate}}</label>-->
+<!--        <input class="form-control form-control-sm" type="text" placeholder="Ex. A" formControlName="objective">-->
+<!--      </div>-->
+
+<!--      <div class="col-md-6">-->
+<!--        <label class="form-label"> Last Year <span class="text-danger">*</span></label>-->
+<!--        <ng-select-->
+<!--                [items]="lastYearList"-->
+<!--                bindLabel="year"-->
+<!--                bindValue="id"-->
+<!--                placeholder="Choose an year"-->
+<!--                formControlName="lastYear"-->
+<!--                [ngClass]="{'is-invalid': fc['lastYear'].invalid && isSubmitted}"-->
+<!--                [(ngModel)]="lastYearListSelect">-->
+<!--        </ng-select>-->
+<!--        <div class="invalid-feedback fst-italic" *ngIf="fc['lastYear'].errors?.['required']">This field is required</div>-->
+<!--        <div class="invalid-feedback fst-italic" *ngIf="fc['lastYear'].errors?.['serverError']">-->
+<!--          {{ fc['lastYear'].errors?.['serverError'] }}-->
+<!--        </div>-->
+<!--      </div>-->
+
+<!--    </div>-->
+
+  </form>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-sm btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
+
+
+  <button form="ngForm" (submit)="onFormSubmit()" type="submit" class="btn btn-sm btn-outline-primary" [disabled]=saving>
+    <ng-container *ngIf="!saving; else isSaving">{{data ? update : create}}</ng-container>
+    <ng-template #isSaving>
+      {{ "Submitting" | translate}} ...
+    </ng-template>
+  </button>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

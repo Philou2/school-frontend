@@ -1,0 +1,45 @@
+<div class="modal-header">
+  <h4 class="modal-title">Student Image</h4>
+  <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+  </button>
+</div>
+<div class="modal-body">
+  <form [formGroup]="imageForm" (ngSubmit)="onFormSubmit()" id="ngForm">
+    <div class="row">
+
+      <div class="mb-3 row">
+        <label class="col-sm-3 col-form-label">Upload File</label>
+        <div class="col-sm-9">
+          <input type="file" class="form-control" (change)="onChange($event)" formControlName="file">
+        </div>
+      </div>
+
+
+    </div>
+
+  </form>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-sm btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
+
+  <button form="ngForm" (submit)="onFormSubmit()" type="submit" class="btn btn-sm btn-outline-primary" [disabled]=saving>
+    <ng-container *ngIf="!saving; else isSaving">{{data ? update : create}}</ng-container>
+    <ng-template #isSaving>
+      {{ "Submitting" | translate}} ...
+    </ng-template>
+  </button>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

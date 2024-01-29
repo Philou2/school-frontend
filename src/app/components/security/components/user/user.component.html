@@ -1,0 +1,203 @@
+<app-breadcrumb [title]="'User'" [items]="['Security']" [active_item]="'User'"></app-breadcrumb>
+<style>
+  .custom-card-erp{
+    margin-bottom: 30px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  @media screen and (max-width: 800px) {
+    .desktop-hidden {
+      display: initial;
+    }
+    .mobile-hidden {
+      display: none;
+    }
+  }
+  @media screen and (min-width: 800px) {
+    .desktop-hidden {
+      display: none;
+    }
+    .mobile-hidden {
+      display: initial;
+    }
+  }
+
+</style>
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-12">
+
+
+      <div class="custom-card-erp">
+        <div style="float:left;">
+          <input
+                  type="text"
+                  style="padding:5px;margin:5px auto;width:30%;"
+                  placeholder="Type to filter the name column..."
+                  (keyup)="updateFilter($event)"
+          />
+
+
+          <div style="float: right; margin: 5px;">
+            <div class="btn-group-vertical me-2" role="group" aria-label="Vertical button group" *ngIf="this.isButtonVisible">
+              <div ngbDropdown placement="top" class="btn-group" role="group">
+                <button type="button" class="btn btn-outline-primary dropdown-toggle" id="dropdownBasic1"
+                        ngbDropdownToggle>Global actions</button>
+                <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                  <button class="dropdown-item" (click)="deleteSelectedUserRows()">Delete selection</button>
+                </div>
+              </div>
+            </div>
+
+            <button class="btn btn-outline-primary" (click)="addUser()">Add</button>
+          </div>
+
+        </div>
+
+
+        <ngx-datatable
+                style="width: 100%"
+                class="material striped"
+                selectionType="checkbox"
+                [rows]="rows"
+                [headerHeight]="50"
+                [footerHeight]="50"
+                [limit]="10"
+                rowHeight="auto"
+                columnMode="force"
+                [scrollbarH]="true"
+                [loadingIndicator]="loadingIndicator"
+                [reorderable]="reorderable"
+                [selected]="selected"
+                (select)="onSelect($event)"
+                [selectAllRowsOnPage]="false"
+        >
+          <ngx-datatable-column
+                  [width]="55"
+                  [sortable]="false"
+                  [canAutoResize]="false"
+                  [draggable]="false"
+                  [resizeable]="false"
+                  [headerCheckboxable]="true"
+                  [checkboxable]="true"
+          >
+            </ngx-datatable-column>
+
+          <ngx-datatable-column name="picture">
+            <ng-template let-column="column" ngx-datatable-header-template>
+              <span class="f-w-700 sp-policy-erp">Picture</span>
+            </ng-template>
+
+            <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+              <ng-container *ngIf="row.fileType === 'image/png' || row.fileType === 'image/jpg' || row.fileType === 'image/jpeg'; else otherFormat">
+                <img [src]="row.picture" alt="Image" width="50" height="50">
+              </ng-container>
+              <ng-template #otherFormat>
+                <a href="{{ row.picture }}" target="_blank">{{ row.fileName }}</a>
+              </ng-template>
+            </ng-template>
+
+          </ngx-datatable-column>
+
+
+          <ngx-datatable-column>
+            <ng-template let-column="column" ngx-datatable-header-template>
+              <span class="f-w-700 sp-policy-erp">Name</span>
+            </ng-template>
+            <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+              {{row.firstname }}  {{row.lastname }}
+            </ng-template>
+          </ngx-datatable-column>
+
+<!--            <ngx-datatable-column name="firstname">-->
+<!--              <ng-template let-column="column" ngx-datatable-header-template>-->
+<!--                <span class="f-w-700 sp-policy-erp">Firstname</span>-->
+<!--              </ng-template>-->
+<!--            </ngx-datatable-column>-->
+<!--            <ngx-datatable-column name="lastname">-->
+<!--              <ng-template let-column="column" ngx-datatable-header-template>-->
+<!--                <span class="f-w-700 sp-policy-erp">Lastname</span>-->
+<!--              </ng-template>-->
+<!--            </ngx-datatable-column>-->
+
+          <ngx-datatable-column name="phone">
+            <ng-template let-column="column" ngx-datatable-header-template>
+              <span class="f-w-700 sp-policy-erp">Phone</span>
+            </ng-template>
+            <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+              <span class="font-primary">{{row.phone}}</span>
+            </ng-template>
+          </ngx-datatable-column>
+
+<!--          <ngx-datatable-column name="phone">-->
+<!--            <ng-template let-column="column" ngx-datatable-header-template>-->
+<!--              <span class="f-w-700 sp-policy-erp">Phone</span>-->
+<!--            </ng-template>-->
+<!--          </ngx-datatable-column>-->
+
+          <ngx-datatable-column name="username">
+            <ng-template let-column="column" ngx-datatable-header-template>
+              <span class="f-w-700 sp-policy-erp">Username</span>
+            </ng-template>
+          </ngx-datatable-column>
+
+          <ngx-datatable-column name="profile">
+            <ng-template let-column="column" ngx-datatable-header-template>
+              <span class="f-w-700 sp-policy-erp">Profile</span>
+            </ng-template>
+            <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+              <span class="badge rounded-pill badge-light-success" style="font-size: 12px;">{{row.profile ? row.profile.name : "" }}</span>
+            </ng-template>
+          </ngx-datatable-column>
+
+          <ngx-datatable-column name="email">
+            <ng-template let-column="column" ngx-datatable-header-template>
+              <span class="f-w-700 sp-policy-erp">Email</span>
+            </ng-template>
+          </ngx-datatable-column>
+
+          <ngx-datatable-column name="branch">
+            <ng-template let-column="column" ngx-datatable-header-template>
+              <span class="f-w-700 sp-policy-erp">Branch</span>
+            </ng-template>
+            <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+              {{row.branch ? row.branch.name : "" }}
+            </ng-template>
+          </ngx-datatable-column>
+
+          <ngx-datatable-column name="institution">
+            <ng-template let-column="column" ngx-datatable-header-template>
+              <span class="f-w-700 sp-policy-erp">Institution</span>
+            </ng-template>
+            <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+              {{row.institution ? row.institution.name : "" }}
+            </ng-template>
+          </ngx-datatable-column>
+
+
+            <ngx-datatable-column [frozenRight]="true" name="actions">
+              <ng-template let-column="column" ngx-datatable-header-template>
+                <span class="f-w-700 sp-policy-erp">Actions</span>
+              </ng-template>
+              <ng-template  let-row="row" let-value="value" ngx-datatable-cell-template>
+                <a (click)="editUser(row.id)" type="button" placement="top" ngbTooltip="Edit"><i class="icon-pencil-alt text-success" style="cursor: pointer"></i></a>
+                <a (click)="deleteUser(row.id)" type="button" placement="top" ngbTooltip="Delete"><i class="icon-trash text-danger ms-2" style="cursor: pointer"></i></a>
+                <a (click)="updatePassword(row)" type="button" placement="top" ngbTooltip="Update password"><i class="icon-unlock text-warning ms-2" style="cursor: pointer"></i></a>
+              </ng-template>
+            </ngx-datatable-column>
+          </ngx-datatable>
+
+      </div>
+
+
+    </div>
+    </div>
+  </div>
+
+
+
+
+
+

@@ -1,0 +1,161 @@
+<div class="modal-header">
+  <h4 class="modal-title">Change Of Matricule</h4>
+  <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+
+  </button>
+</div>
+<div class="modal-body">
+  <form [formGroup]="changeMatriculeForm" (ngSubmit)="onFormSubmit()" id="ngForm">
+
+    <div class="row">
+      <div class="col-md-6">
+        <label class="form-label"> Year <span class="text-danger">*</span></label>
+        <ng-select
+                [items]="years"
+                bindLabel="year"
+                bindValue="id"
+                placeholder="Choose a year"
+                formControlName="year"
+                [ngClass]="{'is-invalid': fc['name'].invalid && isSubmitted}"
+                [(ngModel)]="yearSelected">
+        </ng-select>
+      </div>
+
+
+      <div class="col-md-6">
+        <label class="form-label">Ministry Matricule </label>
+        <input class="form-control form-control-sm" type="text" placeholder="Ex. Security" formControlName="othermatricule"  readonly>
+      </div>
+
+    </div>
+
+    <div class="row">
+      <div class="col-md-12">
+        <label class="form-label"> Old Matricule <span class="text-danger">*</span></label>
+        <input class="form-control form-control-sm" type="text" placeholder="Ex. A" formControlName="matricule">
+      </div>
+
+      <div class="col-md-12">
+        <label class="form-label"> New Matricule <span class="text-danger">*</span></label>
+        <input class="form-control form-control-sm" type="text" placeholder="Ex. A" formControlName="newMatricule" [ngClass]="{'is-invalid': fc['matricule'].invalid && isSubmitted}">
+        <div class="invalid-feedback" *ngIf="fc['matricule'].errors?.['serverError']">
+          {{ fc['matricule'].errors?.['serverError'] }}
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+
+      <div class="col-md-4">
+        <label class="form-label">Internal Matricule </label>
+        <input class="form-control form-control-sm" type="text" placeholder="Ex. Security" formControlName="internalmatricule" readonly>
+      </div>
+
+      <div class="col-md-4">
+        <label class="form-label"> Name <span class="text-danger">*</span></label>
+        <input class="form-control form-control-sm" type="text" placeholder="Ex. A" formControlName="name" readonly>
+      </div>
+
+      <div class="col-md-4">
+        <label class="form-label">First Name </label>
+        <input class="form-control form-control-sm" type="text" placeholder="Ex. Security" formControlName="firstName" readonly>
+      </div>
+
+    </div>
+
+    <div class="row">
+      <div class="col-md-4">
+        <label class="form-label"> Date of Birth <span class="text-danger">*</span></label>
+        <input class="form-control form-control-sm" type="date" placeholder="Ex. A" formControlName="dob" readonly>
+      </div>
+
+      <div class="col-md-4">
+        <label class="form-label"> Born Around </label>
+        <input class="form-control form-control-sm" type="date" placeholder="Ex. A" formControlName="bornAround" readonly>
+      </div>
+
+      <div class="col-md-4">
+        <label class="form-label"> Place of Birth <span class="text-danger">*</span></label>
+        <input class="form-control form-control-sm" type="text" placeholder="Ex. A" formControlName="pob" readonly>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-4">
+        <label class="form-label">Sex </label>
+        <ng-select
+                [items]="sexes"
+                bindLabel="name"
+                bindValue="id"
+                placeholder="Choose a sex"
+                formControlName="sex"
+                [ngClass]="{'is-invalid': fc['name'].invalid && isSubmitted}"
+                [(ngModel)]="sexSelected">
+        </ng-select>
+      </div>
+
+      <div class="col-md-4">
+        <label class="form-label">Country</label>
+        <ng-select
+                [items]="countries"
+                bindLabel="name"
+                bindValue="id"
+                placeholder="Choose a country"
+                formControlName="country"
+                [ngClass]="{'is-invalid': fc['name'].invalid && isSubmitted}"
+                [(ngModel)]="countrySelected">
+        </ng-select>
+      </div>
+
+      <div class="col-md-4">
+        <label class="form-label"> Region </label>
+        <input class="form-control form-control-sm" type="text" placeholder="Ex. A" formControlName="region" readonly>
+      </div>
+    </div>
+
+
+    <div class="row">
+      <div class="col-md-4">
+        <label class="form-label"> Father Name </label>
+        <input class="form-control form-control-sm" type="text" placeholder="Ex. A" formControlName="fathername" readonly>
+      </div>
+
+      <div class="col-md-4">
+        <label class="form-label"> Mother Name </label>
+        <input class="form-control form-control-sm" type="text" placeholder="Ex. A" formControlName="mothername" readonly>
+      </div>
+
+      <div class="col-md-4">
+        <label class="form-label"> Guardian Name </label>
+        <input class="form-control form-control-sm" type="text" placeholder="Ex. A" formControlName="guardianname" readonly>
+      </div>
+    </div>
+
+  </form>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-sm btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
+
+
+  <button form="ngForm" (submit)="onFormSubmit()" type="submit" class="btn btn-sm btn-outline-primary" [disabled]=saving>
+    <ng-container *ngIf="!saving; else isSaving">{{data ? update : create}}</ng-container>
+    <ng-template #isSaving>
+      {{ "Submitting" | translate}} ...
+    </ng-template>
+  </button>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

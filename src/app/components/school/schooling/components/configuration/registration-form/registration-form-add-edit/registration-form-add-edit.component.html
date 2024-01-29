@@ -1,0 +1,127 @@
+<div class="modal-header">
+  <h4 class="modal-title">Registration Form</h4>
+  <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+
+  </button>
+</div>
+<div class="modal-body">
+  <form [formGroup]="registrationFormForm" (ngSubmit)="onFormSubmit()" id="ngForm">
+    <div class="row">
+      <div class="col-md-6">
+        <label class="form-label">Name <span class="text-danger">*</span></label>
+        <input class="form-control form-control-sm" type="text" placeholder="Ex. Security" formControlName="name" [ngClass]="{'is-invalid': fc['name'].invalid && isSubmitted}">
+        <small class="invalid-feedback fst-italic" *ngIf="fc['name'].errors?.['required']">This field is required</small>
+        <div class="invalid-feedback" *ngIf="fc['name'].errors?.['minlength']">Name must be at least 2 characters long</div>
+        <div class="invalid-feedback" *ngIf="fc['name'].errors?.['serverError']">
+          {{ fc['name'].errors?.['serverError'] }}
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label"> Speciality </label>
+        <ng-select
+                [items]="specialities"
+                bindLabel="name"
+                bindValue="id"
+                placeholder="Choose an speciality"
+                formControlName="speciality"
+                [(ngModel)]="specialitySelected">
+        </ng-select>
+      </div>
+
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <label class="form-label"> Minimum Level </label>
+        <ng-select
+                [items]="minimumLevels"
+                bindLabel="name"
+                bindValue="id"
+                placeholder="Choose an minimumLevel"
+                formControlName="minimumLevel"
+                [ngClass]="{'is-invalid': fc['minimumLevel'].invalid && isSubmitted}"
+                [(ngModel)]="minimumLevelSelected"
+                (change)="filterMaximumLevels()">
+        </ng-select>
+        <div class="invalid-feedback" *ngIf="fc['minimumLevel'].errors?.['required']">This field is required</div>
+        <div class="invalid-feedback" *ngIf="fc['minimumLevel'].errors?.['serverError']">
+          {{ fc['minimumLevel'].errors?.['serverError'] }}
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label"> Maximum Level </label>
+        <ng-select
+                [items]="maximumLevels"
+                bindLabel="name"
+                bindValue="id"
+                placeholder="Choose an maximumLevel"
+                formControlName="maximumLevel"
+                [ngClass]="{'is-invalid': fc['maximumLevel'].invalid && isSubmitted}"
+                [(ngModel)]="maximumLevelSelected">
+        </ng-select>
+        <div class="invalid-feedback" *ngIf="fc['maximumLevel'].errors?.['required']">This field is required</div>
+        <div class="invalid-feedback" *ngIf="fc['maximumLevel'].errors?.['serverError']">
+          {{ fc['maximumLevel'].errors?.['serverError'] }}
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <label class="form-label">Show Receipt</label>
+
+        <div class="btn-radio" >
+          <div class="btn-group" data-bs-toggle="buttons">
+            <div class="btn btn-light txt-dark">
+              <div class="radio radio-dark">
+                <input id="radio23" formControlName="isshowreceipt" type="radio" value='1'>
+                <label for="radio23">Yes</label>
+              </div>
+            </div>
+            <div class="btn btn-light txt-dark">
+              <div class="radio radio-dark">
+                <input id="radio24" formControlName="isshowreceipt" type="radio" value='0'>
+                <label for="radio24">No</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label">Amount</label>
+        <input class="form-control form-control-sm" type="text" placeholder="Ex. Security" formControlName="amount">
+      </div>
+
+    </div>
+
+  </form>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-sm btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
+
+
+  <button form="ngForm" (submit)="onFormSubmit()" type="submit" class="btn btn-sm btn-outline-primary" [disabled]=saving>
+    <ng-container *ngIf="!saving; else isSaving">{{data ? update : create}}</ng-container>
+    <ng-template #isSaving>
+      {{ "Submitting" | translate}} ...
+    </ng-template>
+  </button>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

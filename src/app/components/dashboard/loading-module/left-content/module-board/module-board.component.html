@@ -1,0 +1,85 @@
+<style>
+    @media screen and (max-width: 800px) {
+        .desktop-hidden {
+            display: initial;
+        }
+        .mobile-hidden {
+            display: none;
+        }
+    }
+    @media screen and (min-width: 800px) {
+        .desktop-hidden {
+            display: none;
+        }
+        .mobile-hidden {
+            display: initial;
+        }
+    }
+</style>
+
+
+<div class="row">
+<!--  <div class="col-sm-12">-->
+<!--    <div class="card o-hidden">-->
+<!--      <div class="card-body balance-widget">-->
+<!--        <span class="f-w-500 f-light">Total Balance</span>-->
+<!--        <h4 class="mb-3 mt-1 f-w-500 mb-0 f-22">$<span class="counter">245,154.00 </span><span class="f-light f-14 f-w-400 ms-1">this month</span></h4>-->
+<!--        <a class="purchase-btn btn btn-primary btn-hover-effect f-w-500" href="#">Tap Up Balance</a>-->
+<!--        <div class="mobile-right-img"><img class="left-mobile-img" src="assets/images/dashboard-2/widget-img.png" alt="" /><img class="mobile-img" src="assets/images/dashboard-2/mobile.gif" alt="mobile with coin" /></div>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+
+
+    <ng-container *ngFor="let userModule of userModules">
+        <div class="col-xxl-5 col-md-2 mt-3">
+
+<!--        <a (click)="getModuleId(userModule.id)" [routerLink]="['/dashboard/default']" [queryParams]="{ layout: 'Paris' }">-->
+        <a (click)="getModuleId(userModule.id)" [routerLink]="userModule?.path ? userModule.path : ['/dashboard/default']" [queryParams]="{ layout: userModule?.layout ? userModule.layout : 'Paris' }">
+            <div class="card small-widget">
+
+                <!--      <app-sale-status [data]="newOrders"></app-sale-status>-->
+                <div class="card-body {{ userModule.color }}">
+                    <!--          <span class="f-light">{{ userModule.name }}</span>-->
+                    <!--          <span class="f-light">{{ newOrders.title }}</span>-->
+                    <div class="d-flex align-items-end gap-1">
+                        <h5>{{ userModule.name }}</h5>
+                        <span class="font-{{ userModule.color }} f-12 f-w-500">
+<!--              <i class="icon-arrow-{{ newOrders.arrow }}"></i><span>{{ newOrders.orderGrowth }}%</span>-->
+            </span>
+                    </div>
+                    <div class="bg-gradient">
+                        <svg class="stroke-icon svg-fill">
+                            <use attr.xlink:href="assets/svg/icon-sprite.svg#{{ userModule.icon }}"></use>
+                        </svg>
+                    </div>
+                </div>
+
+            </div>
+        </a>
+        </div>
+    </ng-container>
+
+
+
+<!--  <div class="col-6">-->
+<!--    <div class="card small-widget">-->
+<!--      <app-sale-status [data]="newOrders"></app-sale-status>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--  <div class="col-6">-->
+<!--    <div class="card small-widget">-->
+<!--      <app-sale-status [data]="newCustomers"></app-sale-status>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--  <div class="col-6">-->
+<!--    <div class="card small-widget">-->
+<!--      <app-sale-status [data]="averageSale"></app-sale-status>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--  <div class="col-6">-->
+<!--    <div class="card small-widget">-->
+<!--      <app-sale-status [data]="grossProfit"></app-sale-status>-->
+<!--    </div>-->
+<!--  </div>-->
+</div>

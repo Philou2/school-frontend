@@ -1,0 +1,151 @@
+<app-breadcrumb [title]="'Student attendance By Subject'" [items]="['Study']" [active_item]="'Student attendance'"></app-breadcrumb>
+<style>
+  .custom-card-erp{
+    margin-bottom: 30px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  @media screen and (max-width: 800px) {
+    .desktop-hidden {
+      display: initial;
+    }
+    .mobile-hidden {
+      display: none;
+    }
+  }
+  @media screen and (min-width: 800px) {
+    .desktop-hidden {
+      display: none;
+    }
+    .mobile-hidden {
+      display: initial;
+    }
+  }
+
+</style>
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-12">
+
+
+      <div class="custom-card-erp">
+        <div style="float:left;">
+          <input
+                  type="text"
+                  style="padding:5px;margin:5px auto;width:30%;"
+                  placeholder="Type to filter the name column..."
+                  (keyup)="updateFilter($event)"
+          />
+          <div style="float: right; margin: 5px;">
+            <button class="btn btn-outline-primary" (click)="addStudentAttendance()">Add</button>
+          </div>
+
+          <div class="btn-group-vertical" role="group" aria-label="Vertical button group" *ngIf="this.isButtonVisible">
+            <div ngbDropdown class="btn-group" role="group">
+              <button type="button" class="btn btn-outline-primary dropdown-toggle" id="dropdownBasic1"
+                      ngbDropdownToggle>Dropdown</button>
+              <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                <button class="dropdown-item" (click)="deleteSelectedStudentAttendanceRows()">Delete selection</button>
+                <button class="dropdown-item">Dropdown link</button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+
+          <ngx-datatable
+                  style="width: 100%"
+                  class="material striped"
+                  selectionType="checkbox"
+                  [rows]="rows"
+                  [headerHeight]="50"
+                  [footerHeight]="50"
+                  [limit]="10"
+                  rowHeight="auto"
+                  columnMode="force"
+                  [scrollbarH]="true"
+                  [loadingIndicator]="loadingIndicator"
+                  [reorderable]="reorderable"
+                  [selected]="selected"
+                  (activate)="onActivate($event)"
+                  (select)="onSelect($event)"
+                  [selectAllRowsOnPage]="false"
+                  [displayCheck]="displayCheck"
+          >
+            <ngx-datatable-column
+                    [width]="55"
+                    [sortable]="false"
+                    [canAutoResize]="false"
+                    [draggable]="false"
+                    [resizeable]="false"
+                    [headerCheckboxable]="true"
+                    [checkboxable]="true"
+                    [frozenLeft]="true"
+            >
+
+            </ngx-datatable-column>
+              <ngx-datatable-column name="school">
+              <ng-template let-column="column" ngx-datatable-header-template>
+                  <span class="f-w-700 sp-policy-erp">School</span>
+              </ng-template>
+              <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                  {{row.school ? row.school.name : "" }}
+              </ng-template>
+          </ngx-datatable-column>
+              <ngx-datatable-column name="class">
+              <ng-template let-column="column" ngx-datatable-header-template>
+                  <span class="f-w-700 sp-policy-erp">Class</span>
+              </ng-template>
+              <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                  {{row.class ? row.class.code : "" }}
+              </ng-template>
+          </ngx-datatable-column>
+              <ngx-datatable-column name="subject">
+                  <ng-template let-column="column" ngx-datatable-header-template>
+                      <span class="f-w-700 sp-policy-erp">Subject</span>
+                  </ng-template>
+                  <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                      {{row.subject ? row.subject.name : "" }}
+                  </ng-template>
+              </ngx-datatable-column>
+
+
+<!--              <ngx-datatable-column name="isActif">-->
+<!--                  <ng-template let-column="column" ngx-datatable-header-template>-->
+<!--                      <span class="f-w-700 sp-policy-erp">Actif</span>-->
+<!--                  </ng-template>-->
+
+<!--                  <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>-->
+<!--                      <ng-container *ngIf="row.isActif === 1; else otherFormat">-->
+<!--                          <span>Yes</span>-->
+<!--                      </ng-container>-->
+<!--                      <ng-template #otherFormat>-->
+<!--                          <span>No</span>-->
+<!--                      </ng-template>-->
+<!--                  </ng-template>-->
+<!--              </ngx-datatable-column>-->
+
+<!--            <ngx-datatable-column [frozenRight]="true" name="actions">
+              <ng-template let-column="column" ngx-datatable-header-template>
+                <span class="f-w-700 sp-policy-erp">Actions</span>
+              </ng-template>
+              <ng-template  let-row="row" let-value="value" ngx-datatable-cell-template>
+                <a (click)="editStudentAttendance(row)"><i class="icon-pencil-alt text-success" style="cursor: pointer"></i></a>
+                <a (click)="deleteStudentAttendance(row.id)"><i class="icon-trash text-danger ms-2" style="cursor: pointer"></i></a>
+              </ng-template>
+            </ngx-datatable-column>-->
+          </ngx-datatable>
+
+      </div>
+
+
+    </div>
+    </div>
+  </div>
+
+
+
+

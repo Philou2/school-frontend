@@ -1,0 +1,85 @@
+<div class="modal-header">
+  <h4 class="modal-title">Student Re-Admission</h4>
+  <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+
+  </button>
+</div>
+<div class="modal-body">
+  <form [formGroup]="readmissionForm" (ngSubmit)="onFormSubmit()" id="ngForm">
+
+    <div class="row">
+      <div class="col-md-6">
+        <label class="form-label"> Year </label>
+        <ng-select
+                [items]="years"
+                bindLabel="year"
+                bindValue="id"
+                placeholder="Choose a year"
+                formControlName="year"
+                [ngClass]="{'is-invalid': fc['year'].invalid && isSubmitted}"
+                [(ngModel)]="yearSelected"
+                (change)="applyYearFilter($event)">
+        </ng-select>
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label"> Old Class </label>
+        <ng-select
+                [items]="classesFiltered"
+                bindLabel="code"
+                bindValue="id"
+                placeholder="Choose a class"
+                formControlName="classe"
+                [ngClass]="{'is-invalid': fc['classe'].invalid && isSubmitted}"
+                [(ngModel)]="classSelected"
+                (change)="applyClassFilter($event)">
+        </ng-select>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12">
+        <label class="form-label"> Students </label>
+        <ng-select
+                [items]="studregistrationsFiltered"
+                bindLabel="student.name"
+                bindValue="id"
+                [multiple]="true"
+                placeholder="Choose a student name"
+                formControlName="studentlist"
+                [ngClass]="{'is-invalid': fc['studentlist'].invalid && isSubmitted}"
+                [(ngModel)]="studregistrationSelected">
+        </ng-select>
+      </div>
+
+    </div>
+
+
+  </form>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-sm btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
+
+
+  <button form="ngForm" (submit)="onFormSubmit()" type="submit" class="btn btn-sm btn-outline-primary" [disabled]=saving>
+    <ng-container *ngIf="!saving; else isSaving">{{data ? update : create}}</ng-container>
+    <ng-template #isSaving>
+      {{ "Submitting" | translate}} ...
+    </ng-template>
+  </button>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

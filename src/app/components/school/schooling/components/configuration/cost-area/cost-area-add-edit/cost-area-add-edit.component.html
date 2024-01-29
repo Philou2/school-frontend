@@ -1,0 +1,190 @@
+<div class="modal-header">
+  <h4 class="modal-title">Cost Area</h4>
+  <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+
+  </button>
+</div>
+<div class="modal-body">
+  <form [formGroup]="costAreaForm" (ngSubmit)="onFormSubmit()" id="ngForm">
+    <div class="row">
+      <div class="col-md-6">
+        <label class="form-label">Code <span class="text-danger">*</span></label>
+        <input class="form-control form-control-sm" type="text" placeholder="Ex. Security" formControlName="code" [ngClass]="{'is-invalid': fc['code'].invalid && isSubmitted}">
+        <small class="invalid-feedback fst-italic" *ngIf="fc['code'].errors?.['required']">This field is required</small>
+        <div class="invalid-feedback" *ngIf="fc['code'].errors?.['minlength']">Code must be atleast 3 caracters long</div>
+        <div class="invalid-feedback" *ngIf="fc['code'].errors?.['serverError']">
+          {{ fc['code'].errors?.['serverError'] }}
+        </div>
+      </div>
+
+
+      <div class="col-md-6">
+        <label class="form-label">Name <span class="text-danger">*</span></label>
+        <input class="form-control form-control-sm" type="text" placeholder="Ex. Security" formControlName="name" [ngClass]="{'is-invalid': fc['name'].invalid && isSubmitted}">
+        <small class="invalid-feedback fst-italic" *ngIf="fc['name'].errors?.['required']">This field is required</small>
+        <div class="invalid-feedback" *ngIf="fc['name'].errors?.['minlength']">Name must be atleast 3 caracters long</div>
+        <div class="invalid-feedback" *ngIf="fc['name'].errors?.['serverError']">
+          {{ fc['name'].errors?.['serverError'] }}
+        </div>
+      </div>
+
+    </div>
+
+    <div class="row">
+      <div class="col-md-12">
+        <label class="form-label"> Expense Heading </label>
+        <ng-select
+                [items]="expenseHeadings"
+                bindLabel="name"
+                bindValue="id"
+                placeholder="Choose an expenseHeading"
+                formControlName="expenseHeading"
+                [ngClass]="{'is-invalid': fc['expenseHeading'].invalid && isSubmitted}"
+                [(ngModel)]="expenseHeadingSelected">
+        </ng-select>
+        <div class="invalid-feedback" *ngIf="fc['expenseHeading'].errors?.['required']">This field is required</div>
+        <div class="invalid-feedback" *ngIf="fc['expenseHeading'].errors?.['serverError']">
+          {{ fc['expenseHeading'].errors?.['serverError'] }}
+        </div>
+      </div>
+
+      <div class="col-md-6">
+      <label class="form-label">Amount or Quantity</label>
+
+      <div class="btn-radio" >
+        <div class="btn-group" data-bs-toggle="buttons">
+          <div class="btn btn-light txt-dark">
+            <div class="radio radio-dark">
+              <input id="radio23" formControlName="isamountorquantity" type="radio" value='1'>
+              <label for="radio23">Yes</label>
+            </div>
+          </div>
+          <div class="btn btn-light txt-dark">
+            <div class="radio radio-dark">
+              <input id="radio24" formControlName="isamountorquantity" type="radio" value='0'>
+              <label for="radio24">No</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <label class="form-label">New Student</label>
+
+        <div class="btn-radio" >
+          <div class="btn-group" data-bs-toggle="buttons">
+            <div class="btn btn-light txt-dark">
+              <div class="radio radio-dark">
+                <input id="radio25" formControlName="isfornewstudent" type="radio" value='1'>
+                <label for="radio25">Yes</label>
+              </div>
+            </div>
+            <div class="btn btn-light txt-dark">
+              <div class="radio radio-dark">
+                <input id="radio26" formControlName="isfornewstudent" type="radio" value='0'>
+                <label for="radio26">No</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label">Old Student</label>
+
+        <div class="btn-radio" >
+          <div class="btn-group" data-bs-toggle="buttons">
+            <div class="btn btn-light txt-dark">
+              <div class="radio radio-dark">
+                <input id="radio27" formControlName="isforoldstudent" type="radio" value='1'>
+                <label for="radio27">Yes</label>
+              </div>
+            </div>
+            <div class="btn btn-light txt-dark">
+              <div class="radio radio-dark">
+                <input id="radio28" formControlName="isforoldstudent" type="radio" value='0'>
+                <label for="radio28">No</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <label class="form-label">Repeating Student</label>
+
+        <div class="btn-radio" >
+          <div class="btn-group" data-bs-toggle="buttons">
+            <div class="btn btn-light txt-dark">
+              <div class="radio radio-dark">
+                <input id="radio29" formControlName="isforrepeatingstudent" type="radio" value='1'>
+                <label for="radio29">Yes</label>
+              </div>
+            </div>
+            <div class="btn btn-light txt-dark">
+              <div class="radio radio-dark">
+                <input id="radio30" formControlName="isforrepeatingstudent" type="radio" value='0'>
+                <label for="radio30">No</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label">Non Repeating Student</label>
+
+        <div class="btn-radio" >
+          <div class="btn-group" data-bs-toggle="buttons">
+            <div class="btn btn-light txt-dark">
+              <div class="radio radio-dark">
+                <input id="radio31" formControlName="isfornonrepeatingstudent" type="radio" value='1'>
+                <label for="radio31">Yes</label>
+              </div>
+            </div>
+            <div class="btn btn-light txt-dark">
+              <div class="radio radio-dark">
+                <input id="radio32" formControlName="isfornonrepeatingstudent" type="radio" value='0'>
+                <label for="radio32">No</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </form>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-sm btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
+
+
+  <button form="ngForm" (submit)="onFormSubmit()" type="submit" class="btn btn-sm btn-outline-primary" [disabled]=saving>
+    <ng-container *ngIf="!saving; else isSaving">{{data ? update : create}}</ng-container>
+    <ng-template #isSaving>
+      {{ "Submitting" | translate}} ...
+    </ng-template>
+  </button>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

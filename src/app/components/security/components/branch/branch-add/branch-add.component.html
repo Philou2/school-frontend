@@ -1,0 +1,186 @@
+<app-breadcrumb [title]="'Branch'" [items]="['Security', 'Branch']" [active_item]="'Add Branch'"></app-breadcrumb>
+
+<div class="container-fluid">
+  <div class="edit-profile">
+
+    <form class="row" [formGroup]="branchForm" (ngSubmit)="onFormSubmit()" id="ngForm">
+
+      <div class="col-xl-12">
+        <div class="card">
+          <div class="card-header">
+            <h5 class="card-title mb-0 f-w-700">Branch create</h5>
+            <div class="card-options">
+              <a class="card-options-collapse" href="javascript:void(0)" data-bs-toggle="card-collapse"><i class="fe fe-chevron-up"></i></a><a class="card-options-remove" href="javascript:void(0)" data-bs-toggle="card-remove"><i class="fe fe-x"></i></a>
+            </div>
+          </div>
+
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-3">
+                <label class="form-label">Institution <span class="text-danger">*</span></label>
+                <ng-select
+                        [items]="institutions"
+                        bindLabel="name"
+                        bindValue="id"
+                        placeholder="Choose an institution"
+                        formControlName="institution"
+                        [ngClass]="{'is-invalid': fc['institution'].invalid && isSubmitted}"
+                        [(ngModel)]="institutionSelected">
+                </ng-select>
+                <div class="invalid-feedback fst-italic" *ngIf="fc['institution'].errors?.['required']">This field is required</div>
+                <div class="invalid-feedback fst-italic" *ngIf="fc['institution'].errors?.['serverError']">
+                  {{ fc['institution'].errors?.['serverError'] }}
+                </div>
+              </div>
+
+              <div class="col-md-3">
+                <label class="form-label">Code <span class="text-danger">*</span></label>
+                <input class="form-control form-control-sm" type="text" placeholder="Ex. BPL" formControlName="code" [ngClass]="{'is-invalid': fc['code'].invalid && isSubmitted}">
+                <small class="invalid-feedback fst-italic" *ngIf="fc['code'].errors?.['required']">This field is required</small>
+                <div class="invalid-feedback fst-italic" *ngIf="fc['code'].errors?.['minlength']">Name must be atleast 3 caracters long</div>
+                <div class="invalid-feedback fst-italic" *ngIf="fc['code'].errors?.['serverError']">
+                  {{ fc['code'].errors?.['serverError'] }}
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Name <span class="text-danger">*</span></label>
+                <input class="form-control form-control-sm" type="text" placeholder="Ex. Better Plan" formControlName="name" [ngClass]="{'is-invalid': fc['name'].invalid && isSubmitted}">
+                <small class="invalid-feedback fst-italic" *ngIf="fc['name'].errors?.['required']">This field is required</small>
+                <div class="invalid-feedback fst-italic" *ngIf="fc['name'].errors?.['minlength']">Name must be atleast 3 caracters long</div>
+                <div class="invalid-feedback fst-italic" *ngIf="fc['name'].errors?.['serverError']">
+                  {{ fc['name'].errors?.['serverError'] }}
+                </div>
+              </div>
+
+            </div>
+
+            <div class="row mt-1">
+              <div class="col-md-3">
+                <label class="form-label">Email</label>
+                <input class="form-control form-control-sm" type="text" placeholder="Ex. jdoe@bp.com" formControlName="email" [ngClass]="{'is-invalid': fc['email'].invalid && isSubmitted}">
+                <small class="invalid-feedback fst-italic" *ngIf="fc['email'].errors?.['email']">Email must be with mail convention</small>
+                <div class="invalid-feedback fst-italic" *ngIf="fc['email'].errors?.['serverError']">
+                  {{ fc['email'].errors?.['serverError'] }}
+                </div>
+              </div>
+              <div class="col-md-3">
+                <label class="form-label">Phone</label>
+                <input class="form-control form-control-sm" type="text" placeholder="Ex. 677777777" formControlName="phone" [ngClass]="{'is-invalid': fc['phone'].invalid && isSubmitted}">
+                <div class="invalid-feedback fst-italic" *ngIf="fc['phone'].errors?.['pattern']">Phone must between 1 - 9</div>
+                <div class="invalid-feedback fst-italic" *ngIf="fc['phone'].errors?.['serverError']">
+                  {{ fc['phone'].errors?.['serverError'] }}
+                </div>
+              </div>
+
+              <div class="col-md-3">
+                <label class="form-label">Po. Box</label>
+                <input class="form-control form-control-sm" type="text" placeholder="Ex. 237" formControlName="pobox" [ngClass]="{'is-invalid': fc['pobox'].invalid && isSubmitted}">
+                <div class="invalid-feedback fst-italic" *ngIf="fc['pobox'].errors?.['serverError']">
+                  {{ fc['pobox'].errors?.['serverError'] }}
+                </div>
+              </div>
+
+              <div class="col-md-3">
+                <label class="form-label">Website</label>
+                <input class="form-control form-control-sm" type="text" placeholder="Ex. 3w.bp.cm" formControlName="website" [ngClass]="{'is-invalid': fc['website'].invalid && isSubmitted}">
+                <div class="invalid-feedback fst-italic" *ngIf="fc['website'].errors?.['serverError']">
+                  {{ fc['website'].errors?.['serverError'] }}
+                </div>
+              </div>
+
+            </div>
+
+            <div class="row mt-1">
+              <div class="col-md-3">
+                <label class="form-label">Tax payer number</label>
+                <input class="form-control form-control-sm" type="text" placeholder="Ex. 00129929929" formControlName="taxPayerNumber" [ngClass]="{'is-invalid': fc['taxPayerNumber'].invalid && isSubmitted}">
+                <div class="invalid-feedback fst-italic" *ngIf="fc['taxPayerNumber'].errors?.['serverError']">
+                  {{ fc['taxPayerNumber'].errors?.['serverError'] }}
+                </div>
+              </div>
+
+              <div class="col-md-3">
+                <label class="form-label">Business number</label>
+                <input class="form-control form-control-sm" type="text" placeholder="Ex. 1192000000" formControlName="businessNumber" [ngClass]="{'is-invalid': fc['businessNumber'].invalid && isSubmitted}">
+                <div class="invalid-feedback fst-italic" *ngIf="fc['businessNumber'].errors?.['serverError']">
+                  {{ fc['businessNumber'].errors?.['serverError'] }}
+                </div>
+              </div>
+
+              <div class="col-md-3">
+                <label class="form-label">NSIF Employer Mat No.</label>
+                <input class="form-control form-control-sm" type="text" placeholder="Ex. 33019" formControlName="nsifEmployerMatriculeNo" [ngClass]="{'is-invalid': fc['nsifEmployerMatriculeNo'].invalid && isSubmitted}">
+                <div class="invalid-feedback fst-italic" *ngIf="fc['nsifEmployerMatriculeNo'].errors?.['serverError']">
+                  {{ fc['nsifEmployerMatriculeNo'].errors?.['serverError'] }}
+                </div>
+              </div>
+
+              <div class="col-md-3">
+                <label class="form-label">Address</label>
+                <input class="form-control form-control-sm" type="text" placeholder="Ex. BP 237 ssadi" formControlName="address" [ngClass]="{'is-invalid': fc['address'].invalid && isSubmitted}">
+                <div class="invalid-feedback fst-italic" *ngIf="fc['address'].errors?.['serverError']">
+                  {{ fc['address'].errors?.['serverError'] }}
+                </div>
+              </div>
+
+            </div>
+
+<!--            <div class="row mt-2">-->
+<!--              <div class="col-md-4">-->
+<!--                <label class="form-label">CNPS</label>-->
+<!--                <input class="form-control form-control-sm" type="text" placeholder="Ex. 00E02CC00991" formControlName="cnps" [ngClass]="{'is-invalid': fc['cnps'].invalid && isSubmitted}">-->
+<!--                <div class="invalid-feedback fst-italic" *ngIf="fc['cnps'].errors?.['serverError']">-->
+<!--                  {{ fc['cnps'].errors?.['serverError'] }}-->
+<!--                </div>-->
+<!--              </div>-->
+
+<!--              <div class="col-md-4">-->
+<!--                <label class="form-label">Idep Key Number</label>-->
+<!--                <input class="form-control form-control-sm" type="text" placeholder="Ex. 01990099114" formControlName="idepKeyNumber" [ngClass]="{'is-invalid': fc['idepKeyNumber'].invalid && isSubmitted}">-->
+<!--                <div class="invalid-feedback fst-italic" *ngIf="fc['idepKeyNumber'].errors?.['serverError']">-->
+<!--                  {{ fc['idepKeyNumber'].errors?.['serverError'] }}-->
+<!--                </div>-->
+<!--              </div>-->
+
+<!--            </div>-->
+
+<!--            <div class="row mt-2">-->
+<!--              <div class="col-md-4">-->
+<!--                <label class="form-label">NSIF Regime</label>-->
+<!--                <input class="form-control form-control-sm" type="text" placeholder="Ex. 44224" formControlName="nsifRegime" [ngClass]="{'is-invalid': fc['nsifRegime'].invalid && isSubmitted}">-->
+<!--                <div class="invalid-feedback fst-italic" *ngIf="fc['nsifRegime'].errors?.['serverError']">-->
+<!--                  {{ fc['nsifRegime'].errors?.['serverError'] }}-->
+<!--                </div>-->
+<!--              </div>-->
+<!--              -->
+<!--            </div>-->
+
+          </div>
+
+          <div class="card-footer text-end">
+            <button form="ngForm" (submit)="onFormSubmit()" type="submit" class="btn btn-sm btn-primary" [disabled]=saving>
+              <ng-container *ngIf="!saving; else isSaving">{{data ? update : create}}</ng-container>
+              <ng-template #isSaving>
+                {{ "Submitting" | translate}} ...
+              </ng-template>
+            </button>
+          </div>
+
+        </div>
+      </div>
+
+
+
+    </form>
+
+  </div>
+</div>
+
+
+
+
+
+
+
+
+

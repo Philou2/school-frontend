@@ -1,0 +1,764 @@
+<app-breadcrumb [title]="'Teacher'" [items]="['Study']" [active_item]="'Teacher'"></app-breadcrumb>
+<style>
+    .custom-card-erp{
+        margin-bottom: 30px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    @media screen and (max-width: 800px) {
+        .desktop-hidden {
+            display: initial;
+        }
+        .mobile-hidden {
+            display: none;
+        }
+    }
+    @media screen and (min-width: 800px) {
+        .desktop-hidden {
+            display: none;
+        }
+        .mobile-hidden {
+            display: initial;
+        }
+    }
+
+</style>
+<div class="row">
+<div class="col-sm-12">
+
+
+
+<div>
+<div [formGroup]="teacherForm">
+
+
+<div class="col-sm-12">
+<div class="card mt-3"  style="min-height: 500px;">
+<div class="card-body">
+<div class="horizontal-wizard-wrapper vertical-variations">
+<div class="row g-3">
+    <div class="container">
+    <div class="col-12 main-horizontal-header">
+        <div class="nav nav-pills horizontal-options" id="business-n-wizard-tab" role="tablist" aria-orientation="vertical" style="display: flex; justify-content: space-between;">
+            <a class="nav-link" id="business-n-info-tab" data-bs-toggle="pill" href="#ngForm1" role="tab" aria-controls="business-n-info" aria-selected="true" style="width: 150px;" [ngClass]="step==1 ? 'active ' : 'inactive'">
+                <div class="horizontal-wizard">
+                    <div class="stroke-icon-wizard">
+                        <i class="fa fa-user"></i>
+                    </div>
+                    <div class="horizontal-wizard-content">
+                        <h6>Presentation</h6>
+                    </div>
+                </div>
+            </a>
+            <a class="nav-link" id="business-pay-wizard-tab" data-bs-toggle="pill" href="#ngForm2" role="tab" aria-controls="business-pay-wizard" aria-selected="false" style="width: 150px;" [ngClass]="step==2 ? 'active' : 'inactive'">
+                <div class="horizontal-wizard">
+                    <div class="stroke-icon-wizard">
+                        <i class="icofont icofont-ui-contact-list"></i>
+                    </div>
+                    <div class="horizontal-wizard-content">
+                        <h6>Contact & Health</h6>
+                    </div>
+                </div>
+            </a>
+            <a class="nav-link" id="business-stud-wizard-tab" data-bs-toggle="pill" href="#ngForm3" role="tab" aria-controls="business-pay-wizard" aria-selected="false" style="width: 150px;" [ngClass]="step==3 ? 'active' : 'inactive'">
+                <div class="horizontal-wizard">
+                    <div class="stroke-icon-wizard">
+                        <i class="icofont icofont-group-students"></i>
+                    </div>
+                    <div class="horizontal-wizard-content">
+                        <h6>Parent</h6>
+                    </div>
+                </div>
+            </a>
+            <a class="nav-link" id="business-man-wizard-tab" data-bs-toggle="pill" href="#ngForm4" role="tab" aria-controls="business-pay-wizard" aria-selected="false" style="width: 150px;" [ngClass]="step==4 ? 'active' : 'inactive'">
+                <div class="horizontal-wizard">
+                    <div class="stroke-icon-wizard">
+                        <i class="icofont icofont-users-alt-4"></i>
+                    </div>
+                    <div class="horizontal-wizard-content">
+                        <h6>Family</h6>
+                    </div>
+                </div>
+            </a>
+            <a class="nav-link" id="business-admission-wizard-tab" data-bs-toggle="pill" href="#ngForm5" role="tab" aria-controls="business-pay-wizard" aria-selected="false" style="width: 150px;" [ngClass]="step==5 ? 'active' : 'inactive'">
+                <div class="horizontal-wizard">
+                    <div class="stroke-icon-wizard">
+                        <i class="icofont icofont-university"></i>
+                    </div>
+                    <div class="horizontal-wizard-content">
+                        <h6> Specialty & salary </h6>
+                    </div>
+                </div>
+            </a>
+            <a class="nav-link" id="business-reg-wizard-tab" data-bs-toggle="pill" href="#ngForm6" role="tab" aria-controls="business-pay-wizard" aria-selected="false" style="width: 150px;" [ngClass]="step==6 ? 'active' : 'inactive'">
+                <div class="horizontal-wizard">
+                    <div class="stroke-icon-wizard">
+                        <i class="fa fa-file-text"></i>
+                    </div>
+                    <div class="horizontal-wizard-content">
+                        <h6> Identity documents </h6>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+
+        <br>
+    </div>
+    </div>
+
+    <div class="container">
+    <div class="col-12">
+        <div class="tab-content dark-field">
+                <form class="row g-3" [formGroup]="teacherForm"  id="ngForm1">
+                    <fieldset  *ngIf="step == 1" >
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label class="form-label"> Year <span class="text-danger">*</span></label>
+                            <ng-select
+                                    [items]="years"
+                                    bindLabel="year"
+                                    bindValue="id"
+                                    placeholder="Choose a year"
+                                    formControlName="year"
+                                    [ngClass]="{ 'is-invalid': studentStep && student.year.errors }"
+                                    [(ngModel)]="yearSelected">
+                            </ng-select>
+                            <div class="invalid-feedback" *ngIf="student.year.errors?.required">This field is required</div>
+                            <div class="invalid-feedback" *ngIf="student.year.errors?.serverError">
+                                {{ student.year.errors?.serverError }}
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <label class="form-label"> Registration number <span class="text-danger">*</span></label>
+                            <input class="form-control form-control-sm" type="text" placeholder="Ex. A" formControlName="registrationNumber" required [ngClass]="{ 'is-invalid': studentStep && student.registrationNumber.errors }">
+                            <div *ngIf="studentStep && teacherForm.controls.registrationNumber.errors"></div>
+                            <small class="invalid-feedback fst-italic" *ngIf="student.registrationNumber.errors?.required">This field is required</small>
+                            <div class="invalid-feedback" *ngIf="student.registrationNumber.errors?.minLength">Registration number must be at least 2 characters long</div>
+                            <div class="invalid-feedback" *ngIf="student.registrationNumber.errors?.pattern">No White Space Allowed</div>
+                            <div class="invalid-feedback" *ngIf="student.registrationNumber.errors?.serverError">
+                                {{ student.registrationNumber.errors?.serverError }}
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <label class="form-label"> Name <span class="text-danger">*</span></label>
+                            <input class="form-control form-control-sm" type="text" placeholder="Ex. A" formControlName="name" required [ngClass]="{ 'is-invalid': studentStep && student.name.errors }">
+                            <div *ngIf="studentStep && teacherForm.controls.name.errors"></div>
+                            <small class="invalid-feedback fst-italic" *ngIf="student.name.errors?.required">This field is required</small>
+                            <div class="invalid-feedback" *ngIf="student.name.errors?.minLength">Name must be at least 2 characters long</div>
+                            <div class="invalid-feedback" *ngIf="student.name.errors?.pattern">No White Space Allowed</div>
+                            <div class="invalid-feedback" *ngIf="student.name.errors?.serverError">
+                                {{ student.name.errors?.serverError }}
+                            </div>
+                        </div>
+                    </div>
+
+                        <div class="row">
+                        <div class="col-md-4">
+                            <label class="form-label">First Name </label>
+                            <input class="form-control form-control-sm" type="text" placeholder="Ex. Security" formControlName="firstName">
+                        </div>
+
+                        <div class="col-md-4">
+                            <label class="form-label"> Date of Birth <span class="text-danger">*</span></label>
+                            <input class="form-control form-control-sm" type="date" placeholder="Ex. A" formControlName="dob" required [ngClass]="{ 'is-invalid': studentStep && student.dob.errors }">
+                            <div *ngIf="studentStep && teacherForm.controls.dob.errors"></div>
+                            <small class="invalid-feedback fst-italic" *ngIf="student.dob.errors?.required">This field is required</small>
+                        </div>
+
+                        <div class="col-md-4">
+                            <label class="form-label"> Born Toward </label>
+                            <input class="form-control form-control-sm" type="date" placeholder="Ex. A" formControlName="bornTowards">
+                        </div>
+                        </div>
+
+                        <div class="row">
+                        <div class="col-md-4">
+                            <label class="form-label"> Place of Birth <span class="text-danger">*</span></label>
+                            <input class="form-control form-control-sm" type="text" placeholder="Ex. A" formControlName="pob" required [ngClass]="{ 'is-invalid': studentStep && student.pob.errors }">
+                            <div *ngIf="studentStep && teacherForm.controls.pob.errors"></div>
+                            <small class="invalid-feedback fst-italic" *ngIf="student.pob.errors?.required">This field is required</small>
+                        </div>
+
+                        <div class="col-md-4">
+                            <label class="form-label">Sex <span class="text-danger">*</span> </label>
+                            <ng-select
+                                    [items]="sexes"
+                                    bindLabel="name"
+                                    bindValue="id"
+                                    placeholder="Choose a sex"
+                                    formControlName="sex"
+                                    [ngClass]="{ 'is-invalid': studentStep && student.sex.errors }"
+                                    [(ngModel)]="sexSelected">
+                            </ng-select>
+                            <div class="invalid-feedback" *ngIf="student.sex.errors?.required">This field is required</div>
+                            <div class="invalid-feedback" *ngIf="student.sex.errors?.serverError">
+                                {{ student.sex.errors?.serverError }}
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <label class="form-label"> Civil Status<span class="text-danger">*</span> </label>
+                            <ng-select
+                                    [items]="civilities"
+                                    bindLabel="name"
+                                    bindValue="id"
+                                    placeholder="Choose a civility"
+                                    formControlName="civility"
+                                    [ngClass]="{ 'is-invalid': studentStep && student.civility.errors }"
+                                    [(ngModel)]="civilitySelected">
+                            </ng-select>
+                            <div class="invalid-feedback" *ngIf="student.civility.errors?.required">This field is required</div>
+                            <div class="invalid-feedback" *ngIf="student.civility.errors?.serverError">
+                                {{ student.civility.errors?.serverError }}
+                            </div>
+                        </div>
+
+                        </div>
+
+                        <div class="row">
+                        <div class="col-md-4">
+                            <label class="form-label">Country <span class="text-danger">*</span></label>
+                            <ng-select
+                                    [items]="countries"
+                                    bindLabel="name"
+                                    bindValue="id"
+                                    placeholder="Choose a country"
+                                    formControlName="country"
+                                    [ngClass]="{ 'is-invalid': studentStep && student.country.errors }"
+                                    [(ngModel)]="countrySelected">
+                            </ng-select>
+                            <div class="invalid-feedback" *ngIf="student.country.errors?.required">This field is required</div>
+                            <div class="invalid-feedback" *ngIf="student.country.errors?.serverError">
+                                {{ student.country.errors?.serverError }}
+                            </div>
+                        </div>
+                            <div class="col-md-4">
+                                <label class="form-label"> Region </label>
+                                <ng-select
+                                        [items]="regions"
+                                        bindLabel="name"
+                                        bindValue="id"
+                                        placeholder="Choose a region"
+                                        formControlName="regionOrigin"
+                                        [(ngModel)]="regionSelected">
+                                </ng-select>
+                            </div>
+                        <div class="col-md-4">
+                            <label class="form-label"> Religion </label>
+                            <ng-select
+                                    [items]="religions"
+                                    bindLabel="name"
+                                    bindValue="id"
+                                    placeholder="Choose a religion"
+                                    formControlName="religion"
+                                    [ngClass]="{ 'is-invalid': studentStep && student.religion.errors }"
+                                    [(ngModel)]="religionSelected">
+                            </ng-select>
+                        </div>
+                    </div>
+                        <br>
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <input (click)="next()" type="button" name="next" class="btn btn-sm btn-outline-primary" value="Next"/>
+                            </div>
+                            <div>
+                                <button type="button" style="margin-right: 10px;" class="btn btn-sm btn-outline-dark" routerLink='/study/teacher'>Close</button>
+                            </div>
+                        </div>
+                        <br>
+                    </fieldset>
+                </form>
+
+
+            <form class="row mt-2" [formGroup]="teacherForm"  id="ngForm2">
+                <fieldset  *ngIf="step == 2">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label class="form-label"> Phone </label>
+                            <input class="form-control form-control-sm" type="text" placeholder="Ex. A" formControlName="phone">
+                        </div>
+
+                        <div class="col-md-4">
+                            <label class="form-label"> Email <span class="text-danger">*</span></label>
+                            <input class="form-control form-control-sm" type="text" placeholder="Ex. A" formControlName="email" >
+<!--                            <small class="invalid-feedback fst-italic" *ngIf="step == 2 && student.email.errors?.required">This field is required</small>-->
+
+                        </div>
+
+                        <div class="col-md-4">
+                            <label class="form-label"> Occupation </label>
+                            <input class="form-control form-control-sm" type="text" placeholder="Ex. A" formControlName="occupation" >
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label class="form-label"> Quarter </label>
+                            <input class="form-control form-control-sm" type="text" placeholder="Ex. A" formControlName="quarter" >
+                        </div>
+
+                        <div class="col-md-4">
+                            <label class="form-label"> City </label>
+                            <input class="form-control form-control-sm" type="text" placeholder="Ex. A" formControlName="city" >
+                        </div>
+
+                        <div class="col-md-4">
+                            <label class="form-label"> Address </label>
+                            <input class="form-control form-control-sm" type="text" placeholder="Ex. A" formControlName="address" >
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label class="form-label"> Blood Group </label>
+                            <ng-select
+                                    [items]="bloodGroups"
+                                    bindLabel="name"
+                                    bindValue="id"
+                                    placeholder="Choose a blood group"
+                                    formControlName="bloodGroup"
+                                    [ngClass]="{ 'is-invalid': studentStep1 && student.bloodGroup.errors }"
+                                    [(ngModel)]="bloodGroupSelected">
+                            </ng-select>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label"> Rhesus </label>
+                            <ng-select
+                                    [items]="rhesuses"
+                                    bindLabel="code"
+                                    bindValue="id"
+                                    placeholder="Choose a rhesus"
+                                    formControlName="rhesus"
+                                    [ngClass]="{ 'is-invalid': studentStep1 && student.rhesus.errors }"
+                                    [(ngModel)]="rhesusSelected">
+                            </ng-select>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label class="form-label">Stammerer</label>
+
+                            <div class="btn-radio" >
+                                <div class="btn-group" data-bs-toggle="buttons">
+                                    <div class="btn btn-light txt-dark">
+                                        <div class="radio radio-dark">
+                                            <input id="radio23" formControlName="isStammerer" type="radio" value=true>
+                                            <label for="radio23">Yes</label>
+                                        </div>
+                                    </div>
+                                    <div class="btn btn-light txt-dark">
+                                        <div class="radio radio-dark">
+                                            <input id="radio24" formControlName="isStammerer" type="radio" value=false>
+                                            <label for="radio24">No</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label class="form-label">Left Handed</label>
+
+                            <div class="btn-radio" >
+                                <div class="btn-group" data-bs-toggle="buttons">
+                                    <div class="btn btn-light txt-dark">
+                                        <div class="radio radio-dark">
+                                            <input id="radio25" formControlName="isLeftHanded" type="radio" value=true>
+                                            <label for="radio25">Yes</label>
+                                        </div>
+                                    </div>
+                                    <div class="btn btn-light txt-dark">
+                                        <div class="radio radio-dark">
+                                            <input id="radio26" formControlName="isLeftHanded" type="radio" value=false>
+                                            <label for="radio26">No</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label class="form-label">Hearing Problem</label>
+
+                            <div class="btn-radio" >
+                                <div class="btn-group" data-bs-toggle="buttons">
+                                    <div class="btn btn-light txt-dark">
+                                        <div class="radio radio-dark">
+                                            <input id="radio27" formControlName="isHearingProblem" type="radio" value=true>
+                                            <label for="radio27">Yes</label>
+                                        </div>
+                                    </div>
+                                    <div class="btn btn-light txt-dark">
+                                        <div class="radio radio-dark">
+                                            <input id="radio28" formControlName="isHearingProblem" type="radio" value=false>
+                                            <label for="radio28">No</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label class="form-label">Eye Problem</label>
+
+                            <div class="btn-radio" >
+                                <div class="btn-group" data-bs-toggle="buttons">
+                                    <div class="btn btn-light txt-dark">
+                                        <div class="radio radio-dark">
+                                            <input id="radio29" formControlName="isVisionProblem" type="radio" value=true>
+                                            <label for="radio29">Yes</label>
+                                        </div>
+                                    </div>
+                                    <div class="btn btn-light txt-dark">
+                                        <div class="radio radio-dark">
+                                            <input id="radio30" formControlName="isVisionProblem" type="radio" value=false>
+                                            <label for="radio30">No</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label class="form-label"> Vaccine </label>
+                            <input class="form-control form-control-sm" type="text" placeholder="Ex. A" formControlName="vaccines" >
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label"> Vaccine Prohibited </label>
+                            <input class="form-control form-control-sm" type="text" placeholder="Ex. A" formControlName="prohibited" >
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label class="form-label"> Medical History </label>
+                            <textarea rows="5" cols="5" placeholder="Default textarea" class="form-control" formControlName="medicalHistory"></textarea>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <input (click)="previous()" type="button" name="previous" class="btn btn-sm btn-outline-dark" value="Previous"/>
+                            <input (click)="next()" type="button" name="next" class="btn btn-sm btn-outline-primary ms-2" value="Next"/>
+                        </div>
+                        <div>
+                            <button type="button" style="margin-right: 10px;" class="btn btn-sm btn-outline-dark" routerLink='/study/teacher'>Close</button>
+                        </div>
+                    </div>
+                    <br>
+                </fieldset>
+            </form>
+
+
+
+            <form class="row mt-2" [formGroup]="teacherForm"  id="ngForm3">
+                <fieldset  *ngIf="step == 3">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <label class="form-label"> Father Name </label>
+                                <input class="form-control form-control-sm" type="text" placeholder="Ex. A" formControlName="fatherName" >
+                            </div>
+
+                            <div class="col-md-4">
+                                <label class="form-label"> Father Phone </label>
+                                <input class="form-control form-control-sm" type="text" placeholder="Ex. A" formControlName="fatherPhone" >
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label class="form-label"> Father Email </label>
+                                <input class="form-control form-control-sm" type="text" placeholder="Ex. A" formControlName="fatherEmail">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label"> Father Profession </label>
+                                <input class="form-control form-control-sm" type="text" placeholder="Ex. A" formControlName="fatherOccupation" >
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label"> Father City Residence </label>
+                                <input class="form-control form-control-sm" type="text" placeholder="Ex. A" formControlName="fatherCityResidence" >
+                            </div>
+                        </div>
+
+                    <div class="row">
+                        <div class="col-md-8">
+                            <label class="form-label"> Mother Name </label>
+                            <input class="form-control form-control-sm" type="text" placeholder="Ex. A" formControlName="motherName" >
+                        </div>
+                            <div class="col-md-4">
+                                <label class="form-label"> Mother Phone </label>
+                                <input class="form-control form-control-sm" type="text" placeholder="Ex. A" formControlName="motherPhone" >
+                            </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label class="form-label"> Mother Email </label>
+                            <input class="form-control form-control-sm" type="text" placeholder="Ex. A" formControlName="motherEmail" >
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label"> Mother Profession </label>
+                            <input class="form-control form-control-sm" type="text" placeholder="Ex. A" formControlName="motherOccupation" >
+                        </div>
+
+                        <div class="col-md-4">
+                                <label class="form-label"> Mother City Residence </label>
+                                <input class="form-control form-control-sm" type="text" placeholder="Ex. A" formControlName="motherCityResidence" >
+                            </div>
+
+                    </div>
+                    <br>
+
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <input (click)="previous()" type="button" name="previous" class="btn btn-sm btn-outline-dark" value="Previous"/>
+                            <input (click)="next()" type="button" name="next" class="btn btn-sm btn-outline-primary ms-2" value="Next"/>
+                        </div>
+                        <div>
+                            <button type="button" style="margin-right: 10px;" class="btn btn-sm btn-outline-dark" routerLink='/study/teacher'>Close</button>
+                        </div>
+                    </div>
+                    <br>
+                </fieldset>
+            </form>
+
+
+            <form class="row g-3"  [formGroup]="teacherForm"  id="ngForm4">
+                <fieldset  *ngIf="step == 4">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <label class="form-label"> Partner Name </label>
+                            <input class="form-control form-control-sm" type="text" placeholder="Ex. A" formControlName="partnerName" >
+                        </div>
+
+                        <div class="col-md-4">
+                            <label class="form-label"> Partner Phone </label>
+                            <input class="form-control form-control-sm" type="text" placeholder="Ex. A" formControlName="partnerPhone" >
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label class="form-label"> Partner Email </label>
+                            <input class="form-control form-control-sm" type="text" placeholder="Ex. A" formControlName="partnerEmail">
+                        </div>
+
+                        <div class="col-md-4">
+                            <label class="form-label"> Partner Profession </label>
+                            <input class="form-control form-control-sm" type="text" placeholder="Ex. A" formControlName="partnerOccupation" >
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label"> Partner City Residence</label>
+                            <input class="form-control form-control-sm" type="text" placeholder="Ex. A" formControlName="partnerCityResidence" >
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label class="form-label"> Marital Status </label>
+                            <ng-select
+                                    [items]="maritalStatus"
+                                    bindLabel="name"
+                                    bindValue="id"
+                                    placeholder="Choose a marital Status"
+                                    formControlName="maritalStatus"
+                                    [ngClass]="{ 'is-invalid': registrationStep && registration.maritalStatus.errors }"
+                                    [(ngModel)]="maritalStatusSelected">
+                            </ng-select>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label"> Number of Children </label>
+                            <input class="form-control form-control-sm" type="number" placeholder="Ex. A" formControlName="numberOfChildren">
+                        </div>
+                    </div>
+                    <br>
+
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <input (click)="previous()" type="button" name="previous" class="btn btn-sm btn-outline-dark" value="Previous"/>
+                            <input (click)="next()" type="button" name="next" class="btn btn-sm btn-outline-primary ms-2" value="Next"/>
+                        </div>
+                        <div>
+                            <button type="button" style="margin-right: 10px;" class="btn btn-sm btn-outline-dark" routerLink='/study/teacher'>Close</button>
+                        </div>
+                    </div>
+                    <br>
+                </fieldset>
+            </form>
+
+            <form class="row g-3 mt-2"  [formGroup]="teacherForm"  id="ngForm5">
+                <fieldset *ngIf="step == 5">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label class="form-label"> Diploma </label>
+                            <ng-select
+                                    [items]="diplomas"
+                                    bindLabel="name"
+                                    bindValue="id"
+                                    placeholder="Choose a diploma"
+                                    formControlName="diploma"
+                                    [ngClass]="{ 'is-invalid': studentStep && student.diploma.errors }"
+                                    [(ngModel)]="diplomaSelected">
+                            </ng-select>
+                        </div>
+
+                        <div class="col-md-4">
+                            <label class="form-label"> speciality </label>
+                            <input class="form-control form-control-sm" type="text" placeholder="Ex. A" formControlName="speciality" >
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label"> Employment Status </label>
+                            <ng-select
+                                    [items]="employmentStatus"
+                                    bindLabel="name"
+                                    bindValue="id"
+                                    placeholder="Choose a employment Status"
+                                    formControlName="employmentStatus"
+                                    [ngClass]="{ 'is-invalid': studentStep && student.employmentStatus.errors }"
+                                    [(ngModel)]="employmentStatusSelected">
+                            </ng-select>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label class="form-label">Base Salary</label>
+                            <input class="form-control form-control-sm" type="number" placeholder="Ex. A" formControlName="baseSalary" >
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">Hourly Rate</label>
+                            <input class="form-control form-control-sm" type="number" placeholder="Ex. A" formControlName="hourlyRate">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label class="form-label"> Subject</label>
+                            <ng-select
+                                    [items]="subjects"
+                                    bindLabel="name"
+                                    bindValue="id"
+                                    [multiple]="true"
+                                    placeholder="Choose a subject"
+                                    formControlName="subject"
+                                    [ngClass]="{ 'is-invalid': studentStep && student.subject.errors }"
+                                    [(ngModel)]="subjectSelected">
+                            </ng-select>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label class="form-label"> Tax Code </label>
+                            <input class="form-control form-control-sm" type="text" placeholder="Ex. A" formControlName="taxCode">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label"> Social Code</label>
+                            <input class="form-control form-control-sm" type="text" placeholder="Ex. A" formControlName="socialCode">
+                        </div>
+
+                    </div>
+                    <br>
+
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <input (click)="previous()" type="button" name="previous" class="btn btn-sm btn-outline-dark" value="Previous"/>
+                            <input (click)="next()" type="button" name="next" class="btn btn-sm btn-outline-primary ms-2" value="Next"/>
+                        </div>
+                        <div>
+                            <button type="button" style="margin-right: 10px;" class="btn btn-sm btn-outline-dark" routerLink='/study/teacher'>Close</button>
+                        </div>
+                    </div>
+                    <br>
+
+                </fieldset>
+            </form>
+
+                <form class="row mt-2"  [formGroup]="teacherForm"  id="ngForm6">
+                    <fieldset *ngIf="step == 6" >
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label class="form-label">Identity Type</label>
+                            <ng-select
+                                    [items]="identityTypes"
+                                    bindLabel="name"
+                                    bindValue="id"
+                                    placeholder="Choose a identity Type"
+                                    formControlName="identityType"
+                                    [ngClass]="{ 'is-invalid': studentStep && student.identityType.errors }"
+                                    [(ngModel)]="identityTypeSelected">
+                            </ng-select>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label"> Id Number </label>
+                            <input class="form-control form-control-sm" type="text" placeholder="Ex. A" formControlName="idNumber">
+                        </div>
+
+                        <div class="col-md-4">
+                            <label class="form-label"> placeOf Issue </label>
+                            <input class="form-control form-control-sm" type="text" placeholder="Ex. A" formControlName="placeOfIssue">
+                        </div>
+                    </div>
+                        <div class="row">
+                        <div class="col-md-6">
+                            <label class="form-label"> Issue At </label>
+                            <input class="form-control form-control-sm" type="date" placeholder="Ex. A" formControlName="issueAt">
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">Expiration At </label>
+                            <input class="form-control form-control-sm" type="date" placeholder="Ex. A" formControlName="expirationAt">
+                        </div>
+                    </div>
+                        <br>
+
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <input (click)="previous()" type="button" name="previous" class="btn btn-sm btn-outline-dark" value="Previous"/>
+<!--                                <input (click)="next()" type="button" name="next" class="btn btn-sm btn-outline-primary ms-2" value="Next"/>-->
+                                <button (click)="onFormSubmit()" type="button" class="btn btn-sm btn-outline-success ms-2" [disabled]=saving>
+                                    <ng-container *ngIf="!saving; else isSaving">{{data ? update : create}}</ng-container>
+                                    <ng-template #isSaving>
+                                        {{ "Submitting" | translate}} ...
+                                    </ng-template>
+                                </button>
+                            </div>
+                            <div>
+                                <button (click)="close()" type="button" style="margin-right: 10px;" class="btn btn-sm btn-outline-dark" routerLink='/study/teacher'>Close</button>
+                            </div>
+                        </div>
+                        <br>
+
+                    </fieldset>
+                </form>
+        </div>
+        </div>
+    </div>
+</div>
+</div>
+    <br>
+</div>
+</div>
+</div>
+
+
+</div>
+
+
+</div>
+</div>
+</div>
+

@@ -1,0 +1,63 @@
+<app-breadcrumb [title]="'Permission'" [items]="['Security', 'Permission']" [active_item]="'Import Permission'"></app-breadcrumb>
+
+<div class="container-fluid">
+  <div class="edit-profile">
+
+      <div class="col-xl-8">
+
+        <div *ngIf="alert" class="alert alert-warning alert-dismissible fade show" role="alert">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-bell"><path d="M22 17H2a3 3 0 0 0 3-3V9a7 7 0 0 1 14 0v5a3 3 0 0 0 3 3zm-8.27 4a2 2 0 0 1-3.46 0"></path>
+                </svg>
+          <h6>{{message}}</h6>
+          <button (click)="closeAlert()" class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <h5 class="card-title mb-0 f-w-700">Import Permissions</h5>
+            <div class="card-options">
+              <a class="card-options-collapse" href="javascript:void(0)" data-bs-toggle="card-collapse"><i class="fe fe-chevron-up"></i></a><a class="card-options-remove" href="javascript:void(0)" data-bs-toggle="card-remove"><i class="fe fe-x"></i></a>
+            </div>
+          </div>
+
+          <div class="card-body">
+
+            <form [formGroup]="permissionImportForm" (ngSubmit)="onFormSubmit()" id="ngForm">
+
+              <div class="mb-3 row">
+                <label class="col-sm-3 col-form-label">Upload File</label>
+                <div class="col-sm-9">
+                  <input type="file" required="" class="form-control" (change)="onFileChange($event)" formControlName="file">
+                </div>
+              </div>
+
+            </form>
+
+
+          </div>
+
+          <div class="card-footer">
+            <button type="button" class="btn btn-sm btn-outline-dark me-2" [routerLink]="'/security/permission'">Close</button>
+
+            <button form="ngForm" (submit)="onFormSubmit()" type="submit" class="btn btn-sm btn-outline-primary" [disabled]=saving>
+              <ng-container *ngIf="!saving; else isSaving">Import</ng-container>
+              <ng-template #isSaving>
+                {{ "Submitting" | translate}} ...
+              </ng-template>
+            </button>
+          </div>
+
+
+        </div>
+      </div>
+
+  </div>
+</div>
+
+
+
+
+
+
+
+

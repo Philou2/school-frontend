@@ -1,0 +1,309 @@
+
+<app-breadcrumb [title]="'Class'" [items]="['Schooling']" [active_item]="'Class'"></app-breadcrumb>
+<style>
+  .custom-card-erp{
+    margin-bottom: 30px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  @media screen and (max-width: 800px) {
+    .desktop-hidden {
+      display: initial;
+    }
+    .mobile-hidden {
+      display: none;
+    }
+  }
+  @media screen and (min-width: 800px) {
+    .desktop-hidden {
+      display: none;
+    }
+    .mobile-hidden {
+      display: initial;
+    }
+  }
+
+</style>
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-12">
+
+
+      <div class="custom-card-erp">
+        <div style="float:left;">
+          <input
+                  type="text"
+                  style="padding:5px;margin:5px auto;width:30%;"
+                  placeholder="Type to filter the name column..."
+                  (keyup)="updateFilter($event)"
+          />
+<!--          <div style="float: right; margin: 5px;">-->
+<!--            <button class="btn btn-outline-primary" (click)="openFormAdd()">Add</button>-->
+<!--          </div>-->
+
+<!--          <div class="btn-group-vertical" role="group" aria-label="Vertical button group" *ngIf="this.isButtonVisible">-->
+<!--            <div ngbDropdown class="btn-group" role="group">-->
+<!--              <button type="button" class="btn btn-outline-primary dropdown-toggle" id="dropdownBasic1"-->
+<!--                      ngbDropdownToggle>Dropdown</button>-->
+<!--              <div ngbDropdownMenu aria-labelledby="dropdownBasic1">-->
+<!--                <button class="dropdown-item" (click)="deleteSelectedSchoolClassRows()">Delete selection</button>-->
+<!--                <button class="dropdown-item">Dropdown link</button>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </div>-->
+
+            <div style="float: right; margin: 5px;">
+                <div class="btn-group-vertical me-2" role="group" aria-label="Vertical button group" *ngIf="this.isButtonVisible">
+                    <div ngbDropdown placement="top" class="btn-group" role="group">
+                        <button type="button" class="btn btn-outline-primary dropdown-toggle" id="dropdownBasic1"
+                                ngbDropdownToggle>Global actions</button>
+                        <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                            <button class="dropdown-item" (click)="deleteSelectedSchoolClassRows()">Delete selection</button>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="btn btn-outline-primary" (click)="openFormAdd()">Add</button>
+            </div>
+
+        </div>
+
+
+          <ngx-datatable
+                  style="width: 100%"
+                  class="material striped"
+                  selectionType="checkbox"
+                  [rows]="rows"
+                  [headerHeight]="50"
+                  [footerHeight]="50"
+                  [limit]="10"
+                  rowHeight="auto"
+                  columnMode="force"
+                  [scrollbarH]="true"
+                  [loadingIndicator]="loadingIndicator"
+                  [reorderable]="reorderable"
+                  [selected]="selected"
+                  (activate)="onActivate($event)"
+                  (select)="onSelect($event)"
+                  [selectAllRowsOnPage]="false"
+                  [displayCheck]="displayCheck"
+          >
+            <ngx-datatable-column
+                    [width]="55"
+                    [sortable]="false"
+                    [canAutoResize]="false"
+                    [draggable]="false"
+                    [resizeable]="false"
+                    [headerCheckboxable]="true"
+                    [checkboxable]="true"
+                    [frozenLeft]="true"
+            >
+
+
+            </ngx-datatable-column>
+
+              <ngx-datatable-column name="school">
+                  <ng-template let-column="column" ngx-datatable-header-template>
+                      <span class="f-w-700 sp-policy-erp">School</span>
+                  </ng-template>
+                  <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                      {{row.school ? row.school.name : "" }}
+                  </ng-template>
+              </ngx-datatable-column>
+
+              <ngx-datatable-column name="classCategory">
+                  <ng-template let-column="column" ngx-datatable-header-template>
+                      <span class="f-w-700 sp-policy-erp">Class Category</span>
+                  </ng-template>
+                  <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                      {{row.classCategory ? row.classCategory.name : "" }}
+                  </ng-template>
+              </ngx-datatable-column>
+
+              <ngx-datatable-column name="code">
+                  <ng-template let-column="column" ngx-datatable-header-template>
+                      <span class="f-w-700 sp-policy-erp">Code</span>
+                  </ng-template>
+              </ngx-datatable-column>
+
+              <ngx-datatable-column name="mainRoom">
+                  <ng-template let-column="column" ngx-datatable-header-template>
+                      <span class="f-w-700 sp-policy-erp">Main Room</span>
+                  </ng-template>
+                  <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                      {{row.mainRoom ? row.mainRoom.name : "" }}
+                  </ng-template>
+              </ngx-datatable-column>
+
+              <ngx-datatable-column name="speciality">
+                  <ng-template let-column="column" ngx-datatable-header-template>
+                      <span class="f-w-700 sp-policy-erp">Speciality</span>
+                  </ng-template>
+                  <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                      {{row.speciality ? row.speciality.name : "" }}
+                  </ng-template>
+              </ngx-datatable-column>
+
+              <ngx-datatable-column name="level">
+                  <ng-template let-column="column" ngx-datatable-header-template>
+                      <span class="f-w-700 sp-policy-erp">Level</span>
+                  </ng-template>
+                  <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                      {{row.level ? row.level.name : "" }}
+                  </ng-template>
+              </ngx-datatable-column>
+
+              <ngx-datatable-column name="trainingType">
+                  <ng-template let-column="column" ngx-datatable-header-template>
+                      <span class="f-w-700 sp-policy-erp">Training Type</span>
+                  </ng-template>
+                  <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                      {{row.trainingType ? row.trainingType.name : "" }}
+                  </ng-template>
+              </ngx-datatable-column>
+
+              <ngx-datatable-column name="isOptional">
+                  <ng-template let-column="column" ngx-datatable-header-template>
+                      <span class="f-w-700 sp-policy-erp"> Optional</span>
+                  </ng-template>
+
+                  <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                      <ng-container *ngIf="row.isOptional == 1; else otherFormat">
+                          <span>Yes</span>
+                      </ng-container>
+                      <ng-template #otherFormat>
+                          <span>No</span>
+                      </ng-template>
+                  </ng-template>
+              </ngx-datatable-column>
+
+              <ngx-datatable-column name="classExam">
+                  <ng-template let-column="column" ngx-datatable-header-template>
+                      <span class="f-w-700 sp-policy-erp">Class Exam</span>
+                  </ng-template>
+              </ngx-datatable-column>
+
+              <ngx-datatable-column name="maximumStudentNumber">
+                  <ng-template let-column="column" ngx-datatable-header-template>
+                      <span class="f-w-700 sp-policy-erp">Maximum Student</span>
+                  </ng-template>
+              </ngx-datatable-column>
+
+              <ngx-datatable-column name="ageLimit">
+                  <ng-template let-column="column" ngx-datatable-header-template>
+                      <span class="f-w-700 sp-policy-erp">Age Limit</span>
+                  </ng-template>
+              </ngx-datatable-column>
+
+            <ngx-datatable-column name="description">
+              <ng-template let-column="column" ngx-datatable-header-template>
+                <span class="f-w-700 sp-policy-erp">Description</span>
+              </ng-template>
+            </ngx-datatable-column>
+
+              <ngx-datatable-column name="guardianship">
+                  <ng-template let-column="column" ngx-datatable-header-template>
+                      <span class="f-w-700 sp-policy-erp">Guardianship</span>
+                  </ng-template>
+                  <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                      {{row.guardianship ? row.guardianship.name : "" }}
+                  </ng-template>
+              </ngx-datatable-column>
+
+              <ngx-datatable-column name="department">
+                  <ng-template let-column="column" ngx-datatable-header-template>
+                      <span class="f-w-700 sp-policy-erp">Department</span>
+                  </ng-template>
+                  <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                      {{row.department ? row.department.name : "" }}
+                  </ng-template>
+              </ngx-datatable-column>
+
+              <ngx-datatable-column name="registrantOption">
+                  <ng-template let-column="column" ngx-datatable-header-template>
+                      <span class="f-w-700 sp-policy-erp">Registrant Option</span>
+                  </ng-template>
+                  <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                      {{row.registrantOption ? row.registrantOption.name : "" }}
+                  </ng-template>
+              </ngx-datatable-column>
+
+              <ngx-datatable-column name="year">
+                  <ng-template let-column="column" ngx-datatable-header-template>
+                      <span class="f-w-700 sp-policy-erp">Year</span>
+                  </ng-template>
+                  <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                      {{row.year ? row.year.year : "" }}
+                  </ng-template>
+              </ngx-datatable-column>
+
+
+              <ngx-datatable-column [frozenRight]="true" name="actions">
+              <ng-template let-column="column" ngx-datatable-header-template>
+                <span class="f-w-700 sp-policy-erp">Actions</span>
+              </ng-template>
+              <ng-template  let-row="row" let-value="value" ngx-datatable-cell-template>
+                <a (click)="openForm(row)"><i class="icon-pencil-alt text-success" style="cursor: pointer"></i></a>
+                <a (click)="deleteSchoolClass(row.id)"><i class="icon-trash text-danger ms-2" style="cursor: pointer"></i></a>
+              </ng-template>
+            </ngx-datatable-column>
+          </ngx-datatable>
+      </div>
+
+
+    </div>
+    </div>
+  </div>
+
+
+
+<!--<div style="float:left;width:75%">-->
+<!--  <ngx-datatable-->
+<!--          style="width: 90%"-->
+<!--          class="material"-->
+<!--          [rows]="rows"-->
+<!--          columnMode="force"-->
+<!--          selectionType="checkbox"-->
+<!--          [headerHeight]="50"-->
+<!--          [footerHeight]="50"-->
+<!--          rowHeight="auto"-->
+<!--          [limit]="5"-->
+<!--          [selected]="selected"-->
+<!--          [selectAllRowsOnPage]="false"-->
+<!--          [displayCheck]="displayCheck"-->
+<!--          (activate)="onActivate($event)"-->
+<!--          (select)="onSelect($event)"-->
+<!--  >-->
+<!--    <ngx-datatable-column-->
+<!--            [width]="30"-->
+<!--            [sortable]="false"-->
+<!--            [canAutoResize]="false"-->
+<!--            [draggable]="false"-->
+<!--            [resizeable]="false"-->
+<!--            [headerCheckboxable]="true"-->
+<!--            [checkboxable]="true"-->
+<!--    >-->
+<!--    </ngx-datatable-column>-->
+<!--    <ngx-datatable-column name="Name"></ngx-datatable-column>-->
+<!--    <ngx-datatable-column name="Gender"></ngx-datatable-column>-->
+<!--    <ngx-datatable-column name="Company"></ngx-datatable-column>-->
+<!--  </ngx-datatable>-->
+<!--</div>-->
+
+<!-- <div class="selected-column">
+  <h4>
+    Selections <small>({{ selected?.length }})</small>
+  </h4>
+  <ul>
+    <li *ngFor="let sel of selected">
+      {{ sel.name }}
+    </li>
+    <li *ngIf="!selected?.length">No Selections</li>
+  </ul>
+</div> -->
+
+
+
+
